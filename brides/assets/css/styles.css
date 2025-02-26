@@ -445,6 +445,7 @@ nav ul li a:hover::after {
 .showcase {
     padding: 100px 0;
     background-color: var(--white);
+    margin-bottom: 100px;
 }
 
 .showcase-grid {
@@ -906,6 +907,11 @@ footer {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Esconder temporariamente a seção de depoimentos */
+#depoimentos {
+    display: none;
 }
 
 /* Responsive Styles */
