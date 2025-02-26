@@ -844,7 +844,7 @@ footer {
 }
 
 .social-media {
-    display: flex;
+    display: none; /* Escondendo as redes sociais temporariamente */
     gap: 15px;
     margin-top: 20px;
 }
@@ -1024,6 +1024,7 @@ footer {
     }
     
     .social-media {
+        display: none; /* Escondendo as redes sociais temporariamente */
         justify-content: center;
     }
 }
