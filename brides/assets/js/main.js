@@ -23,36 +23,61 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (signupForm) {
         signupForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+            // Não vamos mais prevenir o envio do formulário para permitir que o Mailchimp o processe
+            // e.preventDefault();
             
             const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const weddingDate = document.getElementById('wedding-date').value;
             
-            // Aqui você adicionaria o código para enviar os dados para um servidor
-            // Por enquanto, vamos apenas mostrar uma mensagem de sucesso
+            // Armazenar o nome para exibir na mensagem de sucesso após o retorno
+            if (name) {
+                localStorage.setItem('perfectWeddingUserName', name);
+            }
             
-            // Criar elemento de mensagem
-            const successMessage = document.createElement('div');
-            successMessage.className = 'success-message';
-            successMessage.innerHTML = `
-                <h3>Obrigado, ${name}!</h3>
-                <p>Seu cadastro foi realizado com sucesso. Em breve entraremos em contato para iniciar sua experiência com o DressAI.</p>
-            `;
+            // O restante do código de manipulação do formulário será executado pelo Mailchimp
             
-            // Substituir o formulário pela mensagem
-            signupForm.innerHTML = '';
-            signupForm.appendChild(successMessage);
-            
-            // Estilizar a mensagem
-            successMessage.style.textAlign = 'center';
-            successMessage.style.padding = '30px';
-            successMessage.style.backgroundColor = 'var(--light-bg)';
-            successMessage.style.borderRadius = 'var(--border-radius)';
-            successMessage.style.boxShadow = 'var(--shadow)';
+            // Opcionalmente, podemos adicionar um evento para quando o usuário retornar da página do Mailchimp
+            // Isso pode ser implementado em uma página de agradecimento personalizada
         });
     }
+    
+    // Verificar se o usuário está retornando da página de inscrição do Mailchimp
+    const checkForReturnFromMailchimp = () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const fromMailchimp = urlParams.get('mailchimp');
+        
+        if (fromMailchimp === 'success') {
+            const userName = localStorage.getItem('perfectWeddingUserName') || 'Noiva';
+            const signupSection = document.getElementById('cadastro');
+            
+            if (signupSection) {
+                const signupContent = signupSection.querySelector('.signup-content');
+                
+                if (signupContent) {
+                    // Criar elemento de mensagem
+                    const successMessage = document.createElement('div');
+                    successMessage.className = 'success-message';
+                    successMessage.innerHTML = `
+                        <h3>Obrigado, ${userName}!</h3>
+                        <p>Seu cadastro foi realizado com sucesso. Em breve entraremos em contato para iniciar sua experiência com o Perfect Wedding.</p>
+                    `;
+                    
+                    // Substituir o conteúdo pela mensagem
+                    signupContent.innerHTML = '';
+                    signupContent.appendChild(successMessage);
+                    
+                    // Estilizar a mensagem
+                    successMessage.style.textAlign = 'center';
+                    successMessage.style.padding = '30px';
+                    successMessage.style.backgroundColor = 'var(--light-bg)';
+                    successMessage.style.borderRadius = 'var(--border-radius)';
+                    successMessage.style.boxShadow = 'var(--shadow)';
+                }
+            }
+        }
+    };
+    
+    // Executar verificação quando a página carregar
+    window.addEventListener('load', checkForReturnFromMailchimp);
     
     // Smooth Scrolling para links de âncora
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {

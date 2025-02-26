@@ -1026,4 +1026,58 @@ footer {
     .social-media {
         justify-content: center;
     }
+}
+
+/* Estilos para a página de agradecimento */
+.thank-you {
+    padding: 100px 0;
+    text-align: center;
+    background-color: var(--light-bg);
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+}
+
+.thank-you-content {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 50px;
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.thank-you-content h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+
+.thank-you-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.thank-you-buttons {
+    margin-top: 30px;
+}
+
+/* Animação para o ícone de confirmação */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.thank-you-content i.fa-check-circle {
+    animation: pulse 2s infinite;
 } 

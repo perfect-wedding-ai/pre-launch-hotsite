@@ -1,4 +1,4 @@
-# DressAI - Hotsite para Noivas
+# Perfect Wedding - Hotsite para Noivas
 
 Este é um site estático para o hotsite "brides", focado em noivas que desejam testar vestidos de noiva usando inteligência artificial.
 
@@ -26,20 +26,23 @@ brides/
 │       ├── testimonial-3.jpg
 │       └── signup-bride.jpg
 ├── index.html
+├── thank-you.html
+├── mailchimp-setup.md
 └── README.md
 ```
 
 ## Descrição
 
-O DressAI é uma plataforma que permite às noivas experimentar virtualmente diferentes vestidos de noiva usando inteligência artificial. O site apresenta:
+O Perfect Wedding é uma plataforma que permite às noivas experimentar virtualmente diferentes vestidos de noiva usando inteligência artificial. O site apresenta:
 
 - Uma página inicial atraente com uma chamada clara para ação
 - Seção "Como Funciona" explicando o processo
 - Seção de benefícios destacando as vantagens do serviço
 - Exemplos visuais de antes/depois
 - Depoimentos de usuárias
-- Formulário de inscrição para testes gratuitos
+- Formulário de inscrição para testes gratuitos (integrado com Mailchimp)
 - Seção de perguntas frequentes
+- Página de agradecimento após inscrição
 
 ## Tecnologias Utilizadas
 
@@ -48,6 +51,7 @@ O DressAI é uma plataforma que permite às noivas experimentar virtualmente dif
 - JavaScript (vanilla)
 - Fontes do Google (Playfair Display e Poppins)
 - Ícones do Font Awesome
+- Integração com Mailchimp para gerenciamento de leads
 
 ## Como Executar
 
@@ -73,9 +77,20 @@ As cores principais do site são definidas como variáveis CSS no início do arq
 
 Para substituir as imagens, mantenha os mesmos nomes de arquivo ou atualize as referências no HTML.
 
+## Integração com Mailchimp
+
+O formulário de inscrição está configurado para integração com o Mailchimp, permitindo:
+
+- Captura de leads diretamente para sua lista de e-mail marketing
+- Campos personalizados para nome, e-mail, telefone e data do casamento
+- Redirecionamento para uma página de agradecimento personalizada
+- Feedback visual para o usuário
+
+Para configurar a integração com o Mailchimp, siga as instruções detalhadas no arquivo `mailchimp-setup.md`.
+
 ## Próximos Passos
 
 1. Adicionar imagens reais geradas por IA
-2. Implementar backend para o formulário de inscrição
-3. Adicionar análise de dados para rastrear conversões
-4. Criar versão em inglês para alcance internacional 
+2. Implementar análise de dados para rastrear conversões
+3. Criar versão em inglês para alcance internacional
+4. Adicionar integração com CRM para gerenciamento de leads mais avançado 
