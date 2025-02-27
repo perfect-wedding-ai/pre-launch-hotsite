@@ -12,6 +12,10 @@
     <!-- Preload da imagem principal para melhorar LCP -->
     <link rel="preload" as="image" href="assets/images/hero-bride-desktop.webp" fetchpriority="high">
     
+    <!-- Preload da fonte crítica para o texto principal -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap"></noscript>
+    
     <!-- Preconnect para recursos externos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,11 +51,23 @@
             font-weight: 700;
         }
         
+        /* Otimização crítica para o LCP */
+        .hero-content p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: var(--light-text);
+            max-width: 600px;
+            display: block;
+            will-change: auto;
+            content-visibility: auto;
+        }
+        
         /* Garantir que a seção hero e seu conteúdo apareçam imediatamente */
-        .hero-content, .hero-image {
+        .hero-content, .hero-image, .hero-content p, .hero-content h1, .hero-content h2 {
             opacity: 1 !important;
             transform: translateY(0) !important;
             transition: none !important;
+            animation: none !important;
         }
         
         /* Melhorar renderização da imagem principal */
@@ -215,12 +231,6 @@
             margin-bottom: 1.5rem;
             color: var(--light-text);
             font-weight: 400;
-        }
-        
-        .hero-content p {
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            color: var(--light-text);
         }
         
         .hero-buttons {
@@ -409,7 +419,7 @@
             <div class="hero-content">
                 <h1>Experimente Vestidos de Noiva Virtualmente</h1>
                 <h2>Descubra o vestido dos seus sonhos sem sair de casa</h2>
-                <p>Economize tempo e encontre o vestido perfeito antes mesmo de ir ao ateliê. Nossa tecnologia de inteligência artificial permite que você experimente dezenas de modelos exclusivos em segundos com nossa prova virtual de vestidos.</p>
+                <p style="opacity: 1 !important; transform: none !important; transition: none !important; animation: none !important; display: block; will-change: auto; content-visibility: auto;">Economize tempo e encontre o vestido perfeito antes mesmo de ir ao ateliê. Nossa tecnologia de inteligência artificial permite que você experimente dezenas de modelos exclusivos em segundos com nossa prova virtual de vestidos.</p>
                 <div class="hero-buttons">
                     <a href="#cadastro" class="btn-primary">Experimente Agora</a>
                     <a href="#como-funciona" class="btn-secondary">Saiba Mais</a>

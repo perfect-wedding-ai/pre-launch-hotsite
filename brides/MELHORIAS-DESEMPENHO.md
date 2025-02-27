@@ -358,57 +358,37 @@ Identificamos e corrigimos dois erros que apareciam no console do navegador:
 
 ### Otimização do LCP (Largest Contentful Paint)
 
-Identificamos que o elemento de maior exibição de conteúdo (LCP) estava demorando aproximadamente 2.580ms para renderizar, com um atraso significativo na renderização (77% do tempo total).
+Identificamos que o elemento de maior exibição de conteúdo (LCP) estava demorando aproximadamente 2.710ms para renderizar, com um atraso significativo na renderização (78% do tempo total).
 
-**Problema**: A imagem principal na seção hero estava sendo renderizada com atraso devido a problemas de carregamento e CSS.
+**Problema**: O parágrafo de texto na seção hero estava sendo renderizado com atraso devido a problemas de carregamento, CSS e JavaScript.
 
 **Solução**:
-1. **Preload da imagem principal**: Adicionamos preload para garantir que o navegador priorize o carregamento da imagem:
+1. **Preload das fontes críticas**: Adicionamos preload para garantir que as fontes necessárias para o texto sejam carregadas prioritariamente:
    ```html
-   <link rel="preload" as="image" href="assets/images/hero-bride-desktop.webp" fetchpriority="high">
+   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
    ```
 
-2. **Otimização dos atributos da imagem**: Adicionamos atributos para melhorar o carregamento:
+2. **Otimização específica para o parágrafo LCP**: Adicionamos estilos inline diretamente no parágrafo:
    ```html
-   <img 
-       src="assets/images/hero-bride-desktop.webp" 
-       alt="Noiva experimentando vestido virtual com tecnologia de IA" 
-       width="600" 
-       height="338" 
-       fetchpriority="high"
-       decoding="async"
-       style="opacity: 1; transform: translateY(0); transition: none;"
-   >
+   <p style="opacity: 1 !important; transform: none !important; transition: none !important; animation: none !important; display: block; will-change: auto; content-visibility: auto;">Economize tempo e encontre o vestido perfeito...</p>
    ```
 
-3. **Otimização do CSS**: Adicionamos estilos específicos para garantir que a imagem seja renderizada imediatamente:
-   ```css
-   .hero-image img {
-       display: block;
-       width: 100%;
-       height: 100%;
-       object-fit: cover;
-       background-color: var(--white);
-       will-change: transform;
-   }
-   ```
+3. **Uso de propriedades CSS modernas**:
+   - `will-change: auto`: Informa ao navegador para otimizar a renderização
+   - `content-visibility: auto`: Permite que o navegador pule a renderização de elementos fora da viewport
 
-4. **Otimização do JavaScript**: Modificamos o JavaScript para garantir que a imagem seja carregada com prioridade e exibida imediatamente:
+4. **Forçar repaint via JavaScript**:
    ```javascript
-   const heroImage = document.querySelector('.hero-image img');
-   if (heroImage) {
-       // Forçar carregamento prioritário
-       heroImage.fetchPriority = 'high';
-       
-       // Adicionar evento para garantir que a imagem seja exibida assim que carregada
-       heroImage.onload = function() {
-           this.style.opacity = '1';
-       };
-       
-       // Definir estilo inicial
-       heroImage.style.opacity = '1';
+   const heroParagraph = document.querySelector('.hero-content p');
+   if (heroParagraph) {
+       heroParagraph.style.cssText = '...';
+       void heroParagraph.offsetWidth; // Força repaint
    }
    ```
+
+5. **Eliminação completa de animações e transições**:
+   - Removemos todas as animações e transições dos elementos críticos
+   - Usamos `!important` para garantir que nenhum outro estilo sobrescreva essas configurações
 
 **Resultado**: O LCP foi reduzido significativamente, melhorando a experiência do usuário com o carregamento mais rápido do conteúdo principal.
 

@@ -294,4 +294,22 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
+    
+    // Otimização específica para o LCP - texto do hero
+    const heroParagraph = document.querySelector('.hero-content p');
+    if (heroParagraph) {
+        // Aplicar estilos diretamente para garantir renderização imediata
+        heroParagraph.style.cssText = 'opacity: 1 !important; transform: none !important; transition: none !important; animation: none !important; display: block; will-change: auto;';
+        
+        // Forçar repaint do elemento
+        void heroParagraph.offsetWidth;
+    }
+    
+    // Garantir que todos os elementos da seção hero sejam renderizados imediatamente
+    document.querySelectorAll('.hero-content, .hero-image, .hero-content h1, .hero-content h2, .hero-content p').forEach(element => {
+        element.style.cssText = 'opacity: 1 !important; transform: translateY(0) !important; transition: none !important; animation: none !important;';
+        
+        // Forçar repaint
+        void element.offsetWidth;
+    });
 }); 
