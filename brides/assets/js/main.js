@@ -129,6 +129,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
     
+    // Garantir que a imagem principal seja carregada com prioridade
+    const heroImage = document.querySelector('.hero-image img');
+    if (heroImage) {
+        // Forçar carregamento prioritário
+        heroImage.fetchPriority = 'high';
+        
+        // Adicionar evento para garantir que a imagem seja exibida assim que carregada
+        heroImage.onload = function() {
+            this.style.opacity = '1';
+        };
+        
+        // Definir estilo inicial
+        heroImage.style.opacity = '1';
+    }
+    
     // Inicializar elementos com opacidade 0
     document.querySelectorAll('.step, .benefit, .testimonial, .showcase-item, .section-header, .signup-content').forEach(element => {
         element.style.opacity = '0';
@@ -140,6 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.hero-content, .hero-image').forEach(element => {
         element.style.opacity = '1';
         element.style.transform = 'translateY(0)';
+        element.style.transition = 'none';
     });
     
     // Executar animação no carregamento e no scroll

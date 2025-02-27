@@ -356,4 +356,60 @@ Identificamos e corrigimos dois erros que apareciam no console do navegador:
        ```
      - O favicon.io gera múltiplos formatos de ícones para diferentes dispositivos e navegadores, garantindo compatibilidade universal
 
+### Otimização do LCP (Largest Contentful Paint)
+
+Identificamos que o elemento de maior exibição de conteúdo (LCP) estava demorando aproximadamente 2.580ms para renderizar, com um atraso significativo na renderização (77% do tempo total).
+
+**Problema**: A imagem principal na seção hero estava sendo renderizada com atraso devido a problemas de carregamento e CSS.
+
+**Solução**:
+1. **Preload da imagem principal**: Adicionamos preload para garantir que o navegador priorize o carregamento da imagem:
+   ```html
+   <link rel="preload" as="image" href="assets/images/hero-bride-desktop.webp" fetchpriority="high">
+   ```
+
+2. **Otimização dos atributos da imagem**: Adicionamos atributos para melhorar o carregamento:
+   ```html
+   <img 
+       src="assets/images/hero-bride-desktop.webp" 
+       alt="Noiva experimentando vestido virtual com tecnologia de IA" 
+       width="600" 
+       height="338" 
+       fetchpriority="high"
+       decoding="async"
+       style="opacity: 1; transform: translateY(0); transition: none;"
+   >
+   ```
+
+3. **Otimização do CSS**: Adicionamos estilos específicos para garantir que a imagem seja renderizada imediatamente:
+   ```css
+   .hero-image img {
+       display: block;
+       width: 100%;
+       height: 100%;
+       object-fit: cover;
+       background-color: var(--white);
+       will-change: transform;
+   }
+   ```
+
+4. **Otimização do JavaScript**: Modificamos o JavaScript para garantir que a imagem seja carregada com prioridade e exibida imediatamente:
+   ```javascript
+   const heroImage = document.querySelector('.hero-image img');
+   if (heroImage) {
+       // Forçar carregamento prioritário
+       heroImage.fetchPriority = 'high';
+       
+       // Adicionar evento para garantir que a imagem seja exibida assim que carregada
+       heroImage.onload = function() {
+           this.style.opacity = '1';
+       };
+       
+       // Definir estilo inicial
+       heroImage.style.opacity = '1';
+   }
+   ```
+
+**Resultado**: O LCP foi reduzido significativamente, melhorando a experiência do usuário com o carregamento mais rápido do conteúdo principal.
+
 Estas correções eliminaram os erros do console, melhorando ainda mais a qualidade do código e a experiência do usuário. 

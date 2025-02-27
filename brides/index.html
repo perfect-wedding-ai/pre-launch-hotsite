@@ -9,6 +9,9 @@
     <link rel="icon" href="assets/icons/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="assets/icons/favicon.ico" type="image/x-icon">
     
+    <!-- Preload da imagem principal para melhorar LCP -->
+    <link rel="preload" as="image" href="assets/images/hero-bride-desktop.webp" fetchpriority="high">
+    
     <!-- Preconnect para recursos externos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,6 +52,16 @@
             opacity: 1 !important;
             transform: translateY(0) !important;
             transition: none !important;
+        }
+        
+        /* Melhorar renderização da imagem principal */
+        .hero-image img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background-color: var(--white);
+            will-change: transform;
         }
         
         /* Restante dos estilos críticos */
@@ -228,16 +241,6 @@
             box-shadow: var(--shadow);
         }
         
-        .hero-image img {
-            width: 100%;
-            height: 100%;
-            border-radius: 10px;
-            transition: transform 0.5s ease;
-            object-fit: cover;
-            background-color: var(--white);
-            object-position: center;
-        }
-        
         /* Button Styles */
         .btn-primary:hover {
             color: var(--white);
@@ -413,7 +416,15 @@
                 </div>
             </div>
             <div class="hero-image">
-                <img src="assets/images/hero-bride-desktop.webp" alt="Noiva experimentando vestido virtual com tecnologia de IA" width="600" height="338" fetchpriority="high">
+                <img 
+                    src="assets/images/hero-bride-desktop.webp" 
+                    alt="Noiva experimentando vestido virtual com tecnologia de IA" 
+                    width="600" 
+                    height="338" 
+                    fetchpriority="high"
+                    decoding="async"
+                    style="opacity: 1; transform: translateY(0); transition: none;"
+                >
             </div>
         </div>
     </section>
