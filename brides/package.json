@@ -1,0 +1,24 @@
+{
+  "name": "perfect-wedding-brides",
+  "version": "1.0.0",
+  "description": "Site para noivas do Perfect Wedding",
+  "main": "index.js",
+  "scripts": {
+    "optimize-images": "node optimize-images.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "wedding",
+    "bride",
+    "virtual",
+    "dress",
+    "try-on"
+  ],
+  "author": "Perfect Wedding Team",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "glob": "^8.1.0",
+    "sharp": "^0.32.1"
+  }
+} 
