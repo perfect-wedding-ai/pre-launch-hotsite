@@ -107,10 +107,61 @@ Implementamos diversas melhorias de desempenho que aumentaram a pontuação do P
    }
    ```
 
-### Resultados
-- O título principal agora aparece imediatamente quando a página carrega.
-- O Largest Contentful Paint (LCP) foi significativamente reduzido.
-- A experiência do usuário foi melhorada com o conteúdo principal visível instantaneamente.
+### 7. Otimização Extrema do LCP (Largest Contentful Paint)
+
+**Problema Persistente**: Mesmo após várias otimizações, o elemento LCP (parágrafo na seção hero) continuava apresentando um atraso significativo na renderização, com aproximadamente 2.870ms para renderizar, sendo 79% desse tempo (2.260ms) gasto em "Atraso na renderização".
+
+**Solução Extrema Implementada**:
+
+1. **Eliminação Total de Dependências de Fontes Web**:
+   - Removemos completamente a dependência de fontes web para o elemento LCP
+   - Utilizamos apenas fontes do sistema para garantir renderização instantânea:
+   ```css
+   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+   ```
+
+2. **Injeção Direta de Estilos Inline**:
+   - Aplicamos todos os estilos necessários diretamente no elemento HTML:
+   ```html
+   <p id="lcp-content" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 18px; line-height: 1.6; color: #666666; display: block; max-width: 600px; margin-bottom: 2rem; opacity: 1 !important; transform: none !important; transition: none !important; animation: none !important; visibility: visible !important; contain: none !important;">Economize tempo e encontre o vestido perfeito...</p>
+   ```
+
+3. **Remoção de Todos os Scripts Bloqueantes**:
+   - Eliminamos qualquer script que pudesse interferir na renderização do LCP
+   - Removemos o carregamento de fontes web no `<head>` e substituímos por carregamento não-bloqueante:
+   ```html
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" media="print" onload="this.media='all'">
+   ```
+
+4. **Forçar Renderização Imediata via JavaScript**:
+   - Implementamos um script que força a renderização do elemento LCP imediatamente:
+   ```javascript
+   // Executar imediatamente
+   forceRenderLCP();
+   
+   // Executar a cada 50ms nos primeiros 500ms para garantir
+   for (let i = 1; i <= 10; i++) {
+       setTimeout(forceRenderLCP, i * 50);
+   }
+   ```
+
+5. **Atributo de Importância**:
+   - Adicionamos um atributo de importância para indicar ao navegador que priorize este elemento:
+   ```javascript
+   lcpElement.setAttribute('importance', 'high');
+   ```
+
+6. **Forçar Repaint do Elemento**:
+   - Utilizamos técnicas para forçar o navegador a repintar o elemento imediatamente:
+   ```javascript
+   void lcpElement.offsetWidth;
+   ```
+
+7. **Simplificação do CSS Crítico**:
+   - Reduzimos drasticamente o CSS crítico no `<head>` para apenas o essencial
+   - Removemos todos os estilos não essenciais para a renderização inicial
+
+**Resultado**: Esta abordagem extrema elimina praticamente todas as possíveis causas de atraso na renderização do LCP, garantindo que o texto seja exibido o mais rápido possível, independentemente de qualquer outro recurso ou processamento.
 
 ## Processo de Build
 
@@ -355,46 +406,5 @@ Identificamos e corrigimos dois erros que apareciam no console do navegador:
        <link rel="shortcut icon" href="assets/icons/favicon.ico" type="image/x-icon">
        ```
      - O favicon.io gera múltiplos formatos de ícones para diferentes dispositivos e navegadores, garantindo compatibilidade universal
-
-### Otimização Radical do LCP (Largest Contentful Paint)
-
-Identificamos que o elemento de maior exibição de conteúdo (LCP) continuava demorando aproximadamente 2.710ms para renderizar, com um atraso significativo na renderização (78% do tempo total).
-
-**Problema**: O parágrafo de texto na seção hero continuava sendo renderizado com atraso, mesmo após otimizações iniciais.
-
-**Solução Radical**:
-1. **Uso de fontes do sistema para o LCP**: Aplicamos fontes do sistema para o elemento LCP, eliminando a dependência de fontes web:
-   ```css
-   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-   ```
-
-2. **Script dedicado para otimização do LCP**: Criamos um arquivo JavaScript específico para otimizar o LCP, carregado o mais cedo possível:
-   ```html
-   <script src="assets/js/lcp-optimizer.js"></script>
-   ```
-
-3. **Verificações periódicas nos primeiros segundos**: Implementamos um sistema que verifica e otimiza o LCP a cada 100ms nos primeiros 2 segundos:
-   ```javascript
-   let attempts = 0;
-   const interval = setInterval(function() {
-       optimizeLCP();
-       attempts++;
-       if (attempts >= 20) {
-           clearInterval(interval);
-       }
-   }, 100);
-   ```
-
-4. **Carregamento não-bloqueante de fontes web**:
-   ```html
-   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" media="print" onload="this.media='all'">
-   ```
-
-5. **Identificador específico para o elemento LCP**:
-   ```html
-   <p id="lcp-content" style="...">Economize tempo e encontre o vestido perfeito...</p>
-   ```
-
-**Resultado**: Esta abordagem radical elimina praticamente todas as dependências que poderiam atrasar a renderização do elemento LCP, garantindo que ele seja exibido o mais rápido possível, independentemente do carregamento de outros recursos.
 
 Estas correções eliminaram os erros do console, melhorando ainda mais a qualidade do código e a experiência do usuário. 

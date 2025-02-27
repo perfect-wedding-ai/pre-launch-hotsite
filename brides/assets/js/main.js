@@ -1,39 +1,52 @@
-// Adicionar no início do arquivo, antes de qualquer outro código
-// Otimização radical para LCP
+// Otimização extrema para LCP - Executado imediatamente
 (function() {
     // Função para garantir que o LCP seja renderizado imediatamente
-    function optimizeLCP() {
+    function forceRenderLCP() {
+        // Forçar o navegador a renderizar o texto LCP imediatamente
         const lcpElement = document.getElementById('lcp-content');
         if (lcpElement) {
             // Aplicar estilos críticos diretamente
             lcpElement.style.cssText = `
-                font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-                font-size: 1.1rem;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+                font-size: 18px;
                 line-height: 1.6;
                 color: #666666;
                 display: block;
+                max-width: 600px;
+                margin-bottom: 2rem;
                 opacity: 1 !important;
                 transform: none !important;
                 transition: none !important;
                 animation: none !important;
                 visibility: visible !important;
                 contain: none !important;
+                will-change: auto;
+                content-visibility: visible;
             `;
             
             // Forçar repaint
             void lcpElement.offsetWidth;
+            
+            // Forçar o navegador a priorizar este elemento
+            lcpElement.setAttribute('importance', 'high');
         }
     }
     
-    // Executar o mais cedo possível
+    // Executar imediatamente
+    forceRenderLCP();
+    
+    // Executar novamente quando o DOM estiver pronto
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', optimizeLCP);
-    } else {
-        optimizeLCP();
+        document.addEventListener('DOMContentLoaded', forceRenderLCP);
     }
     
     // Executar novamente após o carregamento completo
-    window.addEventListener('load', optimizeLCP);
+    window.addEventListener('load', forceRenderLCP);
+    
+    // Executar a cada 50ms nos primeiros 500ms para garantir
+    for (let i = 1; i <= 10; i++) {
+        setTimeout(forceRenderLCP, i * 50);
+    }
 })();
 
 document.addEventListener('DOMContentLoaded', function() {
