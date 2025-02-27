@@ -4,14 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfect Wedding – Experimente Vestidos de Noiva Virtualmente</title>
-    <link rel="stylesheet" href="assets/css/styles.css">
+    
+    <!-- Preconnect para recursos externos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <meta name="description" content="Perfect Wedding - Use inteligência artificial para experimentar vestidos de noiva virtualmente antes de ir ao ateliê. Economize tempo e encontre o vestido perfeito.">
-    <meta name="keywords" content="vestido de noiva virtual, experiência com IA para noivas, teste de vestidos online, prova virtual de vestidos de noiva, vestido dos sonhos online, simulação de vestidos com inteligência artificial, ensaio virtual de vestidos, descubra seu vestido ideal, tecnologia para noivas, ateliê virtual de vestidos">
+    
+    <!-- CSS crítico inline para renderização inicial -->
+    <style>
+        :root {
+            --primary-color: #d6a4a4;
+            --secondary-color: #f8e6e6;
+            --accent-color: #9d7e7e;
+            --text-color: #333;
+            --light-text: #666;
+            --white: #fff;
+            --light-bg: #f9f9f9;
+            --border-radius: 8px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            margin-top: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--white);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .hero {
+            padding: 80px 0;
+            background-color: var(--secondary-color);
+        }
+    </style>
+    
+    <!-- Carregamento assíncrono do CSS principal -->
+    <link rel="stylesheet" href="assets/css/styles.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="assets/css/styles.css"></noscript>
+    
+    <!-- Preload das fontes críticas -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"></noscript>
+    
+    <!-- Carregador otimizado do Font Awesome -->
+    <script src="assets/js/fontawesome-loader.js" defer></script>
+    
     <meta name="description" content="Experimente vestidos de noiva virtualmente com nossa tecnologia de IA. Descubra o vestido dos seus sonhos sem sair de casa, economize tempo e viva uma experiência inovadora. Cadastre-se grátis!">
+    <meta name="keywords" content="vestido de noiva virtual, experiência com IA para noivas, teste de vestidos online, prova virtual de vestidos de noiva, vestido dos sonhos online, simulação de vestidos com inteligência artificial, ensaio virtual de vestidos, descubra seu vestido ideal, tecnologia para noivas, ateliê virtual de vestidos">
     <meta name="robots" content="index, follow">
     <meta property="og:title" content="Vestido de Noiva Virtual | Experimente com IA | Perfect Wedding">
     <meta property="og:description" content="Experimente vestidos de noiva virtualmente com nossa tecnologia de IA. Descubra o vestido dos seus sonhos sem sair de casa!">
@@ -42,7 +106,7 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1>Experimente Vestidos de Noiva Virtualmente com IA</h1>
+                <h1>Experimente Vestidos de Noiva Virtualmente</h1>
                 <h2>Descubra o vestido dos seus sonhos sem sair de casa</h2>
                 <p>Economize tempo e encontre o vestido perfeito antes mesmo de ir ao ateliê. Nossa tecnologia de inteligência artificial permite que você experimente dezenas de modelos exclusivos em segundos com nossa prova virtual de vestidos.</p>
                 <div class="hero-buttons">
@@ -329,7 +393,7 @@
         </div>
     </footer>
 
-    <script src="assets/js/main.js"></script>
+    <script src="assets/js/main.js" defer></script>
     <script type="application/ld+json">
         {
           "@context": "https://schema.org",
