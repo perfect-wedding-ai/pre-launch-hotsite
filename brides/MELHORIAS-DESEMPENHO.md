@@ -321,3 +321,39 @@ Em seguida, abra o Chrome DevTools (F12), vá para a aba "Lighthouse" e execute 
 ## Conclusão
 
 As melhorias implementadas resultaram em uma experiência de usuário significativamente melhor, com carregamento mais rápido da página e menos layout shifts. A pontuação do PageSpeed Insights aumentou de 66 para 100, indicando um excelente progresso na otimização do site. O processo de build automatizado e a configuração otimizada do Netlify garantem que o site continue otimizado mesmo com futuras atualizações. 
+
+## Correções Adicionais
+
+### Erros de Console
+
+Identificamos e corrigimos dois erros que apareciam no console do navegador:
+
+1. **Erro 403 ao carregar custom-fa-kit.js**:
+   - **Problema**: O script tentava carregar um kit personalizado do Font Awesome que não existia ou não estava acessível, resultando em erros de CORS.
+   - **Solução**: Atualizamos o arquivo `fontawesome-loader.js` para usar o CDN público do Font Awesome, que não tem restrições de CORS:
+     ```javascript
+     // Importar Font Awesome do CDN público
+     (function() {
+       const script = document.createElement('script');
+       script.src = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js';
+       script.integrity = "sha512-Tn2m0TIpgVyTzzvmxLNuqbSJH3JP8jm+Cy3hvHrW7ndTDcJ1w5mBiksqDBb8GpE2ksktFvDB/ykZ0mDpsZj20w==";
+       script.crossOrigin = "anonymous";
+       script.referrerPolicy = "no-referrer";
+       script.defer = true;
+       document.head.appendChild(script);
+     })();
+     ```
+
+2. **Erro 404 ao tentar carregar favicon.ico**:
+   - **Problema**: O navegador tentava automaticamente carregar um favicon.ico que não existia no site.
+   - **Solução**: 
+     - Criamos um diretório `assets/icons` para armazenar ícones do site
+     - Geramos um favicon personalizado usando o site [favicon.io](https://favicon.io/favicon-generator/)
+     - Adicionamos as tags apropriadas no `<head>` do HTML:
+       ```html
+       <link rel="icon" href="assets/icons/favicon.ico" type="image/x-icon">
+       <link rel="shortcut icon" href="assets/icons/favicon.ico" type="image/x-icon">
+       ```
+     - O favicon.io gera múltiplos formatos de ícones para diferentes dispositivos e navegadores, garantindo compatibilidade universal
+
+Estas correções eliminaram os erros do console, melhorando ainda mais a qualidade do código e a experiência do usuário. 

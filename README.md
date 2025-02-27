@@ -46,6 +46,19 @@ O site foi otimizado para obter pontuação máxima (100/100) no PageSpeed Insig
 
 Para mais detalhes sobre as otimizações implementadas, consulte o [documento de melhorias de desempenho](brides/MELHORIAS-DESEMPENHO.md).
 
+## Otimizações de Desempenho
+
+O site foi otimizado para obter pontuação máxima no PageSpeed Insights:
+
+- **CSS Minificado**: Todo o CSS é minificado durante o build para reduzir o tamanho dos arquivos.
+- **JavaScript Minificado**: Os arquivos JavaScript são minificados usando Terser para carregamento mais rápido.
+- **Imagens Otimizadas**: Todas as imagens são convertidas para WebP e otimizadas para diferentes tamanhos de tela.
+- **Carregamento Crítico**: CSS crítico é carregado inline para renderização rápida da primeira visualização.
+- **Lazy Loading**: Imagens abaixo da dobra são carregadas apenas quando necessário.
+- **Favicon Personalizado**: Gerado com [favicon.io](https://favicon.io/favicon-generator/) para garantir compatibilidade com todos os dispositivos.
+
+Para mais detalhes sobre as otimizações implementadas, consulte o arquivo `brides/MELHORIAS-DESEMPENHO.md`.
+
 ## Implantação no Netlify
 
 O projeto está configurado para implantação otimizada no Netlify através do arquivo `netlify.toml`, que inclui:

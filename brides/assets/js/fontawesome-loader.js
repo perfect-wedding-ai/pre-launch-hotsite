@@ -9,28 +9,23 @@ window.FontAwesomeConfig = {
   autoAddCss: false
 };
 
-// Importar apenas os ícones que usamos
+// Importar Font Awesome do CDN público
 (function() {
   const script = document.createElement('script');
-  script.src = 'https://kit.fontawesome.com/custom-fa-kit.js';
-  script.crossOrigin = 'anonymous';
+  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js';
+  script.integrity = "sha512-Tn2m0TIpgVyTzzvmxLNuqbSJH3JP8jm+Cy3hvHrW7ndTDcJ1w5mBiksqDBb8GpE2ksktFvDB/ykZ0mDpsZj20w==";
+  script.crossOrigin = "anonymous";
+  script.referrerPolicy = "no-referrer";
   script.defer = true;
   document.head.appendChild(script);
 })();
 
 // Lista de ícones usados no site
 // Isso permite que apenas esses ícones sejam carregados
-window.FontAwesomeKitConfig = {
-  asyncLoading: { enabled: true },
-  autoA11y: { enabled: true },
-  baseUrl: "https://ka-f.fontawesome.com",
-  license: "free",
-  method: "css",
-  minify: { enabled: true },
-  v4FontFaceShim: { enabled: false },
-  v4shim: { enabled: false },
-  version: "latest",
-  iconUploads: {},
+window.FontAwesomeConfig = {
+  autoReplaceSvg: 'nest',
+  observeMutations: false,
+  showMissingIcons: false,
   icons: {
     solid: [
       "camera", 
