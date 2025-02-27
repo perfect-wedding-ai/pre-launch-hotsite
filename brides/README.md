@@ -67,6 +67,7 @@ O Perfect Wedding é uma plataforma que permite às noivas experimentar virtualm
 - Node.js com Sharp para otimização de imagens
 - Lighthouse para análise de desempenho
 - clean-css-cli para minificação de CSS
+- Netlify para hospedagem com otimizações avançadas
 
 ## Requisitos
 
@@ -113,6 +114,27 @@ Para executar o build:
 npm run build:css
 ```
 
+## Implantação no Netlify
+
+O projeto está configurado para implantação otimizada no Netlify através do arquivo `netlify.toml` na raiz do projeto:
+
+### Principais Configurações
+
+- **Diretório de Publicação**: `brides/`
+- **Comando de Build**: `npm run build:css`
+- **Compressão de Texto**: Brotli e Gzip habilitados para todos os recursos
+- **Cabeçalhos de Cache**: Configurados para diferentes tipos de arquivos
+- **Processamento Automático**: CSS, JavaScript, HTML e imagens
+
+### Como Implantar
+
+1. Faça o fork ou clone deste repositório
+2. Conecte o repositório ao Netlify
+3. O Netlify detectará automaticamente as configurações no arquivo `netlify.toml`
+4. A build será executada e o site será publicado com todas as otimizações
+
+Para mais detalhes sobre a configuração do Netlify, consulte o [documento de melhorias de desempenho](MELHORIAS-DESEMPENHO.md#configuração-do-netlify).
+
 ## Como Executar
 
 Para iniciar um servidor local e visualizar o site:
@@ -141,6 +163,7 @@ As principais otimizações incluem:
 4. **CSS Minificado**: Redução do tamanho do arquivo CSS
 5. **Preload de Recursos**: Carregamento prioritário para imagens e CSS críticos
 6. **Prevenção de Layout Shifts**: Uso de atributos width/height e aspect-ratio
+7. **Compressão de Texto**: Brotli e Gzip para reduzir o tamanho dos arquivos transferidos
 
 Para mais detalhes sobre as otimizações, consulte:
 - `OTIMIZACAO-IMAGENS.md` - Documentação sobre o sistema de otimização de imagens

@@ -43,6 +43,24 @@ O site foi otimizado para obter pontuação máxima (100/100) no PageSpeed Insig
 
 Para mais detalhes sobre as otimizações implementadas, consulte o [documento de melhorias de desempenho](brides/MELHORIAS-DESEMPENHO.md).
 
+## Implantação no Netlify
+
+O projeto está configurado para implantação otimizada no Netlify através do arquivo `netlify.toml`, que inclui:
+
+- Compressão de texto (Brotli e Gzip) para reduzir o tamanho dos arquivos
+- Cabeçalhos de cache otimizados para diferentes tipos de arquivos
+- Configurações de segurança recomendadas
+- Processamento automático de CSS, JavaScript e imagens
+
+### Como implantar
+
+1. Faça o fork ou clone deste repositório
+2. Conecte o repositório ao Netlify
+3. O Netlify detectará automaticamente as configurações no arquivo `netlify.toml`
+4. A build será executada e o site será publicado com todas as otimizações
+
+Para mais detalhes sobre a configuração do Netlify, consulte o [documento de melhorias de desempenho](brides/MELHORIAS-DESEMPENHO.md#configuração-do-netlify).
+
 ## License
 
 Copyright (c) 2025 Dyego Alekssander Maas

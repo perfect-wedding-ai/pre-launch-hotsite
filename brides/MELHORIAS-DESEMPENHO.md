@@ -72,6 +72,15 @@ Implementamos diversas melhorias de desempenho que aumentaram a pontuação do P
   ```
 - Criamos um script de build para automatizar a minificação do CSS
 
+### 5. Falta de Compressão de Texto
+
+**Problema**: Arquivos de texto (HTML, CSS, JavaScript) não estavam sendo servidos com compressão, resultando em transferências de rede maiores.
+
+**Solução**:
+- Configuramos o Netlify para habilitar compressão Brotli e Gzip para todos os recursos baseados em texto
+- Implementamos cabeçalhos de cache adequados para diferentes tipos de arquivos
+- Economia potencial de aproximadamente 48 KiB de transferência de rede
+
 ## Processo de Build
 
 Implementamos um processo de build automatizado para otimizar o CSS e melhorar o desempenho do site.
@@ -161,12 +170,62 @@ Para iniciar o servidor local:
 npm start
 ```
 
+## Configuração do Netlify
+
+Para garantir o melhor desempenho em produção, configuramos o Netlify com otimizações avançadas através do arquivo `netlify.toml`:
+
+```toml
+[build]
+  publish = "brides/"
+  command = "npm run build:css"
+
+# Configurações para todos os arquivos
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Habilitar compressão de texto
+    Content-Encoding = "br, gzip"
+    
+    # Configurações de segurança
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+
+# Configurações de cache para diferentes tipos de arquivos
+[[headers]]
+  for = "*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Configurações de processamento
+[build.processing]
+  skip_processing = false
+[build.processing.css]
+  bundle = true
+  minify = true
+[build.processing.js]
+  bundle = true
+  minify = true
+[build.processing.html]
+  pretty_urls = true
+[build.processing.images]
+  compress = true
+```
+
+Esta configuração:
+- Habilita compressão Brotli e Gzip para todos os recursos
+- Define cabeçalhos de cache otimizados para diferentes tipos de arquivos
+- Configura o processamento automático de CSS, JavaScript, HTML e imagens
+- Implementa cabeçalhos de segurança recomendados
+
 ## Ferramentas Utilizadas
 
 - **Sharp**: Para otimização e redimensionamento de imagens
 - **Lighthouse**: Para medição de desempenho
 - **PageSpeed Insights**: Para análise de desempenho em dispositivos móveis e desktop
 - **clean-css-cli**: Para minificação de CSS
+- **Netlify**: Para hospedagem com otimizações avançadas de desempenho
 
 ## Como Testar o Desempenho Localmente
 
@@ -186,4 +245,4 @@ Em seguida, abra o Chrome DevTools (F12), vá para a aba "Lighthouse" e execute 
 
 ## Conclusão
 
-As melhorias implementadas resultaram em uma experiência de usuário significativamente melhor, com carregamento mais rápido da página e menos layout shifts. A pontuação do PageSpeed Insights aumentou de 66 para 100, indicando um excelente progresso na otimização do site. O processo de build automatizado garante que o site continue otimizado mesmo com futuras atualizações. 
+As melhorias implementadas resultaram em uma experiência de usuário significativamente melhor, com carregamento mais rápido da página e menos layout shifts. A pontuação do PageSpeed Insights aumentou de 66 para 100, indicando um excelente progresso na otimização do site. O processo de build automatizado e a configuração otimizada do Netlify garantem que o site continue otimizado mesmo com futuras atualizações. 
