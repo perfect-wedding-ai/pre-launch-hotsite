@@ -221,10 +221,14 @@ Esta abordagem garante que:
 ```css
 .before, .after {
     position: relative;
-    width: 100%;
-    height: 300px;
+    width: 450px;
+    height: 450px;
     overflow: hidden;
     border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
 }
 
 .before img, .after img {
@@ -233,6 +237,44 @@ Esta abordagem garante que:
     border-radius: 8px;
     transition: transform 0.3s ease;
     object-fit: cover;
+    object-position: center;
+    background-color: var(--white);
+}
+
+.before-after {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    width: 100%;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Responsividade para dispositivos móveis */
+@media (max-width: 992px) {
+    .before, .after {
+        width: 350px;
+        height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .before-after {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .before, .after {
+        width: 400px;
+        height: 400px;
+    }
+}
+
+@media (max-width: 576px) {
+    .before, .after {
+        width: 300px;
+        height: 300px;
+    }
 }
 ```
 
@@ -320,10 +362,18 @@ Para resolver problemas de distorção de imagens e layout shifts (CLS), realiza
 
 1. **Adição de atributos width e height explícitos**: Adicionamos atributos `width` e `height` explícitos nas tags `<img>` no arquivo `index.html` para permitir que o navegador reserve o espaço correto antes do carregamento das imagens.
 
-2. **Tratamento especial para imagens widescreen**: Modificamos o script de otimização para identificar e tratar de forma especial imagens widescreen, usando o modo `fit: 'cover'` para preservar a proporção original.
+2. **Correção de proporções para imagens quadradas**: Corrigimos os parâmetros `width` e `height` das imagens na seção "antes e depois" para refletir sua proporção quadrada (1:1), alterando de `width="300" height="300"` para `width="450" height="450"`, aumentando significativamente o tamanho para melhor visualização.
 
-3. **CSS para evitar layout shifts**: Adicionamos regras CSS para definir aspect-ratio e dimensões mínimas para os contêineres de imagens, evitando layout shifts durante o carregamento.
+3. **Ajuste do CSS para imagens quadradas**: Modificamos o CSS para garantir que as imagens na seção "antes e depois" sejam exibidas como quadrados perfeitos, com dimensões fixas de 450x450 pixels e dispostas lado a lado em desktop e empilhadas em dispositivos móveis.
 
-4. **Documentação atualizada**: Atualizamos esta documentação para incluir informações sobre como lidar com proporções de imagens e evitar layout shifts.
+4. **Responsividade aprimorada**: Implementamos breakpoints responsivos para ajustar o tamanho das imagens em diferentes tamanhos de tela (350px em tablets grandes, 400px em tablets, 300px em smartphones).
+
+5. **Tratamento especial para imagens widescreen**: Modificamos o script de otimização para identificar e tratar de forma especial imagens widescreen, usando o modo `fit: 'cover'` para preservar a proporção original.
+
+6. **CSS para evitar layout shifts**: Adicionamos regras CSS para definir aspect-ratio e dimensões mínimas para os contêineres de imagens, evitando layout shifts durante o carregamento.
+
+7. **Melhorias no CSS para contêineres de imagens**: Adicionamos `display: flex`, `justify-content: center` e `align-items: center` aos contêineres de imagens para garantir que as imagens sejam centralizadas e preencham adequadamente seus contêineres.
+
+8. **Documentação atualizada**: Atualizamos esta documentação para incluir informações sobre como lidar com proporções de imagens e evitar layout shifts.
 
 Estas alterações garantem que todas as imagens do site sejam exibidas corretamente, mantendo suas proporções originais e evitando layout shifts, o que melhora a pontuação de Core Web Vitals no PageSpeed Insights. 

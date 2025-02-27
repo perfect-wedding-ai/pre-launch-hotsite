@@ -468,31 +468,49 @@ nav ul li a:hover::after {
 }
 
 .showcase-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 1400px;
+    margin: 0 auto;
     gap: 40px;
 }
 
 .showcase-item {
-    border-radius: var(--border-radius);
+    width: auto;
+    max-width: 950px;
+    background-color: var(--white);
+    border-radius: 10px;
     overflow: hidden;
-    box-shadow: var(--shadow);
-    width: 100%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 30px;
+}
+
+.showcase-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .before-after {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
+    flex-direction: row;
+    gap: 30px;
     width: 100%;
+    justify-content: center;
+    padding: 20px;
 }
 
 .before, .after {
     position: relative;
-    width: 100%;
-    height: 300px;
+    width: 450px;
+    height: 450px;
     overflow: hidden;
     border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
 }
 
 .before img, .after img {
@@ -501,8 +519,8 @@ nav ul li a:hover::after {
     border-radius: 8px;
     transition: transform 0.3s ease;
     object-fit: cover;
-    background-color: var(--white);
     object-position: center;
+    background-color: var(--white);
 }
 
 .before:hover img, .after:hover img {
@@ -975,6 +993,11 @@ footer {
     .benefit img {
         height: 180px;
     }
+    
+    .before, .after {
+        width: 350px;
+        height: 350px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -1008,6 +1031,16 @@ footer {
     
     .testimonial {
         flex: 0 0 calc(100% - 20px);
+    }
+    
+    .before-after {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .before, .after {
+        width: 400px;
+        height: 400px;
     }
 }
 
@@ -1063,6 +1096,11 @@ footer {
     .social-media {
         display: none; /* Escondendo as redes sociais temporariamente */
         justify-content: center;
+    }
+    
+    .before, .after {
+        width: 300px;
+        height: 300px;
     }
 }
 
