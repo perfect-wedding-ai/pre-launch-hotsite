@@ -13,7 +13,12 @@ brides/
 │   │   └── main.js
 │   └── images/
 │       ├── hero-bride.jpg
+│       ├── hero-bride.webp
+│       ├── hero-bride-mobile.webp
+│       ├── hero-bride-tablet.webp
+│       ├── hero-bride-desktop.webp
 │       ├── benefit-time.jpg
+│       ├── benefit-time.webp
 │       ├── benefit-stress.jpg
 │       ├── benefit-options.jpg
 │       ├── benefit-confidence.jpg
@@ -27,6 +32,10 @@ brides/
 │       └── signup-bride.jpg
 ├── index.html
 ├── thank-you.html
+├── optimize-images.js
+├── test-performance.js
+├── OTIMIZACAO-IMAGENS.md
+├── MELHORIAS-DESEMPENHO.md
 ├── mailchimp-setup.md
 └── README.md
 ```
@@ -52,10 +61,44 @@ O Perfect Wedding é uma plataforma que permite às noivas experimentar virtualm
 - Fontes do Google (Playfair Display e Poppins)
 - Ícones do Font Awesome
 - Integração com Mailchimp para gerenciamento de leads
+- Node.js com Sharp para otimização de imagens
+- Lighthouse para análise de desempenho
 
 ## Como Executar
 
 Por ser um site estático, basta abrir o arquivo `index.html` em qualquer navegador moderno.
+
+### Scripts de Utilidade
+
+O projeto inclui scripts úteis para otimização e teste:
+
+```bash
+# Otimizar imagens (gera versões WebP e responsivas)
+npm run optimize-images
+
+# Testar desempenho com Lighthouse
+npm run test-performance
+```
+
+## Otimização de Desempenho
+
+O site foi otimizado para obter uma alta pontuação no PageSpeed Insights:
+
+- **Performance Score**: 86/100
+- **First Contentful Paint**: 1.4s
+- **Largest Contentful Paint**: 2.7s
+- **Cumulative Layout Shift**: 0.211
+
+As principais otimizações incluem:
+
+1. **Imagens Responsivas**: Versões otimizadas para mobile, tablet e desktop
+2. **Formato WebP**: Compressão moderna para reduzir o tamanho dos arquivos
+3. **Lazy Loading**: Carregamento preguiçoso para imagens abaixo da dobra
+4. **Prevenção de Layout Shifts**: Uso de atributos width/height e aspect-ratio
+
+Para mais detalhes sobre as otimizações, consulte:
+- `OTIMIZACAO-IMAGENS.md` - Documentação sobre o sistema de otimização de imagens
+- `MELHORIAS-DESEMPENHO.md` - Detalhes sobre as melhorias de desempenho implementadas
 
 ## Personalização
 
@@ -75,7 +118,11 @@ As cores principais do site são definidas como variáveis CSS no início do arq
 
 ### Imagens
 
-Para substituir as imagens, mantenha os mesmos nomes de arquivo ou atualize as referências no HTML.
+Para substituir as imagens, mantenha os mesmos nomes de arquivo ou atualize as referências no HTML. Após adicionar novas imagens, execute o script de otimização:
+
+```bash
+npm run optimize-images
+```
 
 ## Integração com Mailchimp
 
@@ -93,4 +140,5 @@ Para configurar a integração com o Mailchimp, siga as instruções detalhadas 
 1. Adicionar imagens reais geradas por IA
 2. Implementar análise de dados para rastrear conversões
 3. Criar versão em inglês para alcance internacional
-4. Adicionar integração com CRM para gerenciamento de leads mais avançado 
+4. Adicionar integração com CRM para gerenciamento de leads mais avançado
+5. Continuar otimizando o desempenho para atingir pontuação 90+ no PageSpeed Insights 

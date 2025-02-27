@@ -121,32 +121,98 @@ Para adicionar mais imagens à lista de tratamento especial, edite a linha no sc
 const isWidescreen = baseName === 'hero-bride' || baseName === 'signup-bride';
 ```
 
-## Preservando Proporções no HTML
+## Preservando Proporções das Imagens
 
-Para garantir que as imagens mantenham suas proporções naturais no navegador:
+Para garantir que todas as imagens mantenham suas proporções originais e não sejam cortadas, implementamos duas abordagens complementares:
 
-1. **Evite usar atributos `height` fixos**: Especificar tanto `width` quanto `height` pode causar distorções nas imagens.
-   - Correto: `<img src="imagem.webp" width="600" loading="lazy">`
-   - Incorreto: `<img src="imagem.webp" width="600" height="400" loading="lazy">`
+### 1. Preservando Proporções no HTML
 
-2. **Use apenas o atributo `width`**: Definir apenas a largura permite que o navegador calcule automaticamente a altura proporcional.
+Para garantir que as imagens mantenham suas proporções naturais no navegador e evitar layout shifts (CLS):
 
-3. **CSS para manter proporções**: Alternativamente, você pode usar CSS:
-   ```css
-   img {
-     max-width: 100%;
-     height: auto;
-   }
-   ```
+- **Use atributos `width` e `height` explícitos**: Especificar ambos os atributos permite que o navegador reserve o espaço correto antes do carregamento da imagem.
+   - Correto: `<img src="imagem.webp" width="600" height="338" loading="lazy">`
+   - Importante: Mantenha a proporção correta entre width e height
 
-4. **Aspect Ratio no CSS**: Para layouts modernos, considere usar:
-   ```css
-   .image-container {
-     aspect-ratio: 16/9;
-   }
-   ```
+- **Use CSS para garantir responsividade**: Mesmo com dimensões explícitas, use CSS para garantir que as imagens sejam responsivas:
+  ```css
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  ```
 
-> **IMPORTANTE**: Remover os atributos `height` fixos das tags `<img>` é essencial para evitar distorções, especialmente em imagens widescreen como hero-bride e signup-bride.
+- **Defina aspect-ratio no CSS**: Para os contêineres de imagens, defina a proporção para evitar layout shifts:
+  ```css
+  .image-container {
+    aspect-ratio: 16/9;
+    min-height: 300px;
+  }
+  ```
+
+> **IMPORTANTE**: Definir atributos `width` e `height` explícitos nas tags `<img>` é essencial para evitar layout shifts (CLS), mas certifique-se de que as proporções estejam corretas para evitar distorções.
+
+### 2. Preservando Proporções Durante a Otimização e Exibição
+
+Além das configurações no HTML, implementamos melhorias no processo de otimização e no CSS:
+
+1. **No script de otimização (`optimize-images.js`)**:
+   - Todas as imagens agora usam `fit: 'contain'` e `position: 'center'` durante o redimensionamento
+   - Isso garante que a imagem inteira seja visível, sem cortes, mantendo a proporção original
+   - Removemos o tratamento especial apenas para imagens widescreen, aplicando a mesma configuração para todas
+
+2. **No CSS**:
+   - Substituímos `object-fit: cover` por `object-fit: contain` para todas as imagens
+   - Adicionamos `background-color: #f8f8f8` para imagens com fundo transparente
+   - Removemos configurações de `aspect-ratio` que forçavam proporções específicas
+
+Essas mudanças garantem que todas as imagens sejam exibidas completamente, sem cortes, mantendo suas proporções originais.
+
+## Exemplos de Configuração
+
+### CSS para Preservar Proporções
+
+```css
+.benefit img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    transition: transform 0.5s ease;
+}
+
+.testimonial-author img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: contain;
+    background-color: #f8f8f8;
+    margin-right: 15px;
+}
+
+.before img, .after img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    aspect-ratio: 3/2;
+    max-width: 450px;
+    object-fit: contain;
+    background-color: #f8f8f8;
+}
+```
+
+### Script de Otimização
+
+```javascript
+// Configuração de redimensionamento para todas as imagens
+const resizeOptions = {
+  width,
+  withoutEnlargement: true,
+  // Preserva a proporção da imagem (aspect ratio)
+  fit: 'contain',
+  // Não corta a imagem
+  position: 'center'
+};
+```
 
 ## Manutenção
 
@@ -205,14 +271,14 @@ Este sistema de otimização de imagens melhora significativamente o desempenho 
 
 ## Resumo das Alterações Recentes
 
-Para resolver problemas de distorção de imagens, especialmente em imagens widescreen como hero-bride e signup-bride, realizamos as seguintes alterações:
+Para resolver problemas de distorção de imagens e layout shifts (CLS), realizamos as seguintes alterações:
 
-1. **Remoção de atributos height fixos**: Removemos todos os atributos `height` fixos das tags `<img>` no arquivo `index.html` para permitir que as imagens mantenham suas proporções naturais.
+1. **Adição de atributos width e height explícitos**: Adicionamos atributos `width` e `height` explícitos nas tags `<img>` no arquivo `index.html` para permitir que o navegador reserve o espaço correto antes do carregamento das imagens.
 
 2. **Tratamento especial para imagens widescreen**: Modificamos o script de otimização para identificar e tratar de forma especial imagens widescreen, usando o modo `fit: 'contain'` para preservar a proporção original.
 
-3. **Documentação atualizada**: Atualizamos esta documentação para incluir informações sobre como lidar com proporções de imagens e evitar distorções.
+3. **CSS para evitar layout shifts**: Adicionamos regras CSS para definir aspect-ratio e dimensões mínimas para os contêineres de imagens, evitando layout shifts durante o carregamento.
 
-4. **Exemplo atualizado**: Atualizamos o arquivo `exemplo-imagens.html` para demonstrar o tratamento correto de imagens widescreen.
+4. **Documentação atualizada**: Atualizamos esta documentação para incluir informações sobre como lidar com proporções de imagens e evitar layout shifts.
 
-Estas alterações garantem que todas as imagens do site sejam exibidas corretamente, mantendo suas proporções originais e evitando distorções, enquanto ainda se beneficiam da otimização de tamanho e carregamento responsivo. 
+Estas alterações garantem que todas as imagens do site sejam exibidas corretamente, mantendo suas proporções originais e evitando layout shifts, o que melhora a pontuação de Core Web Vitals no PageSpeed Insights. 

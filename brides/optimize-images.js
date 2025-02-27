@@ -5,9 +5,14 @@
  * Instalação: npm install sharp glob
  */
 
-const sharp = require('sharp');
-const path = require('path');
-const fs = require('fs');
+import sharp from 'sharp';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+
+// Obter o diretório atual em ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Configurações
 const IMAGE_DIR = 'assets/images';
@@ -65,9 +70,6 @@ async function optimizeImage(inputFile) {
     const metadata = await image.metadata();
     console.log(`${YELLOW}Metadados: ${JSON.stringify(metadata)}${RESET}`);
     
-    // Verifica se a imagem é widescreen (hero-bride ou signup-bride)
-    const isWidescreen = baseName === 'hero-bride' || baseName === 'signup-bride';
-    
     // Processa para cada tamanho
     for (const [size, width] of Object.entries(SIZES)) {
       const outputFile = path.join(
@@ -84,16 +86,12 @@ async function optimizeImage(inputFile) {
           width,
           withoutEnlargement: true,
           // Preserva a proporção da imagem (aspect ratio)
-          fit: 'inside'
+          fit: 'contain',
+          // Não corta a imagem
+          position: 'center'
         };
         
-        // Para imagens widescreen, usamos configurações específicas
-        if (isWidescreen) {
-          // Mantém a proporção original da imagem
-          resizeOptions.fit = 'contain';
-          // Não corta a imagem
-          resizeOptions.position = 'center';
-        }
+        // Todas as imagens agora usam as mesmas configurações para preservar proporções
         
         await image
           .clone()
