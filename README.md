@@ -25,10 +25,13 @@ npm install -g clean-css-cli
 ## Scripts Disponíveis
 
 ```bash
-# Minificar CSS
+# Build completo (minificar CSS e JavaScript)
+npm run build
+
+# Minificar apenas CSS
 npm run build:css
 
-# Iniciar servidor local
+# Iniciar servidor local com compressão gzip
 npm start
 ```
 

@@ -114,13 +114,14 @@ Implementamos diversas melhorias de desempenho que aumentaram a pontuação do P
 
 ## Processo de Build
 
-Implementamos um processo de build automatizado para otimizar o CSS e melhorar o desempenho do site.
+Implementamos um processo de build automatizado para otimizar o CSS e JavaScript, melhorando o desempenho do site.
 
 ### Requisitos
 
 - Node.js (versão 14 ou superior)
 - NPM (versão 6 ou superior)
 - clean-css-cli (instalado globalmente)
+- terser (instalado como dependência de desenvolvimento)
 
 ### Instalação das Dependências
 
@@ -139,19 +140,20 @@ Adicionamos os seguintes scripts no `package.json`:
 ```json
 "scripts": {
   "build:css": "cd brides && node build.js",
-  "start": "npx http-server . -p 8080"
+  "build": "cd brides && node build.js",
+  "start": "npx http-server . -p 8080 -g"
 }
 ```
 
-### Processo de Minificação do CSS
+### Processo de Minificação
 
-Criamos um script de build (`brides/build.js`) que automatiza a minificação do CSS:
+Criamos um script de build (`brides/build.js`) que automatiza a minificação do CSS e JavaScript:
 
 ```javascript
 /**
  * Perfect Wedding - Build Script
  * 
- * Este script automatiza a minificação do CSS.
+ * Este script automatiza a minificação do CSS e JavaScript.
  * Para executar: node build.js
  */
 
@@ -166,36 +168,78 @@ const __dirname = path.dirname(__filename);
 
 // Diretórios
 const cssDir = path.join(__dirname, 'assets', 'css');
-const minDir = path.join(cssDir, 'min');
+const jsDir = path.join(__dirname, 'assets', 'js');
+const cssMinDir = path.join(cssDir, 'min');
+const jsMinDir = path.join(jsDir, 'min');
 
-// Garantir que o diretório min existe
-if (!fs.existsSync(minDir)) {
-    fs.mkdirSync(minDir, { recursive: true });
+// Garantir que os diretórios min existem
+if (!fs.existsSync(cssMinDir)) {
+    fs.mkdirSync(cssMinDir, { recursive: true });
     console.log('Diretório de CSS minificado criado.');
 }
 
-// Minificar CSS
-try {
-    console.log('Minificando CSS...');
-    execSync(`cleancss -o ${path.join(minDir, 'styles.min.css')} ${path.join(cssDir, 'styles.css')}`);
-    console.log('CSS minificado com sucesso!');
-} catch (error) {
-    console.error('Erro ao minificar CSS:', error.message);
-    console.log('Certifique-se de que o clean-css-cli está instalado: npm install -g clean-css-cli');
+if (!fs.existsSync(jsMinDir)) {
+    fs.mkdirSync(jsMinDir, { recursive: true });
+    console.log('Diretório de JavaScript minificado criado.');
 }
 
-console.log('Build concluído!');
+// Minificar CSS
+function minifyCSS() {
+    try {
+        console.log('Minificando CSS...');
+        execSync(`cleancss -o ${path.join(cssMinDir, 'styles.min.css')} ${path.join(cssDir, 'styles.css')}`);
+        console.log('CSS minificado com sucesso!');
+    } catch (error) {
+        console.error('Erro ao minificar CSS:', error.message);
+        console.log('Certifique-se de que o clean-css-cli está instalado: npm install -g clean-css-cli');
+    }
+}
+
+// Minificar JavaScript
+function minifyJS() {
+    try {
+        console.log('Minificando JavaScript...');
+        
+        // Lista de arquivos JS para minificar
+        const jsFiles = ['main.js', 'image-optimizer.js', 'lazy-loading.js'];
+        
+        jsFiles.forEach(file => {
+            const inputFile = path.join(jsDir, file);
+            const outputFile = path.join(jsMinDir, file.replace('.js', '.min.js'));
+            
+            if (fs.existsSync(inputFile)) {
+                execSync(`npx terser ${inputFile} -o ${outputFile} --compress --mangle`);
+                console.log(`${file} minificado com sucesso!`);
+            } else {
+                console.warn(`Arquivo ${file} não encontrado.`);
+            }
+        });
+        
+        console.log('JavaScript minificado com sucesso!');
+    } catch (error) {
+        console.error('Erro ao minificar JavaScript:', error.message);
+    }
+}
+
+// Executar build
+try {
+    minifyCSS();
+    minifyJS();
+    console.log('Build concluído!');
+} catch (error) {
+    console.error('Erro durante o build:', error.message);
+}
 ```
 
 ### Como Executar o Build
 
-Para minificar o CSS, execute:
+Para executar o build completo (minificação de CSS e JavaScript):
 
 ```bash
-npm run build:css
+npm run build
 ```
 
-Para iniciar o servidor local:
+Para iniciar o servidor local com compressão gzip:
 
 ```bash
 npm start
