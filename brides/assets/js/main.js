@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Animação de entrada para elementos quando entram na viewport
     const animateOnScroll = () => {
-        const elements = document.querySelectorAll('.step, .benefit, .testimonial, .showcase-item, .section-header, .hero-content, .signup-content');
+        const elements = document.querySelectorAll('.step, .benefit, .testimonial, .showcase-item, .section-header, .signup-content');
         
         elements.forEach(element => {
             const elementPosition = element.getBoundingClientRect().top;
@@ -130,10 +130,16 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     // Inicializar elementos com opacidade 0
-    document.querySelectorAll('.step, .benefit, .testimonial, .showcase-item, .section-header, .hero-content, .signup-content').forEach(element => {
+    document.querySelectorAll('.step, .benefit, .testimonial, .showcase-item, .section-header, .signup-content').forEach(element => {
         element.style.opacity = '0';
         element.style.transform = 'translateY(20px)';
         element.style.transition = 'all 0.5s ease';
+    });
+    
+    // Garantir que a seção hero e seu conteúdo apareçam imediatamente
+    document.querySelectorAll('.hero-content, .hero-image').forEach(element => {
+        element.style.opacity = '1';
+        element.style.transform = 'translateY(0)';
     });
     
     // Executar animação no carregamento e no scroll

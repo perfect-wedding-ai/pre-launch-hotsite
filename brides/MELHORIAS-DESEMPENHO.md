@@ -81,6 +81,37 @@ Implementamos diversas melhorias de desempenho que aumentaram a pontuação do P
 - Implementamos cabeçalhos de cache adequados para diferentes tipos de arquivos
 - Economia potencial de aproximadamente 48 KiB de transferência de rede
 
+### 6. Otimização de Animações
+
+### Problema Identificado
+- O título principal (`<h1>`) estava demorando aproximadamente 2 segundos para aparecer devido a animações JavaScript.
+- A animação de entrada estava causando um atraso significativo na exibição do conteúdo principal (LCP - Largest Contentful Paint).
+
+### Solução Implementada
+1. **Remoção da Animação para Elementos Críticos**: Removemos a classe `hero-content` da lista de elementos que recebem animação de entrada no JavaScript.
+2. **Garantia de Visibilidade Imediata**: Adicionamos código JavaScript específico para garantir que a seção hero e seu conteúdo apareçam imediatamente:
+   ```javascript
+   // Garantir que a seção hero e seu conteúdo apareçam imediatamente
+   document.querySelectorAll('.hero-content, .hero-image').forEach(element => {
+       element.style.opacity = '1';
+       element.style.transform = 'translateY(0)';
+   });
+   ```
+3. **Estilos CSS Inline**: Adicionamos estilos CSS inline no HTML para garantir que o título e a seção hero apareçam imediatamente, sem depender do JavaScript:
+   ```css
+   /* Garantir que a seção hero e seu conteúdo apareçam imediatamente */
+   .hero-content, .hero-image {
+       opacity: 1 !important;
+       transform: translateY(0) !important;
+       transition: none !important;
+   }
+   ```
+
+### Resultados
+- O título principal agora aparece imediatamente quando a página carrega.
+- O Largest Contentful Paint (LCP) foi significativamente reduzido.
+- A experiência do usuário foi melhorada com o conteúdo principal visível instantaneamente.
+
 ## Processo de Build
 
 Implementamos um processo de build automatizado para otimizar o CSS e melhorar o desempenho do site.
