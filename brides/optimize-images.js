@@ -85,13 +85,13 @@ async function optimizeImage(inputFile) {
         const resizeOptions = {
           width,
           withoutEnlargement: true,
-          // Preserva a proporção da imagem (aspect ratio)
-          fit: 'contain',
-          // Não corta a imagem
+          // Preenche completamente o contêiner, cortando se necessário
+          fit: 'cover',
+          // Centraliza a imagem
           position: 'center'
         };
         
-        // Todas as imagens agora usam as mesmas configurações para preservar proporções
+        // Todas as imagens agora usam as mesmas configurações para preencher completamente o contêiner
         
         await image
           .clone()

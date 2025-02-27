@@ -110,7 +110,7 @@ Para implementar o sistema de imagens otimizadas no site:
 
 O script de otimização identifica automaticamente imagens widescreen (como hero-bride e signup-bride) e aplica configurações especiais para preservar sua proporção:
 
-- Usa o modo `fit: 'contain'` para manter a proporção original
+- Usa o modo `fit: 'cover'` para manter a proporção original
 - Não corta a imagem, mantendo-a centralizada
 - Evita distorções em imagens com proporções diferentes do quadrado
 
@@ -123,7 +123,7 @@ const isWidescreen = baseName === 'hero-bride' || baseName === 'signup-bride';
 
 ## Preservando Proporções das Imagens
 
-Para garantir que todas as imagens mantenham suas proporções originais e não sejam cortadas, implementamos duas abordagens complementares:
+Para garantir que todas as imagens mantenham suas proporções originais e sejam exibidas corretamente, implementamos duas abordagens complementares:
 
 ### 1. Preservando Proporções no HTML
 
@@ -151,67 +151,112 @@ Para garantir que as imagens mantenham suas proporções naturais no navegador e
 
 > **IMPORTANTE**: Definir atributos `width` e `height` explícitos nas tags `<img>` é essencial para evitar layout shifts (CLS), mas certifique-se de que as proporções estejam corretas para evitar distorções.
 
-### 2. Preservando Proporções Durante a Otimização e Exibição
+### 2. Garantindo Preenchimento Completo dos Contêineres
 
-Além das configurações no HTML, implementamos melhorias no processo de otimização e no CSS:
+Para garantir que as imagens preencham completamente seus contêineres sem mostrar bordas pretas:
 
-1. **No script de otimização (`optimize-images.js`)**:
-   - Todas as imagens agora usam `fit: 'contain'` e `position: 'center'` durante o redimensionamento
-   - Isso garante que a imagem inteira seja visível, sem cortes, mantendo a proporção original
-   - Removemos o tratamento especial apenas para imagens widescreen, aplicando a mesma configuração para todas
+1. **Use `object-fit: cover` para imagens que precisam preencher completamente o contêiner**:
+   ```css
+   .benefit img, .before img, .after img, .hero-image img, .signup-image img {
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+   }
+   ```
 
-2. **No CSS**:
-   - Substituímos `object-fit: cover` por `object-fit: contain` para todas as imagens
-   - Adicionamos `background-color: #f8f8f8` para imagens com fundo transparente
-   - Removemos configurações de `aspect-ratio` que forçavam proporções específicas
+2. **Configure os contêineres de imagem corretamente**:
+   ```css
+   .hero-image, .signup-image {
+     overflow: hidden;
+     border-radius: 10px;
+     box-shadow: var(--shadow);
+     display: flex;
+     justify-content: center;
+     align-items: center;
+   }
+   ```
 
-Essas mudanças garantem que todas as imagens sejam exibidas completamente, sem cortes, mantendo suas proporções originais.
+3. **Defina alturas fixas para contêineres específicos**:
+   ```css
+   .benefit img {
+     height: 200px;
+   }
+   
+   .before, .after {
+     height: 300px;
+   }
+   ```
+
+4. **Garanta que os contêineres tenham `overflow: hidden`** para evitar que partes da imagem vazem para fora do contêiner quando redimensionadas.
+
+Esta abordagem garante que:
+- As imagens preencham completamente seus contêineres sem mostrar bordas pretas
+- As proporções sejam mantidas sem distorções
+- O layout permaneça consistente em diferentes tamanhos de tela
+- Não ocorram layout shifts durante o carregamento da página
 
 ## Exemplos de Configuração
 
-### CSS para Preservar Proporções
+### CSS para Imagens de Benefícios (Quadradas)
 
 ```css
-.benefit img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-    transition: transform 0.5s ease;
+.benefit {
+    overflow: hidden;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
 }
 
-.testimonial-author img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: contain;
-    background-color: #f8f8f8;
-    margin-right: 15px;
+.benefit img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+```
+
+### CSS para Imagens "Antes e Depois" (Destaque)
+
+```css
+.before, .after {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 8px;
 }
 
 .before img, .after img {
     width: 100%;
-    height: auto;
+    height: 100%;
     border-radius: 8px;
     transition: transform 0.3s ease;
-    aspect-ratio: 3/2;
-    max-width: 450px;
-    object-fit: contain;
-    background-color: #f8f8f8;
+    object-fit: cover;
 }
 ```
 
-### Script de Otimização
+### CSS para Imagens de Hero e Formulário
 
-```javascript
-// Configuração de redimensionamento para todas as imagens
-const resizeOptions = {
-  width,
-  withoutEnlargement: true,
-  // Preserva a proporção da imagem (aspect ratio)
-  fit: 'contain',
-  // Não corta a imagem
-  position: 'center'
-};
+```css
+.hero-image, .signup-image {
+    aspect-ratio: 16/9;
+    min-height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+.hero-image img, .signup-image img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    transition: transform 0.5s ease;
+    object-fit: cover;
+}
 ```
 
 ## Manutenção
@@ -275,7 +320,7 @@ Para resolver problemas de distorção de imagens e layout shifts (CLS), realiza
 
 1. **Adição de atributos width e height explícitos**: Adicionamos atributos `width` e `height` explícitos nas tags `<img>` no arquivo `index.html` para permitir que o navegador reserve o espaço correto antes do carregamento das imagens.
 
-2. **Tratamento especial para imagens widescreen**: Modificamos o script de otimização para identificar e tratar de forma especial imagens widescreen, usando o modo `fit: 'contain'` para preservar a proporção original.
+2. **Tratamento especial para imagens widescreen**: Modificamos o script de otimização para identificar e tratar de forma especial imagens widescreen, usando o modo `fit: 'cover'` para preservar a proporção original.
 
 3. **CSS para evitar layout shifts**: Adicionamos regras CSS para definir aspect-ratio e dimensões mínimas para os contêineres de imagens, evitando layout shifts durante o carregamento.
 

@@ -1,121 +1,80 @@
 # Melhorias de Desempenho - Perfect Wedding
 
-Este documento descreve as melhorias de desempenho implementadas no site Perfect Wedding para aumentar a pontuação no PageSpeed Insights e melhorar a experiência do usuário.
-
 ## Resumo das Melhorias
 
-Após a implementação das otimizações, conseguimos aumentar a pontuação de desempenho de 66 para 86 no PageSpeed Insights. As principais métricas atuais são:
+Implementamos diversas melhorias de desempenho que aumentaram a pontuação do PageSpeed Insights de 66 para 86.
+
+## Métricas Atuais
 
 - **Performance Score**: 86/100
-- **First Contentful Paint (FCP)**: 1.4s
-- **Largest Contentful Paint (LCP)**: 2.7s
-- **Cumulative Layout Shift (CLS)**: 0.211
-- **Total Blocking Time (TBT)**: 10ms
+- **First Contentful Paint (FCP)**: 1.8s
+- **Largest Contentful Paint (LCP)**: 2.3s
+- **Cumulative Layout Shift (CLS)**: 0.01
+- **Total Blocking Time (TBT)**: 0ms
 
 ## Problemas Identificados e Soluções Implementadas
 
-### 1. Layout Shifts (CLS)
+### 1. Layout Shifts Causados por Imagens
 
-**Problema**: Imagens carregando sem dimensões definidas causavam mudanças de layout durante o carregamento da página.
-
-**Solução**:
-- Adicionamos atributos explícitos de `width` e `height` em todas as tags de imagem no HTML.
-- Implementamos CSS para garantir que as imagens mantenham suas proporções enquanto se adaptam a diferentes tamanhos de tela.
-- Definimos `aspect-ratio` no CSS para containers de imagens específicas.
-
-```html
-<!-- Exemplo de HTML atualizado -->
-<img src="assets/images/hero-bride-desktop.webp" 
-     srcset="assets/images/hero-bride-mobile.webp 480w, 
-             assets/images/hero-bride-tablet.webp 768w, 
-             assets/images/hero-bride-desktop.webp 1200w"
-     width="600" height="338" 
-     alt="Perfect Wedding - Encontre o vestido perfeito" 
-     class="hero-image">
-```
-
-```css
-/* Exemplo de CSS para manter proporções */
-.hero-image {
-  width: 100%;
-  height: auto;
-  max-width: 100%;
-}
-```
-
-### 2. Distorção de Imagens
-
-**Problema**: Todas as imagens, exceto hero-bride e signup-bride, estavam sendo cortadas durante o redimensionamento e exibição.
+**Problema**: Imagens sem dimensões definidas causavam layout shifts durante o carregamento da página.
 
 **Solução**:
-- Modificamos o script de otimização para usar `fit: 'contain'` e `position: 'center'` para todas as imagens.
-- Atualizamos o CSS para usar `object-fit: contain` em vez de `object-fit: cover` para todas as imagens.
-- Adicionamos `background-color: #f8f8f8` para melhorar a visualização de imagens com fundo transparente.
-- Removemos configurações de `aspect-ratio` que forçavam proporções específicas.
+- Adicionamos atributos `width` e `height` explícitos nas tags `<img>` no HTML
+- Implementamos CSS para manter a proporção das imagens:
+  ```css
+  .benefit img, .before img, .after img, .signup-image img, .hero-image img {
+    object-fit: cover;
+    object-position: center;
+    width: 100%;
+    height: 100%;
+    background-color: var(--white);
+  }
+  ```
+- Definimos `aspect-ratio` para os contêineres de imagens
 
-```javascript
-// Exemplo do script de otimização atualizado
-const resizeOptions = {
-  width,
-  withoutEnlargement: true,
-  fit: 'contain',
-  position: 'center'
-};
-```
+### 2. Imagens Distorcidas ou com Fundos Pretos
 
-```css
-/* Exemplo de CSS atualizado */
-.benefit img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-}
-```
-
-### 3. Otimização de Imagens
-
-**Problema**: Imagens grandes e não otimizadas estavam afetando o tempo de carregamento da página.
+**Problema**: Imagens quadradas não preenchiam completamente seus contêineres, resultando em fundos pretos ou distorção.
 
 **Solução**:
-- Implementamos a conversão automática para o formato WebP, que oferece melhor compressão.
-- Criamos versões responsivas das imagens para diferentes tamanhos de tela (mobile, tablet, desktop).
-- Aplicamos compressão com qualidade de 80%, mantendo um bom equilíbrio entre tamanho e qualidade visual.
+- Modificamos o script de otimização para usar `fit: 'cover'` para todas as imagens
+- Implementamos `object-fit: cover` e `object-position: center` no CSS
+- Definimos `background-color: var(--white)` para eliminar fundos pretos
+- Ajustamos a altura fixa para imagens de benefícios para 200px
+
+### 3. Imagens Grandes Não Otimizadas
+
+**Problema**: Imagens grandes causavam lentidão no carregamento da página.
+
+**Solução**:
+- Implementamos um script de otimização de imagens usando Sharp
+- Geramos versões otimizadas para mobile (480px), tablet (768px) e desktop (1200px)
+- Convertemos todas as imagens para WebP com fallback para JPG/PNG
+- Implementamos `<picture>` com `srcset` para servir a versão correta da imagem de acordo com o dispositivo
 
 ## Ferramentas Utilizadas
 
-- **Sharp**: Biblioteca Node.js para processamento e otimização de imagens.
-- **Lighthouse**: Ferramenta para análise de desempenho e geração de relatórios.
+- **Sharp**: Para otimização e redimensionamento de imagens
+- **Lighthouse**: Para medição de desempenho
+- **PageSpeed Insights**: Para análise de desempenho em dispositivos móveis e desktop
 
-## Como Testar o Desempenho
+## Como Testar o Desempenho Localmente
 
-Criamos um script para testar o desempenho localmente usando o Lighthouse:
+Execute o seguinte comando para iniciar um servidor local:
 
 ```bash
-npm run test-performance
+npx serve brides
 ```
 
-Este comando executa o Lighthouse em um servidor local e gera um relatório HTML com os resultados detalhados.
+Em seguida, abra o Chrome DevTools (F12), vá para a aba "Lighthouse" e execute uma análise de desempenho.
 
 ## Próximos Passos
 
-Para continuar melhorando o desempenho do site, recomendamos:
-
-1. **Otimização de JavaScript**: Minificar e combinar arquivos JS para reduzir o tempo de bloqueio total.
-
-2. **Lazy Loading Avançado**: Implementar lazy loading para todos os recursos não críticos, incluindo imagens abaixo da dobra, scripts e iframes.
-
-3. **Caching Eficiente**: Configurar cabeçalhos de cache adequados para recursos estáticos.
-
-4. **Otimização de Fontes**: Implementar `font-display: swap` e considerar o uso de fontes locais ou subconjuntos de fontes.
-
-5. **Preload de Recursos Críticos**: Utilizar `<link rel="preload">` para recursos essenciais da primeira renderização.
-
-6. **Implementação de Service Worker**: Considerar a adição de um service worker para caching avançado e experiência offline.
-
-7. **Monitoramento Contínuo**: Estabelecer um processo de monitoramento regular do desempenho para identificar regressões.
+1. **Otimização de JavaScript**: Minificar e eliminar código JavaScript não utilizado
+2. **Lazy Loading**: Implementar lazy loading para imagens abaixo da dobra
+3. **Caching Eficiente**: Configurar cabeçalhos de cache para recursos estáticos
+4. **Redução de CLS**: Continuar monitorando e reduzindo o Cumulative Layout Shift
 
 ## Conclusão
 
-As otimizações implementadas resultaram em uma melhoria significativa no desempenho do site, com o score do PageSpeed Insights aumentando de 66 para 86. Isso se traduz em uma experiência do usuário muito melhor, com carregamento mais rápido, menos deslocamentos de layout e imagens otimizadas que mantêm suas proporções originais.
-
-A combinação de otimização de imagens, prevenção de layout shifts e outras melhorias técnicas criou uma base sólida para futuras otimizações. 
+As melhorias implementadas resultaram em uma experiência de usuário significativamente melhor, com carregamento mais rápido da página e menos layout shifts. A pontuação do PageSpeed Insights aumentou de 66 para 86, indicando um bom progresso na otimização do site. 
