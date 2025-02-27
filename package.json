@@ -1,0 +1,17 @@
+{
+  "name": "pre-launch-hotsite",
+  "version": "1.0.0",
+  "description": "Documentação de melhores práticas para prompting de IA generativa para imagens [aqui](docs/generative-image-best-practices.md).",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "cd brides && node build.js",
+    "start": "npx http-server . -p 8080"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
