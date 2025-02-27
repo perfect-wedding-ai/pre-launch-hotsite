@@ -59,18 +59,26 @@ document.addEventListener('DOMContentLoaded', function() {
         const currentSize = getImageSize();
 
         images.forEach(img => {
-            // Não aplicar em imagens que já têm loading="lazy"
-            if (!img.hasAttribute('loading')) {
+            // Identificar imagens críticas (acima da dobra)
+            const isHeroImage = img.closest('.hero-image') !== null;
+            const isFirstBenefitImage = img.closest('.benefits-grid .benefit:first-child') !== null;
+            const isCriticalImage = isHeroImage || isFirstBenefitImage;
+            
+            // Aplicar lazy loading apenas em imagens não críticas
+            if (!img.hasAttribute('loading') && !isCriticalImage) {
                 img.setAttribute('loading', 'lazy');
             }
 
             // Adicionar srcset para imagens responsivas se não for um ícone ou imagem muito pequena
             if (!img.classList.contains('icon') && !img.parentElement.classList.contains('testimonial-author')) {
                 const originalSrc = img.getAttribute('src');
-                const optimizedSrc = getOptimizedImageSrc(originalSrc, currentSize);
                 
-                // Atualiza o src para a versão otimizada
-                img.setAttribute('src', optimizedSrc);
+                // Para imagens críticas, não modificamos o src, apenas adicionamos srcset
+                if (!isCriticalImage) {
+                    const optimizedSrc = getOptimizedImageSrc(originalSrc, currentSize);
+                    // Atualiza o src para a versão otimizada
+                    img.setAttribute('src', optimizedSrc);
+                }
                 
                 // Adiciona srcset para diferentes tamanhos
                 const mobileSrc = getOptimizedImageSrc(originalSrc, imageSizes.mobile);

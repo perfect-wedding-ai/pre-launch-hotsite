@@ -71,6 +71,10 @@
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"></noscript>
     
+    <!-- Preload da imagem hero para evitar layout shifts -->
+    <link rel="preload" as="image" href="assets/images/hero-bride-desktop.webp" fetchpriority="high">
+    <link rel="preload" as="image" href="assets/images/benefit-time-desktop.webp">
+    
     <!-- Carregador otimizado do Font Awesome -->
     <script src="assets/js/fontawesome-loader.js" defer></script>
     
@@ -115,7 +119,7 @@
                 </div>
             </div>
             <div class="hero-image">
-                <img src="assets/images/hero-bride.webp" alt="Noiva experimentando vestido virtual com tecnologia de IA" width="600" height="338" loading="lazy">
+                <img src="assets/images/hero-bride-desktop.webp" alt="Noiva experimentando vestido virtual com tecnologia de IA" width="600" height="338" fetchpriority="high">
             </div>
         </div>
     </section>
@@ -167,7 +171,7 @@
             </div>
             <div class="benefits-grid">
                 <div class="benefit">
-                    <img src="assets/images/benefit-time.webp" alt="Ilustração mostrando economia de tempo ao experimentar vestidos virtualmente" width="400" height="200" loading="lazy">
+                    <img src="assets/images/benefit-time-desktop.webp" alt="Ilustração mostrando economia de tempo ao experimentar vestidos virtualmente" width="400" height="200" fetchpriority="high">
                     <div class="benefit-content">
                         <h3>Economize Tempo</h3>
                         <p>Experimente dezenas de vestidos em minutos, não em semanas</p>
