@@ -8,7 +8,9 @@ Este é um site estático para o hotsite "brides", focado em noivas que desejam 
 brides/
 ├── assets/
 │   ├── css/
-│   │   └── styles.css
+│   │   ├── styles.css
+│   │   └── min/
+│   │       └── styles.min.css
 │   ├── js/
 │   │   └── main.js
 │   └── images/
@@ -34,6 +36,7 @@ brides/
 ├── thank-you.html
 ├── optimize-images.js
 ├── test-performance.js
+├── build.js
 ├── OTIMIZACAO-IMAGENS.md
 ├── MELHORIAS-DESEMPENHO.md
 ├── mailchimp-setup.md
@@ -63,16 +66,32 @@ O Perfect Wedding é uma plataforma que permite às noivas experimentar virtualm
 - Integração com Mailchimp para gerenciamento de leads
 - Node.js com Sharp para otimização de imagens
 - Lighthouse para análise de desempenho
+- clean-css-cli para minificação de CSS
 
-## Como Executar
+## Requisitos
 
-Por ser um site estático, basta abrir o arquivo `index.html` em qualquer navegador moderno.
+- Node.js (versão 14 ou superior)
+- NPM (versão 6 ou superior)
 
-### Scripts de Utilidade
-
-O projeto inclui scripts úteis para otimização e teste:
+## Instalação
 
 ```bash
+# Instalar dependências
+npm install
+
+# Instalar clean-css-cli globalmente (necessário para o build)
+npm install -g clean-css-cli
+```
+
+## Scripts Disponíveis
+
+```bash
+# Minificar CSS
+npm run build:css
+
+# Iniciar servidor local
+npm start
+
 # Otimizar imagens (gera versões WebP e responsivas)
 npm run optimize-images
 
@@ -80,21 +99,48 @@ npm run optimize-images
 npm run test-performance
 ```
 
+## Processo de Build
+
+O projeto utiliza um processo de build automatizado para otimizar o CSS:
+
+1. O script `build.js` minifica o arquivo CSS principal
+2. O CSS minificado é salvo em `assets/css/min/styles.min.css`
+3. O HTML carrega o CSS minificado com preload para melhor desempenho
+
+Para executar o build:
+
+```bash
+npm run build:css
+```
+
+## Como Executar
+
+Para iniciar um servidor local e visualizar o site:
+
+```bash
+npm start
+```
+
+Em seguida, acesse `http://localhost:8080/brides/` no seu navegador.
+
 ## Otimização de Desempenho
 
-O site foi otimizado para obter uma alta pontuação no PageSpeed Insights:
+O site foi otimizado para obter pontuação máxima no PageSpeed Insights:
 
-- **Performance Score**: 86/100
-- **First Contentful Paint**: 1.4s
-- **Largest Contentful Paint**: 2.7s
-- **Cumulative Layout Shift**: 0.211
+- **Performance Score**: 100/100
+- **First Contentful Paint**: 0.9s
+- **Largest Contentful Paint**: 1.7s
+- **Cumulative Layout Shift**: 0.015
+- **Total Blocking Time**: 0ms
 
 As principais otimizações incluem:
 
 1. **Imagens Responsivas**: Versões otimizadas para mobile, tablet e desktop
 2. **Formato WebP**: Compressão moderna para reduzir o tamanho dos arquivos
-3. **Lazy Loading**: Carregamento preguiçoso para imagens abaixo da dobra
-4. **Prevenção de Layout Shifts**: Uso de atributos width/height e aspect-ratio
+3. **CSS Crítico Inline**: Estilos críticos incorporados diretamente no HTML
+4. **CSS Minificado**: Redução do tamanho do arquivo CSS
+5. **Preload de Recursos**: Carregamento prioritário para imagens e CSS críticos
+6. **Prevenção de Layout Shifts**: Uso de atributos width/height e aspect-ratio
 
 Para mais detalhes sobre as otimizações, consulte:
 - `OTIMIZACAO-IMAGENS.md` - Documentação sobre o sistema de otimização de imagens
@@ -114,6 +160,12 @@ As cores principais do site são definidas como variáveis CSS no início do arq
     --dark-accent: #d9a6b3; /* Rosa escuro pastel */
     /* ... outras variáveis ... */
 }
+```
+
+Após fazer alterações no CSS, execute o build para atualizar a versão minificada:
+
+```bash
+npm run build:css
 ```
 
 ### Imagens
@@ -141,4 +193,4 @@ Para configurar a integração com o Mailchimp, siga as instruções detalhadas 
 2. Implementar análise de dados para rastrear conversões
 3. Criar versão em inglês para alcance internacional
 4. Adicionar integração com CRM para gerenciamento de leads mais avançado
-5. Continuar otimizando o desempenho para atingir pontuação 90+ no PageSpeed Insights 
+5. Implementar otimização de JavaScript 
