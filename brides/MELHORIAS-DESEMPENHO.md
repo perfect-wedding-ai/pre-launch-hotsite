@@ -356,40 +356,45 @@ Identificamos e corrigimos dois erros que apareciam no console do navegador:
        ```
      - O favicon.io gera múltiplos formatos de ícones para diferentes dispositivos e navegadores, garantindo compatibilidade universal
 
-### Otimização do LCP (Largest Contentful Paint)
+### Otimização Radical do LCP (Largest Contentful Paint)
 
-Identificamos que o elemento de maior exibição de conteúdo (LCP) estava demorando aproximadamente 2.710ms para renderizar, com um atraso significativo na renderização (78% do tempo total).
+Identificamos que o elemento de maior exibição de conteúdo (LCP) continuava demorando aproximadamente 2.710ms para renderizar, com um atraso significativo na renderização (78% do tempo total).
 
-**Problema**: O parágrafo de texto na seção hero estava sendo renderizado com atraso devido a problemas de carregamento, CSS e JavaScript.
+**Problema**: O parágrafo de texto na seção hero continuava sendo renderizado com atraso, mesmo após otimizações iniciais.
 
-**Solução**:
-1. **Preload das fontes críticas**: Adicionamos preload para garantir que as fontes necessárias para o texto sejam carregadas prioritariamente:
-   ```html
-   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+**Solução Radical**:
+1. **Uso de fontes do sistema para o LCP**: Aplicamos fontes do sistema para o elemento LCP, eliminando a dependência de fontes web:
+   ```css
+   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
    ```
 
-2. **Otimização específica para o parágrafo LCP**: Adicionamos estilos inline diretamente no parágrafo:
+2. **Script dedicado para otimização do LCP**: Criamos um arquivo JavaScript específico para otimizar o LCP, carregado o mais cedo possível:
    ```html
-   <p style="opacity: 1 !important; transform: none !important; transition: none !important; animation: none !important; display: block; will-change: auto; content-visibility: auto;">Economize tempo e encontre o vestido perfeito...</p>
+   <script src="assets/js/lcp-optimizer.js"></script>
    ```
 
-3. **Uso de propriedades CSS modernas**:
-   - `will-change: auto`: Informa ao navegador para otimizar a renderização
-   - `content-visibility: auto`: Permite que o navegador pule a renderização de elementos fora da viewport
-
-4. **Forçar repaint via JavaScript**:
+3. **Verificações periódicas nos primeiros segundos**: Implementamos um sistema que verifica e otimiza o LCP a cada 100ms nos primeiros 2 segundos:
    ```javascript
-   const heroParagraph = document.querySelector('.hero-content p');
-   if (heroParagraph) {
-       heroParagraph.style.cssText = '...';
-       void heroParagraph.offsetWidth; // Força repaint
-   }
+   let attempts = 0;
+   const interval = setInterval(function() {
+       optimizeLCP();
+       attempts++;
+       if (attempts >= 20) {
+           clearInterval(interval);
+       }
+   }, 100);
    ```
 
-5. **Eliminação completa de animações e transições**:
-   - Removemos todas as animações e transições dos elementos críticos
-   - Usamos `!important` para garantir que nenhum outro estilo sobrescreva essas configurações
+4. **Carregamento não-bloqueante de fontes web**:
+   ```html
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" media="print" onload="this.media='all'">
+   ```
 
-**Resultado**: O LCP foi reduzido significativamente, melhorando a experiência do usuário com o carregamento mais rápido do conteúdo principal.
+5. **Identificador específico para o elemento LCP**:
+   ```html
+   <p id="lcp-content" style="...">Economize tempo e encontre o vestido perfeito...</p>
+   ```
+
+**Resultado**: Esta abordagem radical elimina praticamente todas as dependências que poderiam atrasar a renderização do elemento LCP, garantindo que ele seja exibido o mais rápido possível, independentemente do carregamento de outros recursos.
 
 Estas correções eliminaram os erros do console, melhorando ainda mais a qualidade do código e a experiência do usuário. 

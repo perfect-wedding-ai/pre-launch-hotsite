@@ -1,3 +1,41 @@
+// Adicionar no início do arquivo, antes de qualquer outro código
+// Otimização radical para LCP
+(function() {
+    // Função para garantir que o LCP seja renderizado imediatamente
+    function optimizeLCP() {
+        const lcpElement = document.getElementById('lcp-content');
+        if (lcpElement) {
+            // Aplicar estilos críticos diretamente
+            lcpElement.style.cssText = `
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                font-size: 1.1rem;
+                line-height: 1.6;
+                color: #666666;
+                display: block;
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+                animation: none !important;
+                visibility: visible !important;
+                contain: none !important;
+            `;
+            
+            // Forçar repaint
+            void lcpElement.offsetWidth;
+        }
+    }
+    
+    // Executar o mais cedo possível
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', optimizeLCP);
+    } else {
+        optimizeLCP();
+    }
+    
+    // Executar novamente após o carregamento completo
+    window.addEventListener('load', optimizeLCP);
+})();
+
 document.addEventListener('DOMContentLoaded', function() {
     // FAQ Accordion
     const faqItems = document.querySelectorAll('.faq-item');
@@ -312,4 +350,25 @@ document.addEventListener('DOMContentLoaded', function() {
         // Forçar repaint
         void element.offsetWidth;
     });
+    
+    // Garantir novamente que o LCP seja otimizado
+    const lcpElement = document.getElementById('lcp-content');
+    if (lcpElement) {
+        lcpElement.style.cssText = `
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #666666;
+            display: block;
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+            animation: none !important;
+            visibility: visible !important;
+            contain: none !important;
+        `;
+        
+        // Forçar repaint
+        void lcpElement.offsetWidth;
+    }
 }); 
