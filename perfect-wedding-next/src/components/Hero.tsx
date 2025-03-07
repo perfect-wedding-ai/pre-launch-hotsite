@@ -16,7 +16,7 @@ export default function Hero({ dict }: HeroProps) {
             <div className="container mx-auto px-4">
                 <div className="flex flex-col md:flex-row items-center justify-between">
                     <div className="flex-1 md:pr-12 mb-10 md:mb-0">
-                        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
+                        <h1 className="text-4xl md:text-5xl font-bold mb-4">
                             {dict.title}
                         </h1>
                         <h2 className="text-xl md:text-2xl mb-6 text-gray-600">

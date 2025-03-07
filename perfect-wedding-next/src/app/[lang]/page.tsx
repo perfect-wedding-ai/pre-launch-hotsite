@@ -28,7 +28,7 @@ export default function Home() {
         <div className="container">
           <div className="flex items-center justify-between relative z-10">
             <div className="hero-content flex-1 pr-12">
-              <h1 className="text-5xl mb-4 text-gray-900 leading-tight">
+              <h1 className="text-5xl mb-4 leading-tight">
                 Experimente Vestidos de Noiva Virtualmente
               </h1>
               <h2 className="text-2xl mb-6 text-gray-600 font-normal">
