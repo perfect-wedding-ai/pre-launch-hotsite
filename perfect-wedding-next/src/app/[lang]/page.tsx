@@ -168,54 +168,62 @@ export default function Home() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-4xl mb-4">Veja o Perfect Wedding em Ação</h2>
-            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins']">Transformações reais usando nossa tecnologia</p>
+            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">Transformações reais usando nossa tecnologia</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="showcase-item">
-              <div className="before-after grid grid-cols-2 gap-4">
-                <div className="before relative">
-                  <Image 
-                    src="/assets/images/before-1.webp"
-                    alt="Antes da prova virtual de vestido de noiva"
-                    width={450}
-                    height={450}
-                    className="rounded-lg"
-                  />
-                  <span className="absolute bottom-4 left-4 bg-white px-3 py-1 rounded-full text-sm">Antes</span>
+          <div className="grid grid-cols-1 gap-8">
+            <div className="showcase-item bg-white p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)]">
+              <div className="before-after grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="before relative overflow-hidden rounded-lg">
+                  <span className="absolute top-4 left-4 z-10 bg-white px-3 py-1 rounded-full text-sm">Antes</span>
+                  <div className="image-wrapper overflow-hidden rounded-lg">
+                    <Image 
+                      src="/assets/images/before-1.webp"
+                      alt="Antes da prova virtual de vestido de noiva"
+                      width={450}
+                      height={450}
+                      className="w-full h-auto transition-transform duration-300 hover:scale-105"
+                    />
+                  </div>
                 </div>
-                <div className="after relative">
-                  <Image 
-                    src="/assets/images/after-1.webp"
-                    alt="Depois da prova virtual de vestido de noiva"
-                    width={450}
-                    height={450}
-                    className="rounded-lg"
-                  />
-                  <span className="absolute bottom-4 left-4 bg-white px-3 py-1 rounded-full text-sm">Depois</span>
+                <div className="after relative overflow-hidden rounded-lg">
+                  <span className="absolute top-4 left-4 z-10 bg-white px-3 py-1 rounded-full text-sm">Depois</span>
+                  <div className="image-wrapper overflow-hidden rounded-lg">
+                    <Image 
+                      src="/assets/images/after-1.webp"
+                      alt="Depois da prova virtual de vestido de noiva"
+                      width={450}
+                      height={450}
+                      className="w-full h-auto transition-transform duration-300 hover:scale-105"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="showcase-item">
-              <div className="before-after grid grid-cols-2 gap-4">
-                <div className="before relative">
-                  <Image 
-                    src="/assets/images/before-2.webp"
-                    alt="Antes da prova virtual de vestido de noiva"
-                    width={450}
-                    height={450}
-                    className="rounded-lg"
-                  />
-                  <span className="absolute bottom-4 left-4 bg-white px-3 py-1 rounded-full text-sm">Antes</span>
+            <div className="showcase-item bg-white p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)]">
+              <div className="before-after grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="before relative overflow-hidden rounded-lg">
+                  <span className="absolute top-4 left-4 z-10 bg-white px-3 py-1 rounded-full text-sm">Antes</span>
+                  <div className="image-wrapper overflow-hidden rounded-lg">
+                    <Image 
+                      src="/assets/images/before-2.webp"
+                      alt="Antes da prova virtual de vestido de noiva"
+                      width={450}
+                      height={450}
+                      className="w-full h-auto transition-transform duration-300 hover:scale-105"
+                    />
+                  </div>
                 </div>
-                <div className="after relative">
-                  <Image 
-                    src="/assets/images/after-2.webp"
-                    alt="Depois da prova virtual de vestido de noiva"
-                    width={450}
-                    height={450}
-                    className="rounded-lg"
-                  />
-                  <span className="absolute bottom-4 left-4 bg-white px-3 py-1 rounded-full text-sm">Depois</span>
+                <div className="after relative overflow-hidden rounded-lg">
+                  <span className="absolute top-4 left-4 z-10 bg-white px-3 py-1 rounded-full text-sm">Depois</span>
+                  <div className="image-wrapper overflow-hidden rounded-lg">
+                    <Image 
+                      src="/assets/images/after-2.webp"
+                      alt="Depois da prova virtual de vestido de noiva"
+                      width={450}
+                      height={450}
+                      className="w-full h-auto transition-transform duration-300 hover:scale-105"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
