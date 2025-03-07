@@ -66,7 +66,7 @@ export default function Home() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-4xl mb-4">Como Funciona o Teste de Vestidos Online</h2>
-            <p className="text-center mx-auto text-[rgb(122,122,122)]">Experimente vestidos de noiva virtualmente com apenas alguns cliques</p>
+            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins']">Experimente vestidos de noiva virtualmente com apenas alguns cliques</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="step text-center p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.05)]">
@@ -105,7 +105,7 @@ export default function Home() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-4xl mb-4">Benefícios</h2>
-            <p className="text-xl text-gray-600">Por que usar o Perfect Wedding para encontrar seu vestido de noiva</p>
+            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins']">Por que usar o Perfect Wedding para encontrar seu vestido de noiva</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="benefit">
@@ -168,7 +168,7 @@ export default function Home() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-4xl mb-4">Veja o Perfect Wedding em Ação</h2>
-            <p className="text-xl text-gray-600">Transformações reais usando nossa tecnologia</p>
+            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins']">Transformações reais usando nossa tecnologia</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="showcase-item">
@@ -227,7 +227,7 @@ export default function Home() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-4xl mb-4">O Que Nossas Noivas Dizem</h2>
-            <p className="text-xl text-gray-600">Experiências reais com o Perfect Wedding</p>
+            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins']">Experiências reais com o Perfect Wedding</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="testimonial bg-white p-6 rounded-lg shadow-sm">
@@ -292,8 +292,10 @@ export default function Home() {
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="signup-content">
-              <h2 className="text-4xl mb-4">Experimente Gratuitamente</h2>
-              <p className="text-xl text-gray-600 mb-8">Seja uma das primeiras a testar nossa tecnologia revolucionária de prova virtual de vestidos</p>
+              <div className="text-center mb-12">
+                <h2 className="text-4xl mb-4">Experimente Gratuitamente</h2>
+                <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins']">Seja uma das primeiras a testar nossa tecnologia revolucionária de prova virtual de vestidos</p>
+              </div>
               <form 
                 id="signup-form" 
                 className="space-y-4"
@@ -347,7 +349,7 @@ export default function Home() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-4xl mb-4">Perguntas Frequentes</h2>
-            <p className="text-xl text-gray-600">Tire suas dúvidas sobre o Perfect Wedding e nossa tecnologia para noivas</p>
+            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins']">Tire suas dúvidas sobre o Perfect Wedding e nossa tecnologia para noivas</p>
           </div>
           <div className="space-y-4 max-w-3xl mx-auto">
             <div className="faq-item bg-white p-6 rounded-lg shadow-sm">
