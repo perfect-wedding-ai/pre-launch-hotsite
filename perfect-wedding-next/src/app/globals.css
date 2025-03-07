@@ -8,26 +8,29 @@
   --accent-color: #CCD5AE;
   --text-color: #333333;
   --light-text: #666666;
+  --white: #FFFFFF;
+  --light-bg: #F9F9F9;
+  --border-radius: 8px;
+  --shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  --gradient-bg: linear-gradient(135deg, #F9F9F9 0%, #F5F5F5 100%);
 }
 
 @layer base {
   body {
-    @apply text-gray-900 overflow-x-hidden;
+    @apply bg-white text-gray-900;
   }
 }
 
 @layer components {
+  .container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
   .btn-primary {
-    @apply bg-primary text-white px-6 py-3 rounded-lg font-semibold 
-           hover:bg-primary/90 transition-colors duration-200 inline-block;
+    @apply bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all;
   }
 
   .btn-secondary {
-    @apply bg-white text-primary px-6 py-3 rounded-lg font-semibold 
-           border-2 border-primary hover:bg-primary/10 transition-colors duration-200 inline-block;
-  }
-
-  .container {
-    @apply max-w-7xl mx-auto px-4;
+    @apply bg-secondary text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all;
   }
 } 

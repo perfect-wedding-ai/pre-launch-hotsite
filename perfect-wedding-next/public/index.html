@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TGY4JXMX0F"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-TGY4JXMX0F');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfect Wedding – Experimente Vestidos de Noiva Virtualmente</title>
+    
+    <!-- Texto LCP injetado diretamente no head para renderização imediata -->
+    <style>
+        #lcp-text {
+            display: block;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #666666;
+            max-width: 600px;
+            margin-bottom: 2rem;
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: none !important;
+            transition: none !important;
+            animation: none !important;
+            contain: none !important;
+        }
+    </style>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="assets/icons/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="assets/icons/favicon.ico" type="image/x-icon">
+    
+    <!-- Preload da imagem principal para melhorar LCP -->
+    <link rel="preload" as="image" href="assets/images/hero-bride-desktop.webp" fetchpriority="high">
+    
+    <!-- Preconnect para recursos externos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- CSS crítico inline para renderização inicial -->
+    <style>
+        /* Estilos críticos para carregamento rápido */
+        :root {
+            --primary-color: #D4A373;
+            --secondary-color: #FAEDCD;
+            --accent-color: #CCD5AE;
+            --text-color: #333333;
+            --light-text: #666666;
+            --white: #FFFFFF;
+            --light-bg: #F9F9F9;
+            --border-radius: 8px;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            --gradient-bg: linear-gradient(135deg, #F9F9F9 0%, #F5F5F5 100%);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0 0 1rem;
+            font-weight: 700;
+        }
+        
+        /* Garantir que a seção hero e seu conteúdo apareçam imediatamente */
+        .hero-content, .hero-image, .hero-content h1, .hero-content h2, .hero-content p {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+            transition: none !important;
+            animation: none !important;
+        }
+        
+        /* Melhorar renderização da imagem principal */
+        .hero-image img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background-color: var(--white);
+            will-change: transform;
+        }
+        
+        /* Restante dos estilos críticos */
+        header {
+            background-color: var(--white);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            margin: 0;
+            color: var(--primary-color);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 12px 25px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 100px 0;
+            background-color: var(--light-bg);
+            background-image: var(--gradient-bg);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-content {
+            flex: 1;
+            padding-right: 50px;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.2rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+            line-height: 1.2;
+        }
+        
+        .hero-content h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--light-text);
+            font-weight: 400;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .hero-image {
+            flex: 1;
+            position: relative;
+            aspect-ratio: 16/9;
+            min-height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+    </style>
+    
+    <!-- Carregamento direto do CSS minificado para evitar layout shifts -->
+    <link rel="preload" href="assets/css/min/styles.min.css" as="style">
+    <link rel="stylesheet" href="assets/css/min/styles.min.css">
+    
+    <!-- Carregamento não-bloqueante de fontes web -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet"></noscript>
+    
+    <!-- Carregador otimizado do Font Awesome -->
+    <script src="assets/js/fontawesome-loader.js" defer></script>
+    
+    <meta name="description" content="Experimente vestidos de noiva virtualmente com nossa tecnologia de IA. Descubra o vestido dos seus sonhos sem sair de casa, economize tempo e viva uma experiência inovadora. Cadastre-se grátis!">
+    <meta name="keywords" content="vestido de noiva virtual, experiência com IA para noivas, teste de vestidos online, prova virtual de vestidos de noiva, vestido dos sonhos online, simulação de vestidos com inteligência artificial, ensaio virtual de vestidos, descubra seu vestido ideal, tecnologia para noivas, ateliê virtual de vestidos">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Vestido de Noiva Virtual | Experimente com IA | Perfect Wedding">
+    <meta property="og:description" content="Experimente vestidos de noiva virtualmente com nossa tecnologia de IA. Descubra o vestido dos seus sonhos sem sair de casa!">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://perfectwedding.ai/">
+    <meta property="og:image" content="assets/images/og-image.webp">
+    <link rel="canonical" href="https://perfectwedding.ai/">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Perfect Wedding</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#como-funciona">Como Funciona</a></li>
+                    <li><a href="#beneficios">Benefícios</a></li>
+                    <li><a href="#faq">Perguntas Frequentes</a></li>
+                </ul>
+            </nav>
+            <div class="cta-button">
+                <a href="#cadastro" class="btn-primary">Experimente Grátis</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Experimente Vestidos de Noiva Virtualmente</h1>
+                <h2>Descubra o vestido dos seus sonhos sem sair de casa</h2>
+                
+                <!-- LCP Element - Texto injetado diretamente sem dependências -->
+                <p id="lcp-content" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 18px; line-height: 1.6; color: #666666; display: block; max-width: 600px; margin-bottom: 2rem; opacity: 1 !important; transform: none !important; transition: none !important; animation: none !important; visibility: visible !important; contain: none !important;">Economize tempo e encontre o vestido perfeito antes mesmo de ir ao ateliê. Nossa tecnologia de inteligência artificial permite que você experimente dezenas de modelos exclusivos em segundos com nossa prova virtual de vestidos.</p>
+                
+                <div class="hero-buttons">
+                    <a href="#cadastro" class="btn-primary">Experimente Agora</a>
+                    <a href="#como-funciona" class="btn-secondary">Saiba Mais</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img 
+                    src="assets/images/hero-bride-desktop.webp" 
+                    alt="Noiva experimentando vestido virtual com tecnologia de IA" 
+                    width="600" 
+                    height="338" 
+                    fetchpriority="high"
+                    decoding="async"
+                    style="opacity: 1; transform: translateY(0); transition: none;"
+                >
+            </div>
+        </div>
+    </section>
+
+    <section id="como-funciona" class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2>Como Funciona o Teste de Vestidos Online</h2>
+                <p>Experimente vestidos de noiva virtualmente com apenas alguns cliques</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3>Envie sua Foto</h3>
+                    <p>Faça o upload de uma foto sua em posição natural para iniciar seu ensaio virtual de vestidos</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-tshirt"></i>
+                    </div>
+                    <h3>Escolha os Vestidos</h3>
+                    <p>Navegue por nossa coleção de centenas de modelos exclusivos em nosso ateliê virtual</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3>Veja a Transformação</h3>
+                    <p>Nossa tecnologia para noivas cria imagens realistas de você usando os vestidos escolhidos</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Descubra o Vestido Ideal para o seu Casamento</h3>
+                    <p>Salve seus favoritos e agende visitas apenas para os modelos que você realmente amou</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="beneficios" class="benefits">
+        <div class="container">
+            <div class="section-header">
+                <h2>Benefícios</h2>
+                <p>Por que usar o Perfect Wedding para encontrar seu vestido de noiva</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit">
+                    <img src="assets/images/benefit-time-desktop.webp" alt="Ilustração mostrando economia de tempo ao experimentar vestidos virtualmente" width="400" height="200" fetchpriority="high">
+                    <div class="benefit-content">
+                        <h3>Economize Tempo</h3>
+                        <p>Experimente dezenas de vestidos em minutos, não em semanas</p>
+                    </div>
+                </div>
+                <div class="benefit">
+                    <img src="assets/images/benefit-stress.webp" alt="Noiva sorrindo, representando menos estresse com a prova virtual de vestidos" width="400" height="200" loading="lazy">
+                    <div class="benefit-content">
+                        <h3>Menos Estresse</h3>
+                        <p>Evite visitas cansativas a múltiplas lojas e ateliês</p>
+                    </div>
+                </div>
+                <div class="benefit">
+                    <img src="assets/images/benefit-options.webp" alt="Diversos modelos de vestidos de noiva exibidos, destacando a variedade exclusiva" width="400" height="200" loading="lazy">
+                    <div class="benefit-content">
+                        <h3>Mais Opções</h3>
+                        <p>Acesso a estilos exclusivos que podem não estar disponíveis localmente</p>
+                    </div>
+                </div>
+                <div class="benefit">
+                    <img src="assets/images/benefit-confidence.webp" alt="Noiva confiante após experimentar vestidos virtualmente antes da prova real" width="400" height="200" loading="lazy">
+                    <div class="benefit-content">
+                        <h3>Tenha Mais Confiança</h3>
+                        <p>Vá às provas reais já sabendo o que combina com você</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="showcase">
+        <div class="container">
+            <div class="section-header">
+                <h2>Veja o Perfect Wedding em Ação</h2>
+                <p>Transformações reais usando nossa tecnologia</p>
+            </div>
+            <div class="showcase-grid">
+                <div class="showcase-item">
+                    <div class="before-after">
+                        <div class="before">
+                            <img src="assets/images/before-1.webp" alt="Antes da prova virtual de vestido de noiva" width="450" height="450" loading="lazy">
+                            <span>Antes</span>
+                        </div>
+                        <div class="after">
+                            <img src="assets/images/after-1.webp" alt="Comparação antes e depois da prova virtual de vestido de noiva com IA" width="450" height="450" loading="lazy">
+                            <span>Depois</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="showcase-item">
+                    <div class="before-after">
+                        <div class="before">
+                            <img src="assets/images/before-2.webp" alt="Foto original antes da simulação virtual de vestido de noiva" width="450" height="450" loading="lazy">
+                            <span>Antes</span>
+                        </div>
+                        <div class="after">
+                            <img src="assets/images/after-2.webp" alt="Comparação antes e depois da prova virtual de vestido de noiva com IA" width="450" height="450" loading="lazy">
+                            <span>Depois</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="depoimentos" class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>O Que Nossas Noivas Dizem</h2>
+                <p>Experiências reais com o Perfect Wedding</p>
+            </div>
+            <div class="testimonials-slider">
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>"Economizei semanas de buscas! Experimentei mais de 50 vestidos virtualmente e fui direto para os 3 que mais gostei. Encontrei o vestido dos sonhos online na primeira visita ao ateliê!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="assets/images/testimonial-1.webp" alt="Mariana Silva - Noiva satisfeita com a experiência de prova virtual de vestidos" width="60" height="60" loading="lazy">
+                        <div>
+                            <h4>Mariana Silva</h4>
+                            <p>Noiva de Junho/2023</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>"Moro no interior e teria que viajar várias vezes para a capital para provar vestidos. Com o Perfect Wedding, já fui sabendo exatamente o que queria e economizei tempo e dinheiro!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="assets/images/testimonial-2.webp" alt="Carolina Mendes - Noiva que economizou tempo e dinheiro com a prova virtual" width="60" height="60" loading="lazy">
+                        <div>
+                            <h4>Carolina Mendes</h4>
+                            <p>Noiva de Outubro/2023</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>"Eu estava insegura sobre qual estilo combinaria comigo. O Perfect Wedding me permitiu experimentar estilos que eu nunca teria considerado e acabei me apaixonando por um modelo totalmente diferente do que imaginava!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="assets/images/testimonial-3.webp" alt="Fernanda Costa - Noiva que descobriu um estilo inesperado com a tecnologia de IA" width="60" height="60" loading="lazy">
+                        <div>
+                            <h4>Fernanda Costa</h4>
+                            <p>Noiva de Março/2024</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cadastro" class="signup">
+        <div class="container">
+            <div class="signup-content">
+                <h2>Experimente Gratuitamente</h2>
+                <p>Seja uma das primeiras a testar nossa tecnologia revolucionária de prova virtual de vestidos</p>
+                <form id="signup-form" class="signup-form" action="https://gmail.us8.list-manage.com/subscribe/post?u=67483d6202e3116de901adf0e&amp;id=f687178ad2" method="post" name="mc-embedded-subscribe-form" target="_blank">
+                    <div class="form-group">
+                        <input type="text" id="name" name="FNAME" placeholder="Seu Nome" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" name="EMAIL" placeholder="Seu E-mail" required>
+                    </div>
+                    <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                        <input type="text" name="b_873506_f687178ad2" tabindex="-1" value="">
+                    </div>
+                    <input type="hidden" name="REDIRECT" value="https://perfectwedding.netlify.app/thank-you.html">
+                    <button type="submit" class="btn-primary" name="subscribe">Quero Experimentar</button>
+                </form>
+            </div>
+            <div class="signup-image">
+                <img src="assets/images/signup-bride.webp" alt="Noiva feliz após encontrar o vestido perfeito com Perfect Wedding" width="600" height="400" loading="lazy">
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>Perguntas Frequentes</h2>
+                <p>Tire suas dúvidas sobre o Perfect Wedding e nossa tecnologia para noivas</p>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Como funciona a prova virtual de vestidos de noiva?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Nossa tecnologia de inteligência artificial analisa sua foto e cria imagens realistas de como você ficaria usando diferentes vestidos de noiva. O processo é simples: você envia uma foto, escolhe os vestidos que deseja experimentar em nosso ateliê virtual e nossa IA gera as imagens em poucos segundos.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>As imagens são realistas?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sim! Nossa tecnologia de ponta cria imagens extremamente realistas, considerando seu tipo de corpo, tom de pele e características físicas para mostrar como o vestido ficaria em você de verdade.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Quanto custa usar o Perfect Wedding?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Atualmente estamos em fase de testes e oferecendo acesso gratuito para um número limitado de noivas. Cadastre-se agora para garantir sua vaga!</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Posso experimentar vestidos de qualquer marca?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Nossa biblioteca inclui dezenas de modelos exclusivos de diversos estilos. Estamos constantemente expandindo nossa coleção para incluir mais opções e marcas.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Como faço para comprar o vestido depois?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>O Perfect Wedding é uma ferramenta para ajudar você a descobrir o estilo perfeito antes de visitar ateliês. Após encontrar os modelos que mais gostou, fornecemos informações sobre onde encontrá-los ou modelos similares em lojas e ateliês parceiros.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>Perfect Wedding</h2>
+                    <p>Encontre o vestido dos seus sonhos online com a ajuda da inteligência artificial</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="#como-funciona">Como Funciona</a></li>
+                        <li><a href="#beneficios">Benefícios</a></li>
+                        <li><a href="#faq">Perguntas Frequentes</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contato</h3>
+                    <p><i class="fas fa-envelope"></i> contato@perfectwedding.ai</p>
+                    <div class="social-media">
+                        <a href="#" aria-label="Instagram do Perfect Wedding"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Facebook do Perfect Wedding"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Pinterest do Perfect Wedding"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Perfect Wedding AI - Tecnologia para Noivas. Todos os direitos reservados.</p>
+                <p>Experimente vestidos de noiva virtualmente | Descubra seu vestido ideal | Ateliê virtual de vestidos</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Carregamento dos scripts minificados -->
+    <script src="assets/js/min/main.min.js" defer></script>
+    <script src="assets/js/min/image-optimizer.min.js" defer></script>
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "Perfect Wedding",
+          "url": "https://perfectwedding.ai/",
+          "description": "Experimente vestidos de noiva virtualmente com nossa tecnologia de IA. Descubra o vestido dos seus sonhos sem sair de casa.",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://perfectwedding.ai/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Como funciona a prova virtual de vestidos de noiva?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Nossa tecnologia de inteligência artificial analisa sua foto e cria imagens realistas de como você ficaria usando diferentes vestidos de noiva. O processo é simples: você envia uma foto, escolhe os vestidos que deseja experimentar em nosso ateliê virtual e nossa IA gera as imagens em poucos segundos."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "As imagens são realistas?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Sim! Nossa tecnologia de ponta cria imagens extremamente realistas, considerando seu tipo de corpo, tom de pele e características físicas para mostrar como o vestido ficaria em você de verdade."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Quanto custa usar o Perfect Wedding?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Atualmente estamos em fase de testes e oferecendo acesso gratuito para um número limitado de noivas. Cadastre-se agora para garantir sua vaga!"
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Posso experimentar vestidos de qualquer marca?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Nossa biblioteca inclui dezenas de modelos exclusivos de diversos estilos. Estamos constantemente expandindo nossa coleção para incluir mais opções e marcas."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Como faço para comprar o vestido depois?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "O Perfect Wedding é uma ferramenta para ajudar você a descobrir o estilo perfeito antes de visitar ateliês. Após encontrar os modelos que mais gostou, fornecemos informações sobre onde encontrá-los ou modelos similares em lojas e ateliês parceiros."
+              }
+            }
+          ]
+        }
+    </script>
+</body>
+</html> 

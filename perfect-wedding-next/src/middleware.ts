@@ -3,36 +3,40 @@ import type { NextRequest } from 'next/server'
 import { match } from '@formatjs/intl-localematcher'
 import Negotiator from 'negotiator'
 
-let locales = ['pt', 'en']
-let defaultLocale = 'pt'
+const locales = ['pt-BR']
+const defaultLocale = 'pt-BR'
 
 function getLocale(request: NextRequest) {
-    const headers = new Headers(request.headers)
-    const acceptLanguage = headers.get('accept-language')
-    if (acceptLanguage) {
-        headers.set('accept-language', acceptLanguage.replaceAll('_', '-'))
-    }
-    
-    const negotiator = new Negotiator({ headers: headers })
-    return match(negotiator.languages(), locales, defaultLocale)
+    // Aceita apenas pt-BR por enquanto
+    return defaultLocale
 }
 
 export function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname
-    const pathnameIsMissingLocale = locales.every(
-        (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
-    )
+    
+    // Ignora arquivos estáticos e API
+    if (
+        pathname.startsWith('/_next') ||
+        pathname.startsWith('/api') ||
+        pathname.startsWith('/assets') ||
+        pathname.includes('.')
+    ) {
+        return NextResponse.next()
+    }
 
-    if (pathnameIsMissingLocale) {
-        const locale = getLocale(request)
+    // Redireciona para a versão com locale se não estiver presente
+    if (!pathname.startsWith(`/${defaultLocale}`)) {
         return NextResponse.redirect(
-            new URL(`/${locale}${pathname}`, request.url)
+            new URL(`/${defaultLocale}${pathname === '/' ? '' : pathname}`, request.url)
         )
     }
+
+    return NextResponse.next()
 }
 
 export const config = {
     matcher: [
+        // Ignora arquivos estáticos e API
         '/((?!api|_next/static|_next/image|favicon.ico|assets).*)',
     ],
 } 
