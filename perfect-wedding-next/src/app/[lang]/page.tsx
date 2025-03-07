@@ -370,7 +370,7 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' | 'es' } 
                 <div style={{ position: "absolute", left: "-5000px" }} aria-hidden="true">
                   <input type="text" name="b_873506_f687178ad2" tabIndex={-1} />
                 </div>
-                <input type="hidden" name="REDIRECT" value="https://perfectwedding.netlify.app/thank-you.html" />
+                <input type="hidden" name="REDIRECT" value={`/${lang}/thank-you`} />
                 <button type="submit" className="btn-primary w-full">
                   {t.signup.form.button}
                 </button>

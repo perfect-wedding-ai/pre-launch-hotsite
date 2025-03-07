@@ -118,6 +118,12 @@ export const translations = {
         text: "© 2025 Perfect Wedding AI - Tecnologia para Noivas. Todos os direitos reservados.",
         tagline: "Experimente vestidos de noiva virtualmente | Descubra seu vestido ideal | Ateliê virtual de vestidos"
       }
+    },
+    thankYou: {
+      title: "Obrigado por se cadastrar!",
+      subtitle: "Estamos muito felizes em ter você como parte da comunidade Perfect Wedding.",
+      description: "Em breve entraremos em contato para iniciar sua experiência com nossa tecnologia revolucionária.",
+      backToHome: "Voltar para a Página Inicial"
     }
   },
   en: {
@@ -239,6 +245,12 @@ export const translations = {
         text: "© 2025 Perfect Wedding AI - Bridal Technology. All rights reserved.",
         tagline: "Try on wedding dresses virtually | Find your ideal dress | Virtual bridal boutique"
       }
+    },
+    thankYou: {
+      title: "Thank you for signing up!",
+      subtitle: "We are very happy to have you as part of the Perfect Wedding community.",
+      description: "We will contact you soon to start your experience with our revolutionary technology.",
+      backToHome: "Back to Home Page"
     }
   },
   es: {
@@ -360,6 +372,12 @@ export const translations = {
         text: "© 2025 Perfect Wedding AI - Tecnología para Novias. Todos los derechos reservados.",
         tagline: "Prueba vestidos de novia virtualmente | Encuentra tu vestido ideal | Boutique virtual de novias"
       }
+    },
+    thankYou: {
+      title: "¡Gracias por registrarte!",
+      subtitle: "Estamos muy felices de tenerte como parte de la comunidad Perfect Wedding.",
+      description: "Pronto nos pondremos en contacto contigo para iniciar tu experiencia con nuestra tecnología revolucionaria.",
+      backToHome: "Volver a la Página Principal"
     }
   }
 }
