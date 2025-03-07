@@ -17,7 +17,11 @@
 
 @layer base {
   body {
-    @apply bg-white text-gray-900;
+    @apply text-gray-900 leading-normal;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold mb-4;
   }
 }
 
@@ -27,10 +31,24 @@
   }
 
   .btn-primary {
-    @apply bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all;
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg bg-primary text-white font-semibold transition-colors hover:opacity-90;
   }
 
   .btn-secondary {
-    @apply bg-secondary text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all;
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg border-2 border-primary text-primary font-semibold transition-colors hover:bg-primary hover:bg-opacity-10;
+  }
+}
+
+@layer utilities {
+  .text-primary {
+    color: var(--primary-color);
+  }
+
+  .bg-primary {
+    background-color: var(--primary-color);
+  }
+
+  .bg-light-bg {
+    background-color: var(--light-bg);
   }
 } 
