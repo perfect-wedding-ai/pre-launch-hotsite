@@ -18,15 +18,22 @@ const playfair = Playfair_Display({
 
 export { metadata }
 
-export default function RootLayout({
+export async function generateStaticParams() {
+  return [
+    { lang: 'pt' },
+    { lang: 'en' }
+  ]
+}
+
+export default function Layout({
   children,
-  params: { lang },
+  params
 }: {
   children: React.ReactNode
   params: { lang: string }
 }) {
   return (
-    <html lang={lang} className={`${montserrat.variable} ${playfair.variable}`}>
+    <html lang={params.lang} className={`${montserrat.variable} ${playfair.variable}`}>
       <head>
         {/* Font Awesome será carregado via script para evitar problemas de hidratação */}
         <script

@@ -3,9 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { imageAlts } from './translations';
 
-export default function Home() {
+export default function Home({ params }: { params: { lang: 'pt' | 'en' } }) {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const lang = params?.lang || 'pt';
+  const alts = imageAlts[lang as keyof typeof imageAlts] || imageAlts.pt;
 
   const toggleFaq = (index: number) => {
     setOpenFaq(openFaq === index ? null : index);
@@ -77,7 +80,7 @@ export default function Home() {
             <div className="hero-image flex-1">
               <Image 
                 src="/assets/images/hero-bride-desktop.webp"
-                alt="Noiva experimentando vestido virtual com tecnologia de IA"
+                alt={alts.heroBride}
                 width={600}
                 height={338}
                 priority
@@ -138,7 +141,7 @@ export default function Home() {
               <div className="image-wrapper overflow-hidden">
                 <Image 
                   src="/assets/images/benefit-time-desktop.webp"
-                  alt="Ilustração mostrando economia de tempo ao experimentar vestidos virtualmente"
+                  alt={alts.benefitTime}
                   width={400}
                   height={300}
                   className="w-full h-[300px] object-cover transition-transform duration-300 hover:scale-105"
@@ -153,7 +156,7 @@ export default function Home() {
               <div className="image-wrapper overflow-hidden">
                 <Image 
                   src="/assets/images/benefit-stress.webp"
-                  alt="Noiva sorrindo, representando menos estresse com a prova virtual de vestidos"
+                  alt={alts.benefitStress}
                   width={400}
                   height={300}
                   className="w-full h-[300px] object-cover transition-transform duration-300 hover:scale-105"
@@ -168,7 +171,7 @@ export default function Home() {
               <div className="image-wrapper overflow-hidden">
                 <Image 
                   src="/assets/images/benefit-options.webp"
-                  alt="Diversos modelos de vestidos de noiva exibidos, destacando a variedade exclusiva"
+                  alt={alts.benefitOptions}
                   width={400}
                   height={300}
                   className="w-full h-[300px] object-cover transition-transform duration-300 hover:scale-105"
@@ -183,7 +186,7 @@ export default function Home() {
               <div className="image-wrapper overflow-hidden rounded-lg">
                 <Image 
                   src="/assets/images/benefit-confidence.webp"
-                  alt="Noiva confiante após experimentar vestidos virtualmente antes da prova real"
+                  alt={alts.benefitConfidence}
                   width={400}
                   height={300}
                   className="w-full h-[300px] object-cover transition-transform duration-300 hover:scale-105"
@@ -212,7 +215,7 @@ export default function Home() {
                   <div className="image-wrapper overflow-hidden rounded-lg">
                     <Image 
                       src="/assets/images/before-1.webp"
-                      alt="Antes da prova virtual de vestido de noiva"
+                      alt={alts.before1}
                       width={450}
                       height={450}
                       className="w-full h-auto transition-transform duration-300 hover:scale-105"
@@ -224,7 +227,7 @@ export default function Home() {
                   <div className="image-wrapper overflow-hidden rounded-lg">
                     <Image 
                       src="/assets/images/after-1.webp"
-                      alt="Depois da prova virtual de vestido de noiva"
+                      alt={alts.after1}
                       width={450}
                       height={450}
                       className="w-full h-auto transition-transform duration-300 hover:scale-105"
@@ -240,7 +243,7 @@ export default function Home() {
                   <div className="image-wrapper overflow-hidden rounded-lg">
                     <Image 
                       src="/assets/images/before-2.webp"
-                      alt="Antes da prova virtual de vestido de noiva"
+                      alt={alts.before2}
                       width={450}
                       height={450}
                       className="w-full h-auto transition-transform duration-300 hover:scale-105"
@@ -252,7 +255,7 @@ export default function Home() {
                   <div className="image-wrapper overflow-hidden rounded-lg">
                     <Image 
                       src="/assets/images/after-2.webp"
-                      alt="Depois da prova virtual de vestido de noiva"
+                      alt={alts.after2}
                       width={450}
                       height={450}
                       className="w-full h-auto transition-transform duration-300 hover:scale-105"
@@ -377,7 +380,7 @@ export default function Home() {
             <div className="signup-image overflow-hidden rounded-lg">
               <Image 
                 src="/assets/images/signup-bride.webp"
-                alt="Noiva feliz após encontrar o vestido perfeito"
+                alt={alts.signupBride}
                 width={600}
                 height={400}
                 className="rounded-lg transition-transform duration-300 hover:scale-105"
@@ -502,9 +505,9 @@ export default function Home() {
               <p className="pl-[2px] text-[rgb(90,90,90)]">contato@perfectwedding.ai</p>
             </div>
           </div>
-          <div className="footer-bottom text-center border-t border-gray-200 pt-8 mt-12">
-            <p className="mb-2 text-[rgb(90,90,90)] text-sm font-['Playfair Display'] text-center">&copy; 2025 Perfect Wedding AI - Tecnologia para Noivas. Todos os direitos reservados.</p>
-            <p className="text-[rgb(90,90,90)] text-sm font-['Playfair Display'] text-center">Experimente vestidos de noiva virtualmente | Descubra seu vestido ideal | Ateliê virtual de vestidos</p>
+          <div className="footer-bottom text-center border-t border-gray-200 pt-8 mt-12 flex flex-col items-center">
+            <p className="mb-2 text-[rgb(90,90,90)] text-sm font-['Playfair Display'] text-center max-w-4xl mx-auto">&copy; 2025 Perfect Wedding AI - Tecnologia para Noivas. Todos os direitos reservados.</p>
+            <p className="text-[rgb(90,90,90)] text-sm font-['Playfair Display'] text-center max-w-4xl mx-auto">Experimente vestidos de noiva virtualmente | Descubra seu vestido ideal | Ateliê virtual de vestidos</p>
           </div>
         </div>
       </footer>
