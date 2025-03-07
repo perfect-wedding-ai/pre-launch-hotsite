@@ -105,59 +105,67 @@ export default function Home() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-4xl mb-4">Benefícios</h2>
-            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins']">Por que usar o Perfect Wedding para encontrar seu vestido de noiva</p>
+            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">Por que usar o Perfect Wedding para encontrar seu vestido de noiva</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="benefit">
-              <Image 
-                src="/assets/images/benefit-time-desktop.webp"
-                alt="Ilustração mostrando economia de tempo ao experimentar vestidos virtualmente"
-                width={400}
-                height={200}
-                className="rounded-lg mb-4"
-              />
-              <div className="benefit-content">
-                <h3 className="text-2xl mb-2">Economize Tempo</h3>
-                <p className="text-gray-600">Experimente dezenas de vestidos em minutos, não em semanas</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="benefit bg-white rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)] overflow-hidden">
+              <div className="image-wrapper overflow-hidden">
+                <Image 
+                  src="/assets/images/benefit-time-desktop.webp"
+                  alt="Ilustração mostrando economia de tempo ao experimentar vestidos virtualmente"
+                  width={400}
+                  height={300}
+                  className="w-full h-[300px] object-cover transition-transform duration-300 hover:scale-105"
+                />
+              </div>
+              <div className="benefit-content text-center py-4 px-6">
+                <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">Economize Tempo</h3>
+                <p className="text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">Experimente dezenas de vestidos em minutos, não em semanas</p>
               </div>
             </div>
-            <div className="benefit">
-              <Image 
-                src="/assets/images/benefit-stress.webp"
-                alt="Noiva sorrindo, representando menos estresse com a prova virtual de vestidos"
-                width={400}
-                height={200}
-                className="rounded-lg mb-4"
-              />
-              <div className="benefit-content">
-                <h3 className="text-2xl mb-2">Menos Estresse</h3>
-                <p className="text-gray-600">Evite visitas cansativas a múltiplas lojas e ateliês</p>
+            <div className="benefit bg-white rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)] overflow-hidden">
+              <div className="image-wrapper overflow-hidden">
+                <Image 
+                  src="/assets/images/benefit-stress.webp"
+                  alt="Noiva sorrindo, representando menos estresse com a prova virtual de vestidos"
+                  width={400}
+                  height={300}
+                  className="w-full h-[300px] object-cover transition-transform duration-300 hover:scale-105"
+                />
+              </div>
+              <div className="benefit-content text-center py-4 px-6">
+                <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">Menos Estresse</h3>
+                <p className="text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">Evite visitas cansativas a múltiplas lojas e ateliês</p>
               </div>
             </div>
-            <div className="benefit">
-              <Image 
-                src="/assets/images/benefit-options.webp"
-                alt="Diversos modelos de vestidos de noiva exibidos, destacando a variedade exclusiva"
-                width={400}
-                height={200}
-                className="rounded-lg mb-4"
-              />
-              <div className="benefit-content">
-                <h3 className="text-2xl mb-2">Mais Opções</h3>
-                <p className="text-gray-600">Acesso a estilos exclusivos que podem não estar disponíveis localmente</p>
+            <div className="benefit bg-white rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)] overflow-hidden">
+              <div className="image-wrapper overflow-hidden">
+                <Image 
+                  src="/assets/images/benefit-options.webp"
+                  alt="Diversos modelos de vestidos de noiva exibidos, destacando a variedade exclusiva"
+                  width={400}
+                  height={300}
+                  className="w-full h-[300px] object-cover transition-transform duration-300 hover:scale-105"
+                />
+              </div>
+              <div className="benefit-content text-center py-4 px-6">
+                <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">Mais Opções</h3>
+                <p className="text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">Acesso a estilos exclusivos que podem não estar disponíveis localmente</p>
               </div>
             </div>
-            <div className="benefit">
-              <Image 
-                src="/assets/images/benefit-confidence.webp"
-                alt="Noiva confiante após experimentar vestidos virtualmente antes da prova real"
-                width={400}
-                height={200}
-                className="rounded-lg mb-4"
-              />
-              <div className="benefit-content">
-                <h3 className="text-2xl mb-2">Tenha Mais Confiança</h3>
-                <p className="text-gray-600">Vá às provas reais já sabendo o que combina com você</p>
+            <div className="benefit bg-white p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)]">
+              <div className="image-wrapper overflow-hidden rounded-lg">
+                <Image 
+                  src="/assets/images/benefit-confidence.webp"
+                  alt="Noiva confiante após experimentar vestidos virtualmente antes da prova real"
+                  width={400}
+                  height={300}
+                  className="w-full h-[300px] object-cover transition-transform duration-300 hover:scale-105"
+                />
+              </div>
+              <div className="benefit-content text-center py-4 px-6">
+                <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">Tenha Mais Confiança</h3>
+                <p className="text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">Vá às provas reais já sabendo o que combina com você</p>
               </div>
             </div>
           </div>
