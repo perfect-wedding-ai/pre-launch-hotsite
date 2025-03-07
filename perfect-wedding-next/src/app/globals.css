@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --primary-color: #B76E79;
+  --primary-color: rgb(248, 200, 220);
+  --primary-dark: rgb(238, 180, 200);
   --secondary-color: #FDF1F3;
   --accent-color: #D4A373;
   --text-color: #2D3748;
@@ -79,11 +80,51 @@
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg bg-primary text-white font-medium transition-all duration-300 hover:opacity-90 shadow-md hover:shadow-lg transform hover:-translate-y-0.5;
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg bg-primary text-[rgb(90,90,90)] font-normal transition-transform duration-300 transform hover:-translate-y-0.5 relative overflow-hidden;
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--primary-dark);
+    transition: width 0.3s ease;
+    z-index: -1;
+  }
+
+  .btn-primary:hover::before {
+    width: 100%;
+  }
+
+  .btn-primary:hover {
+    color: white;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg border-2 border-primary text-primary font-medium transition-all duration-300 hover:bg-primary hover:text-white shadow-sm hover:shadow-md transform hover:-translate-y-0.5;
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg border-2 border-primary text-[rgb(90,90,90)] font-normal transition-transform duration-300 transform hover:-translate-y-0.5 relative overflow-hidden;
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-secondary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+    z-index: -1;
+  }
+
+  .btn-secondary:hover::before {
+    width: 100%;
   }
 
   .section-title {
