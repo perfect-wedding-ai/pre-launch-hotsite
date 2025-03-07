@@ -1,13 +1,19 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { match } from '@formatjs/intl-localematcher'
-import Negotiator from 'negotiator'
 
-const locales = ['pt-BR']
-const defaultLocale = 'pt-BR'
+const locales = ['pt', 'en']
+const defaultLocale = 'pt'
 
-function getLocale(request: NextRequest) {
-    // Aceita apenas pt-BR por enquanto
+function getLocale(request: NextRequest): string {
+    const pathname = request.nextUrl.pathname
+    
+    // Check if the pathname starts with a locale
+    for (const locale of locales) {
+        if (pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`) {
+            return locale
+        }
+    }
+    
     return defaultLocale
 }
 
@@ -24,14 +30,17 @@ export function middleware(request: NextRequest) {
         return NextResponse.next()
     }
 
-    // Redireciona para a versão com locale se não estiver presente
-    if (!pathname.startsWith(`/${defaultLocale}`)) {
-        return NextResponse.redirect(
-            new URL(`/${defaultLocale}${pathname === '/' ? '' : pathname}`, request.url)
-        )
+    // Check if the pathname already starts with a locale
+    for (const locale of locales) {
+        if (pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`) {
+            return NextResponse.next()
+        }
     }
 
-    return NextResponse.next()
+    // Redireciona para a versão com locale se não estiver presente
+    return NextResponse.redirect(
+        new URL(`/${defaultLocale}${pathname === '/' ? '' : pathname}`, request.url)
+    )
 }
 
 export const config = {

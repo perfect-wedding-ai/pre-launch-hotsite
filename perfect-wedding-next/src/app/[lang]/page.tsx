@@ -3,12 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { imageAlts } from './translations';
+import { imageAlts, translations } from './translations';
 
 export default function Home({ params }: { params: { lang: 'pt' | 'en' } }) {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const lang = params?.lang || 'pt';
   const alts = imageAlts[lang as keyof typeof imageAlts] || imageAlts.pt;
+  const t = translations[lang as keyof typeof translations] || translations.pt;
 
   const toggleFaq = (index: number) => {
     setOpenFaq(openFaq === index ? null : index);
@@ -41,13 +42,13 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' } }) {
             </div>
             <nav>
               <ul className="flex gap-6">
-                <li><Link href="#como-funciona" className="nav-link">Como Funciona</Link></li>
-                <li><Link href="#beneficios" className="nav-link">Benefícios</Link></li>
-                <li><Link href="#faq" className="nav-link">Perguntas Frequentes</Link></li>
+                <li><Link href="#como-funciona" className="nav-link">{t.nav.howItWorks}</Link></li>
+                <li><Link href="#beneficios" className="nav-link">{t.nav.benefits}</Link></li>
+                <li><Link href="#faq" className="nav-link">{t.nav.faq}</Link></li>
               </ul>
             </nav>
             <div className="cta-button">
-              <Link href="#cadastro" className="btn-primary">Experimente Grátis</Link>
+              <Link href="#cadastro" className="btn-primary">{t.nav.tryFree}</Link>
             </div>
           </div>
         </div>
@@ -58,22 +59,20 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' } }) {
           <div className="flex items-center justify-between relative z-10">
             <div className="hero-content flex-1 pr-12">
               <h1 className="text-5xl mb-4 leading-tight">
-                Experimente Vestidos de Noiva Virtualmente
+                {t.hero.title}
               </h1>
               <h2 className="text-2xl mb-6 text-gray-600 font-normal">
-                Descubra o vestido dos seus sonhos sem sair de casa
+                {t.hero.subtitle}
               </h2>
               <p className="text-lg text-gray-600 max-w-2xl mb-8">
-                Economize tempo e encontre o vestido perfeito antes mesmo de ir ao ateliê. 
-                Nossa tecnologia de inteligência artificial permite que você experimente 
-                dezenas de modelos exclusivos em segundos com nossa prova virtual de vestidos.
+                {t.hero.description}
               </p>
               <div className="flex gap-4">
                 <Link href="#cadastro" className="btn-primary">
-                  Experimente Agora
+                  {t.hero.tryNow}
                 </Link>
                 <Link href="#como-funciona" className="btn-secondary">
-                  Saiba Mais
+                  {t.hero.learnMore}
                 </Link>
               </div>
             </div>
@@ -94,37 +93,37 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' } }) {
       <section id="como-funciona" className="how-it-works py-16">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-4xl mb-4">Como Funciona o Teste de Vestidos Online</h2>
-            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins']">Experimente vestidos de noiva virtualmente com apenas alguns cliques</p>
+            <h2 className="text-4xl mb-4">{t.howItWorks.title}</h2>
+            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins']">{t.howItWorks.subtitle}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="step text-center p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.05)]">
               <div className="step-icon mb-6">
                 <i className="fas fa-camera"></i>
               </div>
-              <h3 className="text-xl mb-2">Envie sua Foto</h3>
-              <p className="text-[rgb(122,122,122)] text-sm font-['Poppins']">Faça o upload de uma foto sua em posição natural para iniciar seu ensaio virtual de vestidos</p>
+              <h3 className="text-xl mb-2">{t.howItWorks.steps.uploadPhoto.title}</h3>
+              <p className="text-[rgb(122,122,122)] text-sm font-['Poppins']">{t.howItWorks.steps.uploadPhoto.description}</p>
             </div>
             <div className="step text-center p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.05)]">
               <div className="step-icon mb-6">
                 <i className="fas fa-tshirt"></i>
               </div>
-              <h3 className="text-xl mb-2">Escolha os Vestidos</h3>
-              <p className="text-[rgb(122,122,122)] text-sm font-['Poppins']">Navegue por nossa coleção de centenas de modelos exclusivos em nosso ateliê virtual</p>
+              <h3 className="text-xl mb-2">{t.howItWorks.steps.chooseDresses.title}</h3>
+              <p className="text-[rgb(122,122,122)] text-sm font-['Poppins']">{t.howItWorks.steps.chooseDresses.description}</p>
             </div>
             <div className="step text-center p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.05)]">
               <div className="step-icon mb-6">
                 <i className="fas fa-wand-magic-sparkles"></i>
               </div>
-              <h3 className="text-xl mb-2">Veja a Transformação</h3>
-              <p className="text-[rgb(122,122,122)] text-sm font-['Poppins']">Nossa tecnologia para noivas cria imagens realistas de você usando os vestidos escolhidos</p>
+              <h3 className="text-xl mb-2">{t.howItWorks.steps.seeTransformation.title}</h3>
+              <p className="text-[rgb(122,122,122)] text-sm font-['Poppins']">{t.howItWorks.steps.seeTransformation.description}</p>
             </div>
             <div className="step text-center p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.05)]">
               <div className="step-icon mb-6">
                 <i className="fas fa-heart"></i>
               </div>
-              <h3 className="text-xl mb-2">Descubra o Vestido Ideal</h3>
-              <p className="text-[rgb(122,122,122)] text-sm font-['Poppins']">Salve seus favoritos e agende visitas apenas para os modelos que você realmente amou</p>
+              <h3 className="text-xl mb-2">{t.howItWorks.steps.findIdeal.title}</h3>
+              <p className="text-[rgb(122,122,122)] text-sm font-['Poppins']">{t.howItWorks.steps.findIdeal.description}</p>
             </div>
           </div>
         </div>
@@ -133,8 +132,8 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' } }) {
       <section id="beneficios" className="benefits py-16 bg-gray-50">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-4xl mb-4">Benefícios</h2>
-            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">Por que usar o Perfect Wedding para encontrar seu vestido de noiva</p>
+            <h2 className="text-4xl mb-4">{t.benefits.title}</h2>
+            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">{t.benefits.subtitle}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="benefit bg-white rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)] overflow-hidden">
@@ -148,8 +147,8 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' } }) {
                 />
               </div>
               <div className="benefit-content text-center py-4 px-6">
-                <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">Economize Tempo</h3>
-                <p className="text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">Experimente dezenas de vestidos em minutos, não em semanas</p>
+                <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">{t.benefits.items.time.title}</h3>
+                <p className="text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">{t.benefits.items.time.description}</p>
               </div>
             </div>
             <div className="benefit bg-white rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)] overflow-hidden">
@@ -163,8 +162,8 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' } }) {
                 />
               </div>
               <div className="benefit-content text-center py-4 px-6">
-                <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">Menos Estresse</h3>
-                <p className="text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">Evite visitas cansativas a múltiplas lojas e ateliês</p>
+                <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">{t.benefits.items.stress.title}</h3>
+                <p className="text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">{t.benefits.items.stress.description}</p>
               </div>
             </div>
             <div className="benefit bg-white rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)] overflow-hidden">
@@ -178,8 +177,8 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' } }) {
                 />
               </div>
               <div className="benefit-content text-center py-4 px-6">
-                <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">Mais Opções</h3>
-                <p className="text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">Acesso a estilos exclusivos que podem não estar disponíveis localmente</p>
+                <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">{t.benefits.items.options.title}</h3>
+                <p className="text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">{t.benefits.items.options.description}</p>
               </div>
             </div>
             <div className="benefit bg-white p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)]">
@@ -193,8 +192,8 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' } }) {
                 />
               </div>
               <div className="benefit-content text-center py-4 px-6">
-                <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">Tenha Mais Confiança</h3>
-                <p className="text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">Vá às provas reais já sabendo o que combina com você</p>
+                <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">{t.benefits.items.confidence.title}</h3>
+                <p className="text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">{t.benefits.items.confidence.description}</p>
               </div>
             </div>
           </div>
@@ -204,14 +203,14 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' } }) {
       <section className="showcase py-16">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-4xl mb-4">Veja o Perfect Wedding em Ação</h2>
-            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">Transformações reais usando nossa tecnologia</p>
+            <h2 className="text-4xl mb-4">{t.showcase.title}</h2>
+            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">{t.showcase.subtitle}</p>
           </div>
           <div className="grid grid-cols-1 gap-8">
             <div className="showcase-item bg-white p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)]">
               <div className="before-after grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="before relative overflow-hidden rounded-lg">
-                  <span className="absolute top-4 left-4 z-10 bg-white px-3 py-1 rounded-full text-sm">Antes</span>
+                  <span className="absolute top-4 left-4 z-10 bg-white px-3 py-1 rounded-full text-sm">{t.showcase.labels.before}</span>
                   <div className="image-wrapper overflow-hidden rounded-lg">
                     <Image 
                       src="/assets/images/before-1.webp"
@@ -223,7 +222,7 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' } }) {
                   </div>
                 </div>
                 <div className="after relative overflow-hidden rounded-lg">
-                  <span className="absolute top-4 left-4 z-10 bg-white px-3 py-1 rounded-full text-sm">Depois</span>
+                  <span className="absolute top-4 left-4 z-10 bg-white px-3 py-1 rounded-full text-sm">{t.showcase.labels.after}</span>
                   <div className="image-wrapper overflow-hidden rounded-lg">
                     <Image 
                       src="/assets/images/after-1.webp"
@@ -239,7 +238,7 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' } }) {
             <div className="showcase-item bg-white p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)]">
               <div className="before-after grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="before relative overflow-hidden rounded-lg">
-                  <span className="absolute top-4 left-4 z-10 bg-white px-3 py-1 rounded-full text-sm">Antes</span>
+                  <span className="absolute top-4 left-4 z-10 bg-white px-3 py-1 rounded-full text-sm">{t.showcase.labels.before}</span>
                   <div className="image-wrapper overflow-hidden rounded-lg">
                     <Image 
                       src="/assets/images/before-2.webp"
@@ -251,7 +250,7 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' } }) {
                   </div>
                 </div>
                 <div className="after relative overflow-hidden rounded-lg">
-                  <span className="absolute top-4 left-4 z-10 bg-white px-3 py-1 rounded-full text-sm">Depois</span>
+                  <span className="absolute top-4 left-4 z-10 bg-white px-3 py-1 rounded-full text-sm">{t.showcase.labels.after}</span>
                   <div className="image-wrapper overflow-hidden rounded-lg">
                     <Image 
                       src="/assets/images/after-2.webp"
@@ -338,8 +337,8 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' } }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="signup-content">
               <div className="text-center mb-12">
-                <h2 className="text-4xl mb-4">Experimente Gratuitamente</h2>
-                <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins']">Seja uma das primeiras a testar nossa tecnologia revolucionária de prova virtual de vestidos</p>
+                <h2 className="text-4xl mb-4">{t.signup.title}</h2>
+                <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins']">{t.signup.subtitle}</p>
               </div>
               <form 
                 id="signup-form" 
@@ -353,7 +352,7 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' } }) {
                     type="text" 
                     id="name" 
                     name="FNAME" 
-                    placeholder="Seu Nome" 
+                    placeholder={t.signup.form.name}
                     required
                     className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
                   />
@@ -363,7 +362,7 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' } }) {
                     type="email" 
                     id="email" 
                     name="EMAIL" 
-                    placeholder="Seu E-mail" 
+                    placeholder={t.signup.form.email}
                     required
                     className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
                   />
@@ -373,7 +372,7 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' } }) {
                 </div>
                 <input type="hidden" name="REDIRECT" value="https://perfectwedding.netlify.app/thank-you.html" />
                 <button type="submit" className="btn-primary w-full">
-                  Quero Experimentar
+                  {t.signup.form.button}
                 </button>
               </form>
             </div>
@@ -393,94 +392,29 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' } }) {
       <section id="faq" className="faq py-16 bg-gray-50">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-4xl mb-4">Perguntas Frequentes</h2>
-            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins']">Tire suas dúvidas sobre o Perfect Wedding e nossa tecnologia para noivas</p>
+            <h2 className="text-4xl mb-4">{t.faq.title}</h2>
+            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins']">{t.faq.subtitle}</p>
           </div>
           <div className="space-y-4 max-w-3xl mx-auto">
-            <div 
-              className="faq-item bg-white rounded-lg shadow-[0px_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0px_8px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-              onClick={() => toggleFaq(0)}
-            >
-              <div className="py-4 px-6">
-                <div className="flex justify-between items-center">
-                  <h3 className="text-xl font-semibold">Como funciona a prova virtual de vestidos de noiva?</h3>
-                  <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center">
-                    <i className={`fas fa-chevron-down text-pink-400 transition-transform duration-300 ${openFaq === 0 ? 'rotate-180' : ''}`}></i>
+            {t.faq.questions.map((faq, index) => (
+              <div 
+                key={index}
+                className="faq-item bg-white rounded-lg shadow-[0px_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0px_8px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+                onClick={() => toggleFaq(index)}
+              >
+                <div className="py-4 px-6">
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-xl font-semibold">{faq.question}</h3>
+                    <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center">
+                      <i className={`fas fa-chevron-down text-pink-400 transition-transform duration-300 ${openFaq === index ? 'rotate-180' : ''}`}></i>
+                    </div>
+                  </div>
+                  <div className={`text-gray-600 overflow-hidden transition-all duration-300 ${openFaq === index ? 'mt-4 max-h-96' : 'max-h-0'}`}>
+                    <p>{faq.answer}</p>
                   </div>
                 </div>
-                <div className={`text-gray-600 overflow-hidden transition-all duration-300 ${openFaq === 0 ? 'mt-4 max-h-96' : 'max-h-0'}`}>
-                  <p>Nossa tecnologia de inteligência artificial analisa sua foto e cria imagens realistas de como você ficaria usando diferentes vestidos de noiva. O processo é simples: você envia uma foto, escolhe os vestidos que deseja experimentar em nosso ateliê virtual e nossa IA gera as imagens em poucos segundos.</p>
-                </div>
               </div>
-            </div>
-
-            <div 
-              className="faq-item bg-white rounded-lg shadow-[0px_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0px_8px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-              onClick={() => toggleFaq(1)}
-            >
-              <div className="py-4 px-6">
-                <div className="flex justify-between items-center">
-                  <h3 className="text-xl font-semibold">As imagens são realistas?</h3>
-                  <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center">
-                    <i className={`fas fa-chevron-down text-pink-400 transition-transform duration-300 ${openFaq === 1 ? 'rotate-180' : ''}`}></i>
-                  </div>
-                </div>
-                <div className={`text-gray-600 overflow-hidden transition-all duration-300 ${openFaq === 1 ? 'mt-4 max-h-96' : 'max-h-0'}`}>
-                  <p>Sim! Nossa tecnologia de ponta cria imagens extremamente realistas, considerando seu tipo de corpo, tom de pele e características físicas para mostrar como o vestido ficaria em você de verdade.</p>
-                </div>
-              </div>
-            </div>
-
-            <div 
-              className="faq-item bg-white rounded-lg shadow-[0px_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0px_8px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-              onClick={() => toggleFaq(2)}
-            >
-              <div className="py-4 px-6">
-                <div className="flex justify-between items-center">
-                  <h3 className="text-xl font-semibold">Quanto custa usar o Perfect Wedding?</h3>
-                  <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center">
-                    <i className={`fas fa-chevron-down text-pink-400 transition-transform duration-300 ${openFaq === 2 ? 'rotate-180' : ''}`}></i>
-                  </div>
-                </div>
-                <div className={`text-gray-600 overflow-hidden transition-all duration-300 ${openFaq === 2 ? 'mt-4 max-h-96' : 'max-h-0'}`}>
-                  <p>Atualmente estamos em fase de testes e oferecendo acesso gratuito para um número limitado de noivas. Cadastre-se agora para garantir sua vaga!</p>
-                </div>
-              </div>
-            </div>
-
-            <div 
-              className="faq-item bg-white rounded-lg shadow-[0px_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0px_8px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-              onClick={() => toggleFaq(3)}
-            >
-              <div className="py-4 px-6">
-                <div className="flex justify-between items-center">
-                  <h3 className="text-xl font-semibold">Posso experimentar vestidos de qualquer marca?</h3>
-                  <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center">
-                    <i className={`fas fa-chevron-down text-pink-400 transition-transform duration-300 ${openFaq === 3 ? 'rotate-180' : ''}`}></i>
-                  </div>
-                </div>
-                <div className={`text-gray-600 overflow-hidden transition-all duration-300 ${openFaq === 3 ? 'mt-4 max-h-96' : 'max-h-0'}`}>
-                  <p>Nossa biblioteca inclui dezenas de modelos exclusivos de diversos estilos. Estamos constantemente expandindo nossa coleção para incluir mais opções e marcas.</p>
-                </div>
-              </div>
-            </div>
-
-            <div 
-              className="faq-item bg-white rounded-lg shadow-[0px_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0px_8px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-              onClick={() => toggleFaq(4)}
-            >
-              <div className="py-4 px-6">
-                <div className="flex justify-between items-center">
-                  <h3 className="text-xl font-semibold">Como faço para comprar o vestido depois?</h3>
-                  <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center">
-                    <i className={`fas fa-chevron-down text-pink-400 transition-transform duration-300 ${openFaq === 4 ? 'rotate-180' : ''}`}></i>
-                  </div>
-                </div>
-                <div className={`text-gray-600 overflow-hidden transition-all duration-300 ${openFaq === 4 ? 'mt-4 max-h-96' : 'max-h-0'}`}>
-                  <p>O Perfect Wedding é uma ferramenta para ajudar você a descobrir o estilo perfeito antes de visitar ateliês. Após encontrar os modelos que mais gostou, fornecemos informações sobre onde encontrá-los ou modelos similares em lojas e ateliês parceiros.</p>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -490,24 +424,24 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' } }) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div className="footer-logo">
               <h2 id="footer-title" className="text-2xl text-[rgb(90,90,90)] after:content-none">Perfect Wedding</h2>
-              <p className="text-[rgb(90,90,90)]">Encontre o vestido dos seus sonhos online com a ajuda da inteligência artificial</p>
+              <p className="text-[rgb(90,90,90)]">{t.footer.description}</p>
             </div>
             <div className="footer-links">
-              <h3 className="text-lg text-[rgb(90,90,90)] mb-4 relative after:content-[''] after:absolute after:left-0 after:-bottom-2 after:w-12 after:h-[2px] after:bg-[rgb(255,192,203)]">Links Rápidos</h3>
+              <h3 className="text-lg text-[rgb(90,90,90)] mb-4 relative after:content-[''] after:absolute after:left-0 after:-bottom-2 after:w-12 after:h-[2px] after:bg-[rgb(255,192,203)]">{t.footer.quickLinks.title}</h3>
               <ul className="space-y-2">
-                <li><Link href="#como-funciona" className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">Como Funciona</Link></li>
-                <li><Link href="#beneficios" className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">Benefícios</Link></li>
-                <li><Link href="#faq" className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">Perguntas Frequentes</Link></li>
+                <li><Link href="#como-funciona" className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.howItWorks}</Link></li>
+                <li><Link href="#beneficios" className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.benefits}</Link></li>
+                <li><Link href="#faq" className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.faq}</Link></li>
               </ul>
             </div>
             <div className="footer-contact">
-              <h3 className="text-lg text-[rgb(90,90,90)] mb-4 relative after:content-[''] after:absolute after:left-0 after:-bottom-2 after:w-12 after:h-[2px] after:bg-[rgb(255,192,203)]">Contato</h3>
-              <p className="pl-[2px] text-[rgb(90,90,90)]">contato@perfectwedding.ai</p>
+              <h3 className="text-lg text-[rgb(90,90,90)] mb-4 relative after:content-[''] after:absolute after:left-0 after:-bottom-2 after:w-12 after:h-[2px] after:bg-[rgb(255,192,203)]">{t.footer.contact.title}</h3>
+              <p className="pl-[2px] text-[rgb(90,90,90)]">{t.footer.contact.email}</p>
             </div>
           </div>
           <div className="footer-bottom text-center border-t border-gray-200 pt-8 mt-12 flex flex-col items-center">
-            <p className="mb-2 text-[rgb(90,90,90)] text-sm font-['Playfair Display'] text-center max-w-4xl mx-auto">&copy; 2025 Perfect Wedding AI - Tecnologia para Noivas. Todos os direitos reservados.</p>
-            <p className="text-[rgb(90,90,90)] text-sm font-['Playfair Display'] text-center max-w-4xl mx-auto">Experimente vestidos de noiva virtualmente | Descubra seu vestido ideal | Ateliê virtual de vestidos</p>
+            <p className="mb-2 text-[rgb(90,90,90)] text-sm font-['Playfair Display'] text-center max-w-4xl mx-auto">{t.footer.copyright.text}</p>
+            <p className="text-[rgb(90,90,90)] text-sm font-['Playfair Display'] text-center max-w-4xl mx-auto">{t.footer.copyright.tagline}</p>
           </div>
         </div>
       </footer>
