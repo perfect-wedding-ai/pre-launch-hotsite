@@ -66,36 +66,36 @@ export default function Home() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-4xl mb-4">Como Funciona o Teste de Vestidos Online</h2>
-            <p className="text-xl text-gray-600">Experimente vestidos de noiva virtualmente com apenas alguns cliques</p>
+            <p className="text-center mx-auto text-[rgb(122,122,122)]">Experimente vestidos de noiva virtualmente com apenas alguns cliques</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="step text-center">
-              <div className="step-icon mb-4 text-4xl text-primary">
+            <div className="step text-center p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.05)]">
+              <div className="step-icon mb-6">
                 <i className="fas fa-camera"></i>
               </div>
               <h3 className="text-xl mb-2">Envie sua Foto</h3>
-              <p className="text-gray-600">Faça o upload de uma foto sua em posição natural para iniciar seu ensaio virtual de vestidos</p>
+              <p className="text-[rgb(122,122,122)] text-sm font-['Poppins']">Faça o upload de uma foto sua em posição natural para iniciar seu ensaio virtual de vestidos</p>
             </div>
-            <div className="step text-center">
-              <div className="step-icon mb-4 text-4xl text-primary">
+            <div className="step text-center p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.05)]">
+              <div className="step-icon mb-6">
                 <i className="fas fa-tshirt"></i>
               </div>
               <h3 className="text-xl mb-2">Escolha os Vestidos</h3>
-              <p className="text-gray-600">Navegue por nossa coleção de centenas de modelos exclusivos em nosso ateliê virtual</p>
+              <p className="text-[rgb(122,122,122)] text-sm font-['Poppins']">Navegue por nossa coleção de centenas de modelos exclusivos em nosso ateliê virtual</p>
             </div>
-            <div className="step text-center">
-              <div className="step-icon mb-4 text-4xl text-primary">
-                <i className="fas fa-magic"></i>
+            <div className="step text-center p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.05)]">
+              <div className="step-icon mb-6">
+                <i className="fas fa-wand-magic-sparkles"></i>
               </div>
               <h3 className="text-xl mb-2">Veja a Transformação</h3>
-              <p className="text-gray-600">Nossa tecnologia para noivas cria imagens realistas de você usando os vestidos escolhidos</p>
+              <p className="text-[rgb(122,122,122)] text-sm font-['Poppins']">Nossa tecnologia para noivas cria imagens realistas de você usando os vestidos escolhidos</p>
             </div>
-            <div className="step text-center">
-              <div className="step-icon mb-4 text-4xl text-primary">
+            <div className="step text-center p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.05)]">
+              <div className="step-icon mb-6">
                 <i className="fas fa-heart"></i>
               </div>
               <h3 className="text-xl mb-2">Descubra o Vestido Ideal</h3>
-              <p className="text-gray-600">Salve seus favoritos e agende visitas apenas para os modelos que você realmente amou</p>
+              <p className="text-[rgb(122,122,122)] text-sm font-['Poppins']">Salve seus favoritos e agende visitas apenas para os modelos que você realmente amou</p>
             </div>
           </div>
         </div>

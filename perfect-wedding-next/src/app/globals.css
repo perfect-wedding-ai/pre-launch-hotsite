@@ -34,9 +34,20 @@
   }
 
   h2 {
-    @apply font-bold mb-4 text-3xl md:text-4xl leading-snug;
+    @apply font-bold mb-4 text-3xl md:text-4xl leading-snug relative pb-4;
     font-family: var(--font-playfair);
     color: var(--h2-color);
+  }
+
+  h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 2px;
+    background-color: var(--primary-color);
   }
 
   h3, h4, h5, h6 {
@@ -77,6 +88,18 @@
 @layer components {
   .container {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .step-icon {
+    @apply w-20 h-20 rounded-full bg-primary flex items-center justify-center mx-auto transition-transform duration-300 ease-in-out;
+  }
+
+  .step-icon i {
+    @apply text-white text-2xl;
+  }
+
+  .step:hover .step-icon {
+    @apply transform scale-110;
   }
 
   .nav-link {
