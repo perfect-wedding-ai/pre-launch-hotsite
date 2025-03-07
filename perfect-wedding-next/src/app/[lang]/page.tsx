@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { imageAlts, translations } from './translations';
 
-export default function Home({ params }: { params: { lang: 'pt' | 'en' } }) {
+export default function Home({ params }: { params: { lang: 'pt' | 'en' | 'es' } }) {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const lang = params?.lang || 'pt';
   const alts = imageAlts[lang as keyof typeof imageAlts] || imageAlts.pt;

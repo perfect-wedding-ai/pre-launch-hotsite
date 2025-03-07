@@ -240,6 +240,127 @@ export const translations = {
         tagline: "Try on wedding dresses virtually | Find your ideal dress | Virtual bridal boutique"
       }
     }
+  },
+  es: {
+    nav: {
+      howItWorks: "Cómo Funciona",
+      benefits: "Beneficios",
+      faq: "Preguntas Frecuentes",
+      tryFree: "Prueba Gratis"
+    },
+    hero: {
+      title: "Prueba Vestidos de Novia Virtualmente",
+      subtitle: "Encuentra el vestido de tus sueños sin salir de casa",
+      description: "Ahorra tiempo y encuentra el vestido perfecto antes de ir a la tienda. Nuestra tecnología de inteligencia artificial te permite probar decenas de diseños exclusivos en segundos con nuestra prueba virtual de vestidos.",
+      tryNow: "Prueba Ahora",
+      learnMore: "Saber Más"
+    },
+    howItWorks: {
+      title: "Cómo Funciona la Prueba Virtual de Vestidos",
+      subtitle: "Prueba vestidos de novia virtualmente con solo unos clics",
+      steps: {
+        uploadPhoto: {
+          title: "Sube tu Foto",
+          description: "Sube una foto tuya en posición natural para iniciar tu prueba virtual de vestidos"
+        },
+        chooseDresses: {
+          title: "Elige los Vestidos",
+          description: "Navega por nuestra colección de cientos de diseños exclusivos en nuestra tienda virtual"
+        },
+        seeTransformation: {
+          title: "Ve la Transformación",
+          description: "Nuestra tecnología para novias crea imágenes realistas de ti usando los vestidos elegidos"
+        },
+        findIdeal: {
+          title: "Encuentra el Vestido Ideal",
+          description: "Guarda tus favoritos y agenda visitas solo para los modelos que realmente te encantaron"
+        }
+      }
+    },
+    benefits: {
+      title: "Beneficios",
+      subtitle: "Por qué usar Perfect Wedding para encontrar tu vestido de novia",
+      items: {
+        time: {
+          title: "Ahorra Tiempo",
+          description: "Prueba decenas de vestidos en minutos, no en semanas"
+        },
+        stress: {
+          title: "Menos Estrés",
+          description: "Evita visitas cansadoras a múltiples tiendas y boutiques"
+        },
+        options: {
+          title: "Más Opciones",
+          description: "Acceso a estilos exclusivos que pueden no estar disponibles localmente"
+        },
+        confidence: {
+          title: "Ten Más Confianza",
+          description: "Ve a las pruebas reales ya sabiendo lo que te queda bien"
+        }
+      }
+    },
+    showcase: {
+      title: "Ve Perfect Wedding en Acción",
+      subtitle: "Transformaciones reales usando nuestra tecnología",
+      labels: {
+        before: "Antes",
+        after: "Después"
+      }
+    },
+    signup: {
+      title: "Prueba Gratuitamente",
+      subtitle: "Sé una de las primeras en probar nuestra revolucionaria tecnología de prueba virtual de vestidos",
+      form: {
+        name: "Tu Nombre",
+        email: "Tu Email",
+        button: "Quiero Probar"
+      }
+    },
+    faq: {
+      title: "Preguntas Frecuentes",
+      subtitle: "Resuelve tus dudas sobre Perfect Wedding y nuestra tecnología para novias",
+      questions: [
+        {
+          question: "¿Cómo funciona la prueba virtual de vestidos de novia?",
+          answer: "Nuestra tecnología de inteligencia artificial analiza tu foto y crea imágenes realistas de cómo te verías usando diferentes vestidos de novia. El proceso es simple: subes una foto, eliges los vestidos que quieres probar en nuestra tienda virtual y nuestra IA genera las imágenes en segundos."
+        },
+        {
+          question: "¿Las imágenes son realistas?",
+          answer: "¡Sí! Nuestra tecnología de vanguardia crea imágenes extremadamente realistas, considerando tu tipo de cuerpo, tono de piel y características físicas para mostrar cómo te quedaría el vestido realmente."
+        },
+        {
+          question: "¿Cuánto cuesta usar Perfect Wedding?",
+          answer: "Actualmente estamos en fase de pruebas y ofreciendo acceso gratuito a un número limitado de novias. ¡Regístrate ahora para asegurar tu lugar!"
+        },
+        {
+          question: "¿Puedo probar vestidos de cualquier marca?",
+          answer: "Nuestra biblioteca incluye decenas de diseños exclusivos en varios estilos. Estamos constantemente expandiendo nuestra colección para incluir más opciones y marcas."
+        },
+        {
+          question: "¿Cómo compro el vestido después?",
+          answer: "Perfect Wedding es una herramienta para ayudarte a descubrir el estilo perfecto antes de visitar las tiendas. Después de encontrar los diseños que más te gustaron, te proporcionamos información sobre dónde encontrarlos o modelos similares en tiendas y boutiques asociadas."
+        }
+      ]
+    },
+    footer: {
+      description: "Encuentra el vestido de tus sueños online con la ayuda de la inteligencia artificial",
+      quickLinks: {
+        title: "Enlaces Rápidos",
+        items: {
+          howItWorks: "Cómo Funciona",
+          benefits: "Beneficios",
+          faq: "Preguntas Frecuentes"
+        }
+      },
+      contact: {
+        title: "Contacto",
+        email: "contacto@perfectwedding.ai"
+      },
+      copyright: {
+        text: "© 2025 Perfect Wedding AI - Tecnología para Novias. Todos los derechos reservados.",
+        tagline: "Prueba vestidos de novia virtualmente | Encuentra tu vestido ideal | Boutique virtual de novias"
+      }
+    }
   }
 }
 
@@ -267,5 +388,17 @@ export const imageAlts = {
     before2: "Original photo before virtual dress simulation",
     after2: "Before and after comparison of virtual wedding dress fitting with AI",
     signupBride: "Happy bride after finding the perfect dress"
+  },
+  es: {
+    heroBride: "Novia probando vestido virtual con tecnología de IA",
+    benefitTime: "Ilustración mostrando ahorro de tiempo al probar vestidos virtualmente",
+    benefitStress: "Novia sonriente, representando menos estrés con la prueba virtual de vestidos",
+    benefitOptions: "Varios modelos de vestidos de novia exhibidos, destacando la variedad exclusiva",
+    benefitConfidence: "Novia confiada después de probar vestidos virtualmente antes de la prueba real",
+    before1: "Antes de la prueba virtual de vestido de novia",
+    after1: "Después de la prueba virtual de vestido de novia",
+    before2: "Foto original antes de la simulación virtual de vestido de novia",
+    after2: "Comparación antes y después de la prueba virtual de vestido de novia con IA",
+    signupBride: "Novia feliz después de encontrar el vestido perfecto"
   }
 } 
