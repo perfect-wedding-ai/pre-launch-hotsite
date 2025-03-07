@@ -1,0 +1,15 @@
+{
+    "navigation": {
+        "howItWorks": "How It Works",
+        "benefits": "Benefits",
+        "faq": "FAQ",
+        "tryForFree": "Try For Free"
+    },
+    "hero": {
+        "title": "Try Wedding Dresses Virtually",
+        "subtitle": "Find your dream dress without leaving home",
+        "description": "Save time and find the perfect dress before visiting the atelier. Our artificial intelligence technology allows you to try dozens of exclusive models in seconds with our virtual dress fitting.",
+        "tryNow": "Try Now",
+        "learnMore": "Learn More"
+    }
+} 

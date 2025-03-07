@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color: #D4A373;
+  --secondary-color: #FAEDCD;
+  --accent-color: #CCD5AE;
+  --text-color: #333333;
+  --light-text: #666666;
+}
+
+@layer base {
+  body {
+    @apply text-gray-900 overflow-x-hidden;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white px-6 py-3 rounded-lg font-semibold 
+           hover:bg-primary/90 transition-colors duration-200 inline-block;
+  }
+
+  .btn-secondary {
+    @apply bg-white text-primary px-6 py-3 rounded-lg font-semibold 
+           border-2 border-primary hover:bg-primary/10 transition-colors duration-200 inline-block;
+  }
+
+  .container {
+    @apply max-w-7xl mx-auto px-4;
+  }
+} 
