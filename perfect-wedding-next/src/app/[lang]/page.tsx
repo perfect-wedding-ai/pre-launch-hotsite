@@ -8,13 +8,13 @@ export default function Home() {
         <div className="container">
           <div className="flex justify-between items-center">
             <div className="logo">
-              <h1 className="text-2xl m-0 text-primary">Perfect Wedding</h1>
+              <h1 className="text-[28.8px] m-0 text-[rgb(90,90,90)]">Perfect Wedding</h1>
             </div>
             <nav>
               <ul className="flex gap-6">
-                <li><Link href="#como-funciona" className="text-gray-700 hover:text-primary transition-colors">Como Funciona</Link></li>
-                <li><Link href="#beneficios" className="text-gray-700 hover:text-primary transition-colors">Benefícios</Link></li>
-                <li><Link href="#faq" className="text-gray-700 hover:text-primary transition-colors">Perguntas Frequentes</Link></li>
+                <li><Link href="#como-funciona" className="nav-link">Como Funciona</Link></li>
+                <li><Link href="#beneficios" className="nav-link">Benefícios</Link></li>
+                <li><Link href="#faq" className="nav-link">Perguntas Frequentes</Link></li>
               </ul>
             </nav>
             <div className="cta-button">

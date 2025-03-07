@@ -79,6 +79,34 @@
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
+  .nav-link {
+    @apply relative inline-block text-[rgb(90,90,90)] transition-colors duration-300;
+    padding-bottom: 2px;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  .nav-link:hover {
+    color: var(--primary-color);
+  }
+
+  .nav-link.active::after {
+    width: 100%;
+  }
+
   .btn-primary {
     @apply inline-flex items-center justify-center px-6 py-3 rounded-lg bg-primary text-[rgb(90,90,90)] font-normal transition-transform duration-300 transform hover:-translate-y-0.5 relative overflow-hidden;
     position: relative;
