@@ -1,7 +1,33 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 export default function Home() {
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  const toggleFaq = (index: number) => {
+    setOpenFaq(openFaq === index ? null : index);
+  };
+
+  useEffect(() => {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+      item.addEventListener('click', () => {
+        // Remove active class from all other items
+        faqItems.forEach(otherItem => {
+          if (otherItem !== item) {
+            otherItem.classList.remove('active');
+          }
+        });
+        // Toggle active class on clicked item
+        item.classList.toggle('active');
+      });
+    });
+  }, []);
+
   return (
     <>
       <header className="fixed w-full top-0 left-0 z-[1000] bg-white py-5 shadow-[0_2px_10px_rgba(0,0,0,0.05)]">
@@ -239,7 +265,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="depoimentos" className="testimonials py-16 bg-gray-50">
+      <section id="depoimentos" className="testimonials py-16 bg-gray-50 hidden">
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-4xl mb-4">O Que Nossas Noivas Dizem</h2>
@@ -348,13 +374,13 @@ export default function Home() {
                 </button>
               </form>
             </div>
-            <div className="signup-image">
+            <div className="signup-image overflow-hidden rounded-lg">
               <Image 
                 src="/assets/images/signup-bride.webp"
                 alt="Noiva feliz após encontrar o vestido perfeito"
                 width={600}
                 height={400}
-                className="rounded-lg"
+                className="rounded-lg transition-transform duration-300 hover:scale-105"
               />
             </div>
           </div>
@@ -368,25 +394,89 @@ export default function Home() {
             <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins']">Tire suas dúvidas sobre o Perfect Wedding e nossa tecnologia para noivas</p>
           </div>
           <div className="space-y-4 max-w-3xl mx-auto">
-            <div className="faq-item bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-semibold mb-2">Como funciona a prova virtual de vestidos de noiva?</h3>
-              <p className="text-gray-600">Nossa tecnologia de inteligência artificial analisa sua foto e cria imagens realistas de como você ficaria usando diferentes vestidos de noiva. O processo é simples: você envia uma foto, escolhe os vestidos que deseja experimentar em nosso ateliê virtual e nossa IA gera as imagens em poucos segundos.</p>
+            <div 
+              className="faq-item bg-white rounded-lg shadow-[0px_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0px_8px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+              onClick={() => toggleFaq(0)}
+            >
+              <div className="py-4 px-6">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-xl font-semibold">Como funciona a prova virtual de vestidos de noiva?</h3>
+                  <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center">
+                    <i className={`fas fa-chevron-down text-pink-400 transition-transform duration-300 ${openFaq === 0 ? 'rotate-180' : ''}`}></i>
+                  </div>
+                </div>
+                <div className={`text-gray-600 overflow-hidden transition-all duration-300 ${openFaq === 0 ? 'mt-4 max-h-96' : 'max-h-0'}`}>
+                  <p>Nossa tecnologia de inteligência artificial analisa sua foto e cria imagens realistas de como você ficaria usando diferentes vestidos de noiva. O processo é simples: você envia uma foto, escolhe os vestidos que deseja experimentar em nosso ateliê virtual e nossa IA gera as imagens em poucos segundos.</p>
+                </div>
+              </div>
             </div>
-            <div className="faq-item bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-semibold mb-2">As imagens são realistas?</h3>
-              <p className="text-gray-600">Sim! Nossa tecnologia de ponta cria imagens extremamente realistas, considerando seu tipo de corpo, tom de pele e características físicas para mostrar como o vestido ficaria em você de verdade.</p>
+
+            <div 
+              className="faq-item bg-white rounded-lg shadow-[0px_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0px_8px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+              onClick={() => toggleFaq(1)}
+            >
+              <div className="py-4 px-6">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-xl font-semibold">As imagens são realistas?</h3>
+                  <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center">
+                    <i className={`fas fa-chevron-down text-pink-400 transition-transform duration-300 ${openFaq === 1 ? 'rotate-180' : ''}`}></i>
+                  </div>
+                </div>
+                <div className={`text-gray-600 overflow-hidden transition-all duration-300 ${openFaq === 1 ? 'mt-4 max-h-96' : 'max-h-0'}`}>
+                  <p>Sim! Nossa tecnologia de ponta cria imagens extremamente realistas, considerando seu tipo de corpo, tom de pele e características físicas para mostrar como o vestido ficaria em você de verdade.</p>
+                </div>
+              </div>
             </div>
-            <div className="faq-item bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-semibold mb-2">Quanto custa usar o Perfect Wedding?</h3>
-              <p className="text-gray-600">Atualmente estamos em fase de testes e oferecendo acesso gratuito para um número limitado de noivas. Cadastre-se agora para garantir sua vaga!</p>
+
+            <div 
+              className="faq-item bg-white rounded-lg shadow-[0px_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0px_8px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+              onClick={() => toggleFaq(2)}
+            >
+              <div className="py-4 px-6">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-xl font-semibold">Quanto custa usar o Perfect Wedding?</h3>
+                  <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center">
+                    <i className={`fas fa-chevron-down text-pink-400 transition-transform duration-300 ${openFaq === 2 ? 'rotate-180' : ''}`}></i>
+                  </div>
+                </div>
+                <div className={`text-gray-600 overflow-hidden transition-all duration-300 ${openFaq === 2 ? 'mt-4 max-h-96' : 'max-h-0'}`}>
+                  <p>Atualmente estamos em fase de testes e oferecendo acesso gratuito para um número limitado de noivas. Cadastre-se agora para garantir sua vaga!</p>
+                </div>
+              </div>
             </div>
-            <div className="faq-item bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-semibold mb-2">Posso experimentar vestidos de qualquer marca?</h3>
-              <p className="text-gray-600">Nossa biblioteca inclui dezenas de modelos exclusivos de diversos estilos. Estamos constantemente expandindo nossa coleção para incluir mais opções e marcas.</p>
+
+            <div 
+              className="faq-item bg-white rounded-lg shadow-[0px_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0px_8px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+              onClick={() => toggleFaq(3)}
+            >
+              <div className="py-4 px-6">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-xl font-semibold">Posso experimentar vestidos de qualquer marca?</h3>
+                  <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center">
+                    <i className={`fas fa-chevron-down text-pink-400 transition-transform duration-300 ${openFaq === 3 ? 'rotate-180' : ''}`}></i>
+                  </div>
+                </div>
+                <div className={`text-gray-600 overflow-hidden transition-all duration-300 ${openFaq === 3 ? 'mt-4 max-h-96' : 'max-h-0'}`}>
+                  <p>Nossa biblioteca inclui dezenas de modelos exclusivos de diversos estilos. Estamos constantemente expandindo nossa coleção para incluir mais opções e marcas.</p>
+                </div>
+              </div>
             </div>
-            <div className="faq-item bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-semibold mb-2">Como faço para comprar o vestido depois?</h3>
-              <p className="text-gray-600">O Perfect Wedding é uma ferramenta para ajudar você a descobrir o estilo perfeito antes de visitar ateliês. Após encontrar os modelos que mais gostou, fornecemos informações sobre onde encontrá-los ou modelos similares em lojas e ateliês parceiros.</p>
+
+            <div 
+              className="faq-item bg-white rounded-lg shadow-[0px_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0px_8px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+              onClick={() => toggleFaq(4)}
+            >
+              <div className="py-4 px-6">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-xl font-semibold">Como faço para comprar o vestido depois?</h3>
+                  <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center">
+                    <i className={`fas fa-chevron-down text-pink-400 transition-transform duration-300 ${openFaq === 4 ? 'rotate-180' : ''}`}></i>
+                  </div>
+                </div>
+                <div className={`text-gray-600 overflow-hidden transition-all duration-300 ${openFaq === 4 ? 'mt-4 max-h-96' : 'max-h-0'}`}>
+                  <p>O Perfect Wedding é uma ferramenta para ajudar você a descobrir o estilo perfeito antes de visitar ateliês. Após encontrar os modelos que mais gostou, fornecemos informações sobre onde encontrá-los ou modelos similares em lojas e ateliês parceiros.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
