@@ -482,43 +482,29 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="bg-gray-900 text-white py-16">
+      <footer className="bg-white text-gray-600 py-16">
         <div className="container">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div className="footer-logo">
-              <h2 className="text-2xl mb-4">Perfect Wedding</h2>
-              <p className="text-gray-400">Encontre o vestido dos seus sonhos online com a ajuda da inteligência artificial</p>
+              <h2 id="footer-title" className="text-2xl text-[rgb(90,90,90)] after:content-none">Perfect Wedding</h2>
+              <p className="text-[rgb(90,90,90)]">Encontre o vestido dos seus sonhos online com a ajuda da inteligência artificial</p>
             </div>
             <div className="footer-links">
-              <h3 className="text-lg font-semibold mb-4">Links Rápidos</h3>
+              <h3 className="text-lg text-[rgb(90,90,90)] mb-4 relative after:content-[''] after:absolute after:left-0 after:-bottom-2 after:w-12 after:h-[2px] after:bg-[rgb(255,192,203)]">Links Rápidos</h3>
               <ul className="space-y-2">
-                <li><Link href="#como-funciona" className="text-gray-400 hover:text-white transition-colors">Como Funciona</Link></li>
-                <li><Link href="#beneficios" className="text-gray-400 hover:text-white transition-colors">Benefícios</Link></li>
-                <li><Link href="#faq" className="text-gray-400 hover:text-white transition-colors">Perguntas Frequentes</Link></li>
+                <li><Link href="#como-funciona" className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">Como Funciona</Link></li>
+                <li><Link href="#beneficios" className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">Benefícios</Link></li>
+                <li><Link href="#faq" className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">Perguntas Frequentes</Link></li>
               </ul>
             </div>
             <div className="footer-contact">
-              <h3 className="text-lg font-semibold mb-4">Contato</h3>
-              <p className="flex items-center gap-2 text-gray-400 mb-4">
-                <i className="fas fa-envelope"></i>
-                contato@perfectwedding.ai
-              </p>
-              <div className="social-media flex gap-4">
-                <Link href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Instagram do Perfect Wedding">
-                  <i className="fab fa-instagram text-2xl"></i>
-                </Link>
-                <Link href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Facebook do Perfect Wedding">
-                  <i className="fab fa-facebook text-2xl"></i>
-                </Link>
-                <Link href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Pinterest do Perfect Wedding">
-                  <i className="fab fa-pinterest text-2xl"></i>
-                </Link>
-              </div>
+              <h3 className="text-lg text-[rgb(90,90,90)] mb-4 relative after:content-[''] after:absolute after:left-0 after:-bottom-2 after:w-12 after:h-[2px] after:bg-[rgb(255,192,203)]">Contato</h3>
+              <p className="pl-[2px] text-[rgb(90,90,90)]">contato@perfectwedding.ai</p>
             </div>
           </div>
-          <div className="footer-bottom text-center text-gray-400 border-t border-gray-800 pt-8">
-            <p className="mb-2">&copy; 2025 Perfect Wedding AI - Tecnologia para Noivas. Todos os direitos reservados.</p>
-            <p>Experimente vestidos de noiva virtualmente | Descubra seu vestido ideal | Ateliê virtual de vestidos</p>
+          <div className="footer-bottom text-center border-t border-gray-200 pt-8 mt-12">
+            <p className="mb-2 text-[rgb(90,90,90)] text-sm font-['Playfair Display'] text-center">&copy; 2025 Perfect Wedding AI - Tecnologia para Noivas. Todos os direitos reservados.</p>
+            <p className="text-[rgb(90,90,90)] text-sm font-['Playfair Display'] text-center">Experimente vestidos de noiva virtualmente | Descubra seu vestido ideal | Ateliê virtual de vestidos</p>
           </div>
         </div>
       </footer>
