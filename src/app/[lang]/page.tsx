@@ -96,7 +96,9 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
         <div className="container">
           <div className="flex justify-between items-center">
             <div className="logo">
-              <h1 className="text-[28.8px] m-0 text-[rgb(90,90,90)]">Perfect Wedding</h1>
+              <Link href={process.env.NEXT_PUBLIC_BASE_URL || '/'}>
+                <h1 className="text-[28.8px] m-0 text-[rgb(90,90,90)]">Perfect Wedding</h1>
+              </Link>
             </div>
             <nav>
               <ul className="flex gap-6">
