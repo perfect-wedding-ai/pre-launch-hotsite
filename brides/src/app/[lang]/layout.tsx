@@ -4,6 +4,7 @@ import Script from 'next/script'
 import Link from 'next/link'
 import { translations } from './translations'
 import '../globals.css'
+import { metadataTranslations } from './metadata'
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -19,23 +20,21 @@ const playfair = Playfair_Display({
   weight: ['400', '500', '600', '700'],
 })
 
-// Importar os metadados traduzidos
-import { metadataTranslations } from './metadata'
+type ValidLang = 'pt' | 'en' | 'es';
 
-// Gerar metadados dinâmicos baseados no idioma
-export async function generateMetadata({ params }: { params: { lang: 'pt' | 'en' | 'es' } }): Promise<Metadata> {
-  const lang = params?.lang || 'pt'
-  const meta = metadataTranslations[lang]
-  const t = translations[lang]
+export async function generateMetadata({ params }: { params: { lang: ValidLang } }): Promise<Metadata> {
+  const lang = (params?.lang || 'pt') as ValidLang;
+  const metadata = metadataTranslations[lang] || metadataTranslations.pt;
+  const t = translations[lang] || translations.pt;
 
   return {
     metadataBase: new URL('https://perfectwedding.ai'),
-    title: meta.title,
-    description: meta.description,
-    keywords: meta.keywords,
+    title: metadata.title,
+    description: metadata.description,
+    keywords: metadata.keywords,
     openGraph: {
-      title: meta.ogTitle,
-      description: meta.ogDescription,
+      title: metadata.ogTitle,
+      description: metadata.ogDescription,
       type: 'website',
       url: `https://perfectwedding.ai/${lang}`,
       images: [
@@ -64,7 +63,7 @@ export async function generateMetadata({ params }: { params: { lang: 'pt' | 'en'
         "@type": "WebSite",
         "name": "Perfect Wedding",
         "url": `https://perfectwedding.ai/${lang}`,
-        "description": meta.description,
+        "description": metadata.description,
         "inLanguage": lang === 'pt' ? 'pt-BR' : lang === 'en' ? 'en-US' : 'es-ES',
         "potentialAction": {
           "@type": "SearchAction",
@@ -76,7 +75,7 @@ export async function generateMetadata({ params }: { params: { lang: 'pt' | 'en'
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "inLanguage": lang === 'pt' ? 'pt-BR' : lang === 'en' ? 'en-US' : 'es-ES',
-        "mainEntity": t.faq.questions.map(q => ({
+        "mainEntity": t.faq.questions.map((q: { question: string; answer: string }) => ({
           "@type": "Question",
           "name": q.question,
           "acceptedAnswer": {
@@ -97,17 +96,23 @@ export async function generateStaticParams() {
   ]
 }
 
-export default function Layout({
+export default function RootLayout({
   children,
   params
 }: {
   children: React.ReactNode
-  params: { lang: 'pt' | 'en' | 'es' }
+  params: { lang: ValidLang }
 }) {
   return (
     <html lang={params.lang} className={`${montserrat.variable} ${playfair.variable}`}>
       <head>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+        <link
+          rel="preload"
+          as="image"
+          href="/assets/images/hero-bride-desktop.webp"
+          type="image/webp"
+        />
       </head>
       <body className={`${montserrat.className} antialiased`}>
         {children}
