@@ -153,7 +153,7 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' | 'es' } 
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-4xl mb-4">{t.howItWorks.title}</h2>
-            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins']">{t.howItWorks.subtitle}</p>
+            <p className="text-center mx-auto text-[rgb(122,122,122)]">{t.howItWorks.subtitle}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="step text-center p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.05)]">
@@ -161,28 +161,28 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' | 'es' } 
                 <i className="fas fa-camera"></i>
               </div>
               <h3 className="text-xl mb-2">{t.howItWorks.steps.uploadPhoto.title}</h3>
-              <p className="text-[rgb(122,122,122)] text-sm font-['Poppins']">{t.howItWorks.steps.uploadPhoto.description}</p>
+              <p className="text-[rgb(122,122,122)]">{t.howItWorks.steps.uploadPhoto.description}</p>
             </div>
             <div className="step text-center p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.05)]">
               <div className="step-icon mb-6">
                 <i className="fas fa-tshirt"></i>
               </div>
               <h3 className="text-xl mb-2">{t.howItWorks.steps.chooseDresses.title}</h3>
-              <p className="text-[rgb(122,122,122)] text-sm font-['Poppins']">{t.howItWorks.steps.chooseDresses.description}</p>
+              <p className="text-[rgb(122,122,122)]">{t.howItWorks.steps.chooseDresses.description}</p>
             </div>
             <div className="step text-center p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.05)]">
               <div className="step-icon mb-6">
                 <i className="fas fa-wand-magic-sparkles"></i>
               </div>
               <h3 className="text-xl mb-2">{t.howItWorks.steps.seeTransformation.title}</h3>
-              <p className="text-[rgb(122,122,122)] text-sm font-['Poppins']">{t.howItWorks.steps.seeTransformation.description}</p>
+              <p className="text-[rgb(122,122,122)]">{t.howItWorks.steps.seeTransformation.description}</p>
             </div>
             <div className="step text-center p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.05)]">
               <div className="step-icon mb-6">
                 <i className="fas fa-heart"></i>
               </div>
               <h3 className="text-xl mb-2">{t.howItWorks.steps.findIdeal.title}</h3>
-              <p className="text-[rgb(122,122,122)] text-sm font-['Poppins']">{t.howItWorks.steps.findIdeal.description}</p>
+              <p className="text-[rgb(122,122,122)]">{t.howItWorks.steps.findIdeal.description}</p>
             </div>
           </div>
         </div>
@@ -196,7 +196,7 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' | 'es' } 
         <div className="container relative z-[1]">
           <div className="text-center mb-12">
             <h2 className="text-4xl mb-4">{t.benefits.title}</h2>
-            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">{t.benefits.subtitle}</p>
+            <p className="text-center mx-auto text-[rgb(122,122,122)] leading-[25.6px]">{t.benefits.subtitle}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="benefit bg-white rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)] overflow-hidden">
@@ -211,7 +211,7 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' | 'es' } 
               </div>
               <div className="benefit-content text-center py-4 px-6">
                 <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">{t.benefits.items.time.title}</h3>
-                <p className="text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">{t.benefits.items.time.description}</p>
+                <p className="text-[rgb(122,122,122)] leading-[25.6px]">{t.benefits.items.time.description}</p>
               </div>
             </div>
             <div className="benefit bg-white rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)] overflow-hidden">
@@ -226,7 +226,7 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' | 'es' } 
               </div>
               <div className="benefit-content text-center py-4 px-6">
                 <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">{t.benefits.items.stress.title}</h3>
-                <p className="text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">{t.benefits.items.stress.description}</p>
+                <p className="text-[rgb(122,122,122)] leading-[25.6px]">{t.benefits.items.stress.description}</p>
               </div>
             </div>
             <div className="benefit bg-white rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)] overflow-hidden">
@@ -241,7 +241,7 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' | 'es' } 
               </div>
               <div className="benefit-content text-center py-4 px-6">
                 <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">{t.benefits.items.options.title}</h3>
-                <p className="text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">{t.benefits.items.options.description}</p>
+                <p className="text-[rgb(122,122,122)] leading-[25.6px]">{t.benefits.items.options.description}</p>
               </div>
             </div>
             <div className="benefit bg-white p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)]">
@@ -256,7 +256,7 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' | 'es' } 
               </div>
               <div className="benefit-content text-center py-4 px-6">
                 <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">{t.benefits.items.confidence.title}</h3>
-                <p className="text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">{t.benefits.items.confidence.description}</p>
+                <p className="text-[rgb(122,122,122)] leading-[25.6px]">{t.benefits.items.confidence.description}</p>
               </div>
             </div>
           </div>
@@ -267,7 +267,7 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' | 'es' } 
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-4xl mb-4">{t.showcase.title}</h2>
-            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins'] leading-[25.6px]">{t.showcase.subtitle}</p>
+            <p className="text-center mx-auto text-[rgb(122,122,122)] leading-[25.6px]">{t.showcase.subtitle}</p>
           </div>
           <div className="grid grid-cols-1 gap-8">
             <div className="showcase-item bg-white p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)]">
@@ -334,7 +334,7 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' | 'es' } 
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-4xl mb-4">O Que Nossas Noivas Dizem</h2>
-            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins']">Experiências reais com o Perfect Wedding</p>
+            <p className="text-center mx-auto text-[rgb(122,122,122)]">Experiências reais com o Perfect Wedding</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="testimonial bg-white p-6 rounded-lg shadow-sm">
@@ -405,7 +405,7 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' | 'es' } 
             <div className="signup-content">
               <div className="text-center mb-12">
                 <h2 className="text-4xl mb-4">{t.signup.title}</h2>
-                <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins']">{t.signup.subtitle}</p>
+                <p className="text-center mx-auto text-[rgb(122,122,122)]">{t.signup.subtitle}</p>
               </div>
               <form 
                 id="signup-form" 
@@ -460,7 +460,7 @@ export default function Home({ params }: { params: { lang: 'pt' | 'en' | 'es' } 
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-4xl mb-4">{t.faq.title}</h2>
-            <p className="text-center mx-auto text-[rgb(122,122,122)] text-sm font-['Poppins']">{t.faq.subtitle}</p>
+            <p className="text-center mx-auto text-[rgb(122,122,122)]">{t.faq.subtitle}</p>
           </div>
           <div className="space-y-4 max-w-3xl mx-auto">
             {t.faq.questions.map((faq, index) => (
