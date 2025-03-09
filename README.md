@@ -1,87 +1,138 @@
-# Pre-launch Brides Hotsite
+# Perfect Wedding - Site de Lançamento
 
-Site de pré-lançamento para o Perfect Wedding, otimizado para máximo desempenho e experiência do usuário.
+Site de lançamento do Perfect Wedding, uma plataforma que permite noivas experimentarem vestidos de noiva virtualmente usando inteligência artificial.
 
-## Documentação
+## 🚀 Tecnologias
 
-- [Melhores práticas para prompting de IA generativa para imagens](docs/generative-image-best-practices.md)
-- [Melhorias de Desempenho](brides/MELHORIAS-DESEMPENHO.md)
+- [Next.js 14](https://nextjs.org/)
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
 
-## Requisitos
+## 📦 Estrutura do Projeto
 
-- Node.js (versão 14 ou superior)
-- NPM (versão 6 ou superior)
+```
+perfect-wedding-next/
+├── src/
+│   ├── app/
+│   │   ├── [lang]/           # Rotas dinâmicas por idioma
+│   │   │   ├── page.tsx      # Página principal
+│   │   │   ├── layout.tsx    # Layout com configurações globais
+│   │   │   ├── metadata.ts   # Metadados traduzidos
+│   │   │   └── translations.ts # Traduções do site
+│   │   └── globals.css       # Estilos globais
+│   └── components/           # Componentes React
+├── public/
+│   ├── assets/
+│   │   ├── images/          # Imagens otimizadas
+│   │   └── icons/          # Ícones e favicon
+└── ...
+```
 
-## Instalação
+## 🌍 Internacionalização
 
+O site suporta três idiomas:
+- 🇧🇷 Português (pt-BR)
+- 🇺🇸 Inglês (en-US)
+- 🇪🇸 Espanhol (es-ES)
+
+As URLs são estruturadas com o código do idioma:
+- `/pt` - Português
+- `/en` - Inglês
+- `/es` - Espanhol
+
+## 🔧 Configuração
+
+### Variáveis de Ambiente
+
+Crie um arquivo `.env.local` na raiz do projeto com as seguintes variáveis:
+
+```env
+# Google Analytics e Verificação
+GOOGLE_ANALYTICS_ID=seu-id-do-google-analytics
+GOOGLE_SITE_VERIFICATION=seu-código-de-verificação
+
+# URLs da API (exemplo)
+NEXT_PUBLIC_API_URL=https://perfectwedding.ai/api
+```
+
+### SEO e Metadados
+
+O projeto inclui:
+- Metadados dinâmicos por idioma
+- Tags OpenGraph para compartilhamento em redes sociais
+- Schema.org markup para rich snippets
+- Sitemap e robots.txt automáticos
+- Canonical URLs e hreflang tags
+
+### Performance
+
+- Fontes otimizadas com next/font
+- Carregamento assíncrono de scripts
+- Imagens otimizadas com next/image
+- Estratégia "afterInteractive" para scripts não-críticos
+
+## 🚀 Como Rodar
+
+1. Clone o repositório
 ```bash
-# Instalar dependências
+git clone https://github.com/seu-usuario/perfect-wedding.git
+cd perfect-wedding/perfect-wedding-next
+```
+
+2. Instale as dependências
+```bash
 npm install
-
-# Instalar clean-css-cli globalmente (necessário para o build)
-npm install -g clean-css-cli
+# ou
+yarn install
 ```
 
-## Scripts Disponíveis
-
+3. Configure as variáveis de ambiente
 ```bash
-# Build completo (minificar CSS e JavaScript)
-npm run build
-
-# Minificar apenas CSS
-npm run build:css
-
-# Iniciar servidor local com compressão gzip
-npm start
+cp .env.example .env.local
+# Edite .env.local com suas configurações
 ```
 
-## Desempenho
+4. Rode o projeto em desenvolvimento
+```bash
+npm run dev
+# ou
+yarn dev
+```
 
-O site foi otimizado para obter pontuação máxima (100/100) no PageSpeed Insights, com foco em:
+5. Para build de produção
+```bash
+npm run build
+# ou
+yarn build
+```
 
-- First Contentful Paint (FCP): 0.9s
-- Largest Contentful Paint (LCP): 1.7s
-- Cumulative Layout Shift (CLS): 0.015
-- Total Blocking Time (TBT): 0ms
+## 📝 Scripts Disponíveis
 
-Para mais detalhes sobre as otimizações implementadas, consulte o [documento de melhorias de desempenho](brides/MELHORIAS-DESEMPENHO.md).
+- `dev`: Roda o projeto em modo desenvolvimento
+- `build`: Gera build de produção
+- `start`: Inicia o servidor de produção
+- `lint`: Executa verificação de lint
+- `type-check`: Verifica tipos TypeScript
 
-## Otimizações de Desempenho
+## 🤝 Contribuindo
 
-O site foi otimizado para obter pontuação máxima no PageSpeed Insights:
+1. Faça o fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
 
-- **CSS Minificado**: Todo o CSS é minificado durante o build para reduzir o tamanho dos arquivos.
-- **JavaScript Minificado**: Os arquivos JavaScript são minificados usando Terser para carregamento mais rápido.
-- **Imagens Otimizadas**: Todas as imagens são convertidas para WebP e otimizadas para diferentes tamanhos de tela.
-- **Carregamento Crítico**: CSS crítico é carregado inline para renderização rápida da primeira visualização.
-- **Lazy Loading**: Imagens abaixo da dobra são carregadas apenas quando necessário.
-- **Favicon Personalizado**: Gerado com [favicon.io](https://favicon.io/favicon-generator/) para garantir compatibilidade com todos os dispositivos.
+## 📄 Licença
 
-Para mais detalhes sobre as otimizações implementadas, consulte o arquivo `brides/MELHORIAS-DESEMPENHO.md`.
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-## Implantação no Netlify
+## 👥 Autores
 
-O projeto está configurado para implantação otimizada no Netlify através do arquivo `netlify.toml`, que inclui:
+- Seu Nome - [@seu-usuario](https://github.com/seu-usuario)
 
-- Compressão de texto (Brotli e Gzip) para reduzir o tamanho dos arquivos
-- Cabeçalhos de cache otimizados para diferentes tipos de arquivos
-- Configurações de segurança recomendadas
-- Processamento automático de CSS, JavaScript e imagens
+## 🙏 Agradecimentos
 
-### Como implantar
-
-1. Faça o fork ou clone deste repositório
-2. Conecte o repositório ao Netlify
-3. O Netlify detectará automaticamente as configurações no arquivo `netlify.toml`
-4. A build será executada e o site será publicado com todas as otimizações
-
-Para mais detalhes sobre a configuração do Netlify, consulte o [documento de melhorias de desempenho](brides/MELHORIAS-DESEMPENHO.md#configuração-do-netlify).
-
-## License
-
-Copyright (c) 2025 Dyego Alekssander Maas
-
-Todos os direitos reservados.
-
-Este código é propriedade exclusiva do autor e não pode ser usado,
-copiado, modificado ou distribuído sem permissão expressa por escrito.
+- [Next.js Team](https://nextjs.org/)
+- [Vercel](https://vercel.com)
+- [Tailwind CSS](https://tailwindcss.com/)
