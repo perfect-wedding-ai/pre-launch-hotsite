@@ -1,5 +1,6 @@
 import { Montserrat, Playfair_Display } from 'next/font/google'
 import { Metadata } from 'next'
+import Script from 'next/script'
 import { translations } from './translations'
 import '../globals.css'
 
@@ -24,6 +25,7 @@ import { metadataTranslations } from './metadata'
 export async function generateMetadata({ params }: { params: { lang: 'pt' | 'en' | 'es' } }): Promise<Metadata> {
   const lang = params?.lang || 'pt'
   const meta = metadataTranslations[lang]
+  const t = translations[lang]
 
   return {
     metadataBase: new URL('https://perfectwedding.ai'),
@@ -54,6 +56,35 @@ export async function generateMetadata({ params }: { params: { lang: 'pt' | 'en'
         'es-ES': '/es',
       },
     },
+    other: {
+      'google-site-verification': process.env.GOOGLE_SITE_VERIFICATION || '',
+      schemaWebsite: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Perfect Wedding",
+        "url": `https://perfectwedding.ai/${lang}`,
+        "description": meta.description,
+        "inLanguage": lang === 'pt' ? 'pt-BR' : lang === 'en' ? 'en-US' : 'es-ES',
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": `https://perfectwedding.ai/${lang}/search?q={search_term_string}`,
+          "query-input": "required name=search_term_string"
+        }
+      }),
+      schemaFAQ: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "inLanguage": lang === 'pt' ? 'pt-BR' : lang === 'en' ? 'en-US' : 'es-ES',
+        "mainEntity": t.faq.questions.map(q => ({
+          "@type": "Question",
+          "name": q.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": q.answer
+          }
+        }))
+      })
+    }
   }
 }
 
@@ -72,76 +103,34 @@ export default function Layout({
   children: React.ReactNode
   params: { lang: 'pt' | 'en' | 'es' }
 }) {
-  const lang = params?.lang || 'pt'
-  const t = translations[lang]
-  const meta = metadataTranslations[lang]
-
   return (
     <html lang={params.lang} className={`${montserrat.variable} ${playfair.variable}`}>
-      <head>
+      <body className={`${montserrat.className} antialiased`}>
+        {children}
+
         {/* Google Analytics */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-TGY4JXMX0F"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-TGY4JXMX0F');
-            `
-          }}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GOOGLE_ANALYTICS_ID}`}
+          strategy="afterInteractive"
         />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${process.env.GOOGLE_ANALYTICS_ID}');
+          `}
+        </Script>
 
         {/* Font Awesome */}
-        <script
+        <Script
           src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"
           integrity="sha512-GWzVrcGlo0TxTjwEjZEDSxVqzGnAYYXBwKhJiAqSWFT6ZP+nZf6xBY4JqiZZZWwNrTY+CRRTmFJ5NtJ3RBwJw=="
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
-          defer
+          strategy="afterInteractive"
         />
-
-        {/* Schema.org markup para o site */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              "name": "Perfect Wedding",
-              "url": `https://perfectwedding.ai/${lang}`,
-              "description": meta.description,
-              "inLanguage": lang === 'pt' ? 'pt-BR' : lang === 'en' ? 'en-US' : 'es-ES',
-              "potentialAction": {
-                "@type": "SearchAction",
-                "target": `https://perfectwedding.ai/${lang}/search?q={search_term_string}`,
-                "query-input": "required name=search_term_string"
-              }
-            })
-          }}
-        />
-
-        {/* Schema.org markup para FAQs */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              "inLanguage": lang === 'pt' ? 'pt-BR' : lang === 'en' ? 'en-US' : 'es-ES',
-              "mainEntity": t.faq.questions.map(q => ({
-                "@type": "Question",
-                "name": q.question,
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": q.answer
-                }
-              }))
-            })
-          }}
-        />
-      </head>
-      <body className={`${montserrat.className} antialiased`}>{children}</body>
+      </body>
     </html>
   )
 } 

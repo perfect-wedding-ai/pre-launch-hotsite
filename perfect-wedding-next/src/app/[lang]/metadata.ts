@@ -52,7 +52,28 @@ export const metadata: Metadata = {
   },
   robots: 'index, follow',
   icons: {
-    icon: '/assets/icons/favicon.ico',
+    icon: [
+      {
+        url: '/assets/icons/favicon.ico',
+        sizes: '16x16',
+        type: 'image/x-icon',
+      },
+      {
+        url: '/assets/icons/icon-192.png',
+        sizes: '192x192',
+        type: 'image/png',
+      },
+      {
+        url: '/assets/icons/icon-512.png',
+        sizes: '512x512',
+        type: 'image/png',
+      },
+    ],
+    apple: {
+      url: '/assets/icons/apple-touch-icon.png',
+      sizes: '180x180',
+      type: 'image/png',
+    },
     shortcut: '/assets/icons/favicon.ico',
   },
   alternates: {
