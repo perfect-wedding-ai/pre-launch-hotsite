@@ -32,6 +32,11 @@ jobs:
           GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
           GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
 
+      - name: Clear Netlify cache
+        run: |
+          curl -X POST "https://api.netlify.com/api/v1/sites/${{ secrets.NETLIFY_SITE_ID }}/builds/clear-cache" \
+          -H "Authorization: Bearer ${{ secrets.NETLIFY_AUTH_TOKEN }}"
+
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v2.0
         with:
@@ -42,6 +47,7 @@ jobs:
           enable-pull-request-comment: true
           enable-commit-comment: true
           overwrites-pull-request-comment: true
+          production: true
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
