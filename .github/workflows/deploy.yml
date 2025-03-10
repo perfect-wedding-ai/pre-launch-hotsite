@@ -28,10 +28,6 @@ jobs:
         run: |
           echo "Starting build process..."
           npm run build
-          echo "Build completed. Checking .next directory..."
-          ls -la .next/
-          echo "Checking server functions..."
-          ls -la .next/server/
         env:
           NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
@@ -39,19 +35,21 @@ jobs:
           GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
           NEXT_TELEMETRY_DISABLED: 1
 
-      - name: Install Netlify CLI
-        run: npm install -g netlify-cli
-
       - name: Deploy to Netlify
-        id: deploy
-        run: |
-          DEPLOY_OUTPUT=$(netlify deploy --prod --dir=.next --functions=.next/server)
-          echo "deploy_url=$(echo "$DEPLOY_OUTPUT" | grep -o 'Website URL:.*' | cut -d' ' -f3)" >> "$GITHUB_OUTPUT"
-          echo "Deployed to: $(echo "$DEPLOY_OUTPUT" | grep -o 'Website URL:.*' | cut -d' ' -f3)"
+        uses: nwtgck/actions-netlify@v2.0
+        with:
+          publish-dir: '.next'
+          production-branch: main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy from GitHub Actions"
+          enable-pull-request-comment: true
+          enable-commit-comment: true
+          overwrites-pull-request-comment: true
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
           GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
-          GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }} 
+          GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
+        timeout-minutes: 2 
