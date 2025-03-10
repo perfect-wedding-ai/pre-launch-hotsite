@@ -39,27 +39,8 @@ jobs:
           GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
           NEXT_TELEMETRY_DISABLED: 1
 
-      - name: Prepare for deploy
-        run: |
-          echo "Preparing for deployment..."
-          echo "Checking Netlify configuration..."
-          cat netlify.toml
-          echo "Current directory structure:"
-          ls -la
-
       - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v2.0
-        with:
-          publish-dir: '.next'
-          production-branch: main
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Deploy from GitHub Actions with SSR"
-          enable-pull-request-comment: true
-          enable-commit-comment: true
-          overwrites-pull-request-comment: true
-          production-deploy: true
-          functions-dir: '.next/server'
-          netlify-config-path: ./netlify.toml
+        uses: netlify/actions/cli@master
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
@@ -67,5 +48,5 @@ jobs:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
           GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
           GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
-          NEXT_TELEMETRY_DISABLED: 1
-        timeout-minutes: 5 
+        with:
+          args: deploy --prod --dir=.next --functions=.next/server 
