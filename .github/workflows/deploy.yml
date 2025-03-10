@@ -25,13 +25,27 @@ jobs:
         run: npm ci
 
       - name: Build project
-        run: npm run build
+        run: |
+          echo "Starting build process..."
+          npm run build
+          echo "Build completed. Checking .next directory..."
+          ls -la .next/
+          echo "Checking server functions..."
+          ls -la .next/server/
         env:
           NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
           GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
           GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
           NEXT_TELEMETRY_DISABLED: 1
+
+      - name: Prepare for deploy
+        run: |
+          echo "Preparing for deployment..."
+          echo "Checking Netlify configuration..."
+          cat netlify.toml
+          echo "Current directory structure:"
+          ls -la
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v2.0
@@ -45,6 +59,7 @@ jobs:
           overwrites-pull-request-comment: true
           production-deploy: true
           functions-dir: '.next/server'
+          netlify-config-path: ./netlify.toml
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
@@ -53,4 +68,4 @@ jobs:
           GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
           GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
           NEXT_TELEMETRY_DISABLED: 1
-        timeout-minutes: 2 
+        timeout-minutes: 5 
