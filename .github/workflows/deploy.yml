@@ -24,42 +24,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build project
-        run: |
-          echo "Starting build process..."
-          npm run build
-          echo "Listing build output directories..."
-          ls -la
-          echo "\nContents of .next directory:"
-          ls -la .next/ || echo "'.next' directory not found"
-          echo "\nContents of public directory:"
-          ls -la public/ || echo "'public' directory not found"
-        env:
-          NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
-          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
-          GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
-          GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
-          NEXT_TELEMETRY_DISABLED: 1
-
-      - name: Prepare for deploy
-        run: |
-          echo "Creating deployment directory structure..."
-          mkdir -p deploy
-          cp -r .next deploy/
-          cp -r public deploy/
-          echo "\nContents of deploy directory:"
-          ls -la deploy/
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
 
       - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v2.0
-        with:
-          publish-dir: './deploy'
-          production-branch: main
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Deploy from GitHub Actions"
-          enable-pull-request-comment: true
-          enable-commit-comment: true
-          overwrites-pull-request-comment: true
+        run: |
+          echo "Starting Netlify deployment..."
+          netlify deploy --build --prod --message "Deploy from GitHub Actions"
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
@@ -67,4 +38,4 @@ jobs:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
           GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
           GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
-        timeout-minutes: 2 
+          NEXT_TELEMETRY_DISABLED: 1 
