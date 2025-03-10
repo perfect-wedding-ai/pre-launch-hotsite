@@ -1,68 +1,62 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-const locales = ['pt', 'en', 'es']
-const defaultLocale = 'pt'
+const supportedLocales = ['en', 'pt', 'es']
+const defaultLocale = 'en'
 
-function getLocaleFromHeader(request: NextRequest): string {
-    // Pega o header Accept-Language
-    const acceptLanguage = request.headers.get('accept-language')
-    if (!acceptLanguage) return defaultLocale
-
-    // Extrai o idioma principal (ex: 'pt-BR' -> 'pt')
-    const browserLocales = acceptLanguage.split(',')
-        .map(locale => locale.split(';')[0].trim())
-        .map(locale => locale.split('-')[0])
-
-    // Mapeia o idioma do navegador para um dos locales suportados
-    if (browserLocales[0] === 'pt') return 'pt'
-    if (browserLocales[0] === 'en') return 'en'
-    if (browserLocales[0] === 'es') return 'es'
-
-    return defaultLocale
-}
-
-function getLocaleFromPath(pathname: string): string | null {
-    // Verifica se o caminho já começa com um locale válido
-    for (const locale of locales) {
-        if (pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`) {
-            return locale
-        }
-    }
-    return null
+// Mapeia variações de idiomas para os idiomas suportados
+const localeMap: { [key: string]: string } = {
+  'en': 'en',
+  'en-us': 'en',
+  'en-gb': 'en',
+  'pt': 'pt',
+  'pt-br': 'pt',
+  'pt-pt': 'pt',
+  'es': 'es',
+  'es-es': 'es',
+  'es-mx': 'es',
+  'es-ar': 'es'
 }
 
 export function middleware(request: NextRequest) {
-    const pathname = request.nextUrl.pathname
-    
-    // Ignora arquivos estáticos e API
-    if (
-        pathname.startsWith('/_next') ||
-        pathname.startsWith('/api') ||
-        pathname.startsWith('/assets') ||
-        pathname.includes('.')
-    ) {
-        return NextResponse.next()
-    }
+  // Se já estiver em uma rota com idioma, não faz nada
+  if (supportedLocales.some(locale => request.nextUrl.pathname.startsWith(`/${locale}`))) {
+    return NextResponse.next()
+  }
 
-    // Verifica se já tem um locale no path
-    const pathLocale = getLocaleFromPath(pathname)
-    if (pathLocale) {
-        return NextResponse.next()
-    }
+  // Se estiver na rota raiz ou em qualquer outra rota sem idioma
+  const acceptLanguage = request.headers.get('accept-language') || ''
+  
+  // Processa cada idioma do accept-language
+  const browserLocales = acceptLanguage
+    .split(',')
+    .map(lang => {
+      // Pega apenas o código do idioma, ignorando o parâmetro de qualidade
+      const [languageCode] = lang.split(';')
+      return languageCode.trim().toLowerCase()
+    })
 
-    // Se não tiver locale no path, usa o do navegador
-    const browserLocale = getLocaleFromHeader(request)
+  // Tenta encontrar uma correspondência para cada variação de idioma
+  let targetLocale = defaultLocale
+  for (const locale of browserLocales) {
+    // Tenta o código completo (ex: en-us)
+    if (localeMap[locale]) {
+      targetLocale = localeMap[locale]
+      break
+    }
     
-    // Redireciona para a versão com locale
-    return NextResponse.redirect(
-        new URL(`/${browserLocale}${pathname === '/' ? '' : pathname}`, request.url)
-    )
+    // Tenta apenas o idioma principal (ex: en)
+    const mainLang = locale.split('-')[0]
+    if (localeMap[mainLang]) {
+      targetLocale = localeMap[mainLang]
+      break
+    }
+  }
+
+  // Redireciona para o idioma encontrado ou para o padrão
+  return NextResponse.redirect(new URL(`/${targetLocale}${request.nextUrl.pathname}`, request.url))
 }
 
 export const config = {
-    matcher: [
-        // Ignora arquivos estáticos e API
-        '/((?!api|_next/static|_next/image|favicon.ico|assets).*)',
-    ],
+  matcher: ['/((?!api|_next/static|_next/image|assets|favicon.ico).*)'],
 } 

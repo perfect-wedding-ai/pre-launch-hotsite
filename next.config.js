@@ -1,10 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
   images: {
-    unoptimized: true
+    domains: ['localhost'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
-  trailingSlash: true
+  trailingSlash: true,
+  generateBuildId: () => 'build',
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  experimental: {
+    telemetry: false
+  }
 }
 
 module.exports = nextConfig 

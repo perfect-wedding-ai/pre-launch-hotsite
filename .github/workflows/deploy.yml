@@ -2,10 +2,10 @@ name: Deploy to Netlify
 on:
   push:
     branches:
-      - main  # ou master, dependendo da sua branch principal
+      - main
   pull_request:
     branches:
-      - main  # ou master
+      - main
 
 jobs:
   deploy:
@@ -31,23 +31,20 @@ jobs:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
           GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
           GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
-
-      - name: Clear Netlify cache
-        run: |
-          curl -X POST "https://api.netlify.com/api/v1/sites/${{ secrets.NETLIFY_SITE_ID }}/builds/clear-cache" \
-          -H "Authorization: Bearer ${{ secrets.NETLIFY_AUTH_TOKEN }}"
+          NEXT_TELEMETRY_DISABLED: 1
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v2.0
         with:
-          publish-dir: 'out'
+          publish-dir: '.next'
           production-branch: main
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Deploy from GitHub Actions"
+          deploy-message: "Deploy from GitHub Actions with SSR"
           enable-pull-request-comment: true
           enable-commit-comment: true
           overwrites-pull-request-comment: true
           production-deploy: true
+          functions-dir: '.next/server'
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
@@ -55,4 +52,5 @@ jobs:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
           GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
           GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
-        timeout-minutes: 1 
+          NEXT_TELEMETRY_DISABLED: 1
+        timeout-minutes: 2 
