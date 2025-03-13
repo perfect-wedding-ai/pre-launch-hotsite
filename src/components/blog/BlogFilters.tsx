@@ -16,6 +16,9 @@ interface BlogFiltersProps {
 export default function BlogFilters({ categories, tags, locale, activeCategory, activeTag }: BlogFiltersProps) {
   const searchParams = useSearchParams();
   
+  // Colapsar variantes de idioma (en-US -> en, pt-BR -> pt)
+  const baseLocale = locale.split('-')[0];
+  
   const createFilterUrl = (type: 'category' | 'tag', value: string | null) => {
     const params = new URLSearchParams(searchParams.toString());
     
@@ -30,17 +33,17 @@ export default function BlogFilters({ categories, tags, locale, activeCategory, 
     }
     
     const queryString = params.toString();
-    return `/${locale}/blog${queryString ? `?${queryString}` : ''}`;
+    return `/${baseLocale}/blog${queryString ? `?${queryString}` : ''}`;
   };
   
-  const clearFiltersUrl = `/${locale}/blog`;
+  const clearFiltersUrl = `/${baseLocale}/blog`;
   const hasActiveFilters = activeCategory || activeTag;
   
   return (
     <div className="mb-8">
       <div className="flex flex-wrap items-center justify-between mb-4">
         <h2 className="text-xl font-playfair font-bold text-gray-900">
-          {locale === 'pt' ? 'Filtros' : 'Filters'}
+          {baseLocale === 'pt' ? 'Filtros' : 'Filters'}
         </h2>
         
         {hasActiveFilters && (
@@ -48,7 +51,7 @@ export default function BlogFilters({ categories, tags, locale, activeCategory, 
             href={clearFiltersUrl}
             className="text-sm text-pink-700 hover:text-pink-900 transition-colors"
           >
-            {locale === 'pt' ? 'Limpar filtros' : 'Clear filters'}
+            {baseLocale === 'pt' ? 'Limpar filtros' : 'Clear filters'}
           </Link>
         )}
       </div>
@@ -57,7 +60,7 @@ export default function BlogFilters({ categories, tags, locale, activeCategory, 
       {categories.length > 0 && (
         <div className="mb-6">
           <h3 className="text-lg font-semibold mb-2 text-gray-800">
-            {locale === 'pt' ? 'Categorias' : 'Categories'}
+            {baseLocale === 'pt' ? 'Categorias' : 'Categories'}
           </h3>
           
           <div className="flex flex-wrap gap-2">
@@ -86,7 +89,7 @@ export default function BlogFilters({ categories, tags, locale, activeCategory, 
       {tags.length > 0 && (
         <div>
           <h3 className="text-lg font-semibold mb-2 text-gray-800">
-            {locale === 'pt' ? 'Tags' : 'Tags'}
+            {baseLocale === 'pt' ? 'Tags' : 'Tags'}
           </h3>
           
           <div className="flex flex-wrap gap-2">

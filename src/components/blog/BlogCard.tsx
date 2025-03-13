@@ -11,21 +11,33 @@ interface BlogCardProps {
 }
 
 export default function BlogCard({ post, locale }: BlogCardProps) {
-  const { title, publishDate, tags, image, metadescription, category, slug } = post.fields;
+  const { title, publishDate, tags = [], image, metadescription, category, slug } = post.fields;
   
   const dateLocale = locale === 'pt' ? ptBR : enUS;
-  const formattedDate = format(new Date(publishDate), 'dd MMM, yyyy', { locale: dateLocale });
+  
+  // Tratar datas potencialmente inválidas
+  let formattedDate = '';
+  try {
+    const dateObj = publishDate ? new Date(publishDate) : new Date();
+    // Verificar se a data é válida
+    if (!isNaN(dateObj.getTime())) {
+      formattedDate = format(dateObj, 'dd MMM, yyyy', { locale: dateLocale });
+    }
+  } catch (error) {
+    console.error('Error formatting date:', error);
+    formattedDate = '';
+  }
   
   const postUrl = `/${locale}/blog/${slug}`;
   
   return (
     <article className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
       <Link href={postUrl} className="block">
-        {image ? (
+        {image && image.fields && image.fields.file ? (
           <div className="relative h-64 w-full">
             <Image
               src={`https:${image.fields.file.url}`}
-              alt={image.fields.title}
+              alt={image.fields.title || 'Blog post image'}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover"
@@ -40,7 +52,7 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
       
       <div className="p-6">
         <div className="flex flex-wrap gap-2 mb-3">
-          {tags.map((tag) => (
+          {Array.isArray(tags) && tags.map((tag) => (
             <Link
               key={tag}
               href={`/${locale}/blog?tag=${encodeURIComponent(tag)}`}
@@ -50,7 +62,7 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
             </Link>
           ))}
           
-          {category && (
+          {category && category.fields && category.fields.name && (
             <Link
               href={`/${locale}/blog?category=${category.sys.id}`}
               className="text-xs font-semibold bg-purple-100 text-purple-800 px-2 py-1 rounded-full hover:bg-purple-200 transition-colors"
@@ -71,7 +83,9 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
         )}
         
         <div className="flex items-center justify-between mt-4 text-sm text-gray-500">
-          <time dateTime={publishDate}>{formattedDate}</time>
+          {formattedDate && (
+            <time dateTime={publishDate}>{formattedDate}</time>
+          )}
           
           <Link
             href={postUrl}
