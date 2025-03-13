@@ -11,4 +11,5 @@ alwaysApply: false
 - Tailwind CSS for styling
 - Shadcn for new components
 - Contentful is the headless CMS that hosts the blog section's data
-- Tests with Jest + React Testing Library 
+- Tests with Jest + React Testing Library
+- App hosted on Netlify
