@@ -1,0 +1,13 @@
+---
+description: This is the project's tech stack
+globs: 
+alwaysApply: false
+---
+# Technical stack
+
+- .NET in the backend (it is in another repository)
+- NextJS in the frontend
+- Tailwind CSS for styling
+- Shadcn for new components
+- Contentful is the headless CMS that hosts the blog section's data
+- Tests with Jest + React Testing Library 
