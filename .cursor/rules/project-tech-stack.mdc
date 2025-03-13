@@ -5,6 +5,7 @@ alwaysApply: false
 ---
 # Technical stack
 
+- Development happens in a Windows machine
 - .NET in the backend (it is in another repository)
 - NextJS in the frontend
 - Tailwind CSS for styling
