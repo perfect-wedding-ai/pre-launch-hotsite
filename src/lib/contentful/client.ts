@@ -4,11 +4,14 @@ import { BlogPost, BlogPostCollection, Category, CategoryCollection } from './ty
 import { Locale } from '@/config/i18n.config';
 
 // IMPORTANTE: No Contentful, atualmente o inglês (en) é o locale padrão,
-// e o português (pt) tem um fallback para o inglês. 
-// Para forçar a exibição somente de conteúdo em português, estamos usando o
-// parâmetro 'locale.fallback=false' em todas as consultas com locale 'pt'.
-// Se no futuro o locale padrão for alterado no Contentful, este código pode precisar
-// ser revisado.
+// e o português (pt) tem um fallback para o inglês. Isso significa que se não houver
+// conteúdo em português para um campo, o Contentful retornará o conteúdo em inglês automaticamente.
+// 
+// Para garantir que apenas conteúdo em português seja exibido, estamos filtrando manualmente
+// os resultados das consultas, verificando se campos essenciais como 'title' existem no locale 'pt'.
+// 
+// Essa abordagem é necessária porque o parâmetro 'locale.fallback=false' não é suportado na 
+// versão atual do SDK do Contentful que estamos usando.
 
 // Content Delivery API client (para conteúdo publicado)
 const contentfulClient = createClient({
@@ -127,7 +130,7 @@ export const getBlogPosts = async (locale: Locale, options: { limit?: number; sk
   try {
     console.log(`Buscando posts no Contentful. Locale: ${locale}, Tipo: ${typeof locale}, Include: 2`);
     
-    // Para o locale pt, forçamos a buscar apenas posts em português
+    // Configurar parâmetros da consulta
     const queryParams = {
       content_type: 'blogPost',
       limit,
@@ -139,13 +142,6 @@ export const getBlogPosts = async (locale: Locale, options: { limit?: number; sk
       ...(category && { 'fields.category.sys.id': category }),
     };
     
-    // Se for locale pt, adicionar parâmetro para forçar a não usar fallback
-    if (locale === 'pt') {
-      console.log('Forçando locale pt sem fallback');
-      // @ts-ignore - O parâmetro 'locale.fallback' existe na API mas não está tipado
-      queryParams['locale.fallback'] = false;
-    }
-    
     console.log(`Opções de consulta:`, JSON.stringify(queryParams, null, 2));
     
     const response = await getClient().getEntries(queryParams);
@@ -153,19 +149,28 @@ export const getBlogPosts = async (locale: Locale, options: { limit?: number; sk
     console.log(`Resposta do Contentful: encontrados ${response.items.length} posts para o locale '${locale}'`);
     console.log(`Total de posts disponíveis: ${response.total}`);
     
+    // Quando o locale é 'pt', filtrar manualmente para garantir que só posts com conteúdo em português sejam retornados
+    let filteredItems = response.items;
+    if (locale === 'pt') {
+      console.log('Filtrando manualmente posts sem conteúdo em português');
+      filteredItems = response.items.filter((item: any) => {
+        // Verificar se o título existe em português
+        return item.fields.title && typeof item.fields.title === 'string';
+      });
+      
+      console.log(`Após filtragem: ${filteredItems.length} posts com conteúdo em português`);
+    }
+    
     // Verificar se algum dado está ausente na localização solicitada
-    if (response.items.length > 0) {
-      response.items.forEach((item: any, index: number) => {
+    if (filteredItems.length > 0) {
+      filteredItems.forEach((item: any, index: number) => {
         console.log(`Post ${index + 1} - Título: ${item.fields.title || 'Sem título'} - Locale: ${item.sys.locale || 'Não especificado'}`);
-        if (!item.fields.title && locale === 'pt') {
-          console.log(`ALERTA: Post ${index + 1} (ID: ${item.sys.id}) não tem título em português!`);
-        }
       });
     }
     
     // Verificar se as imagens estão presentes
-    if (response.items.length > 0) {
-      response.items.forEach((item: any, index: number) => {
+    if (filteredItems.length > 0) {
+      filteredItems.forEach((item: any, index: number) => {
         console.log(`Post ${index + 1} - ${item.fields.title} - Tem imagem: ${!!item.fields.image}`);
         if (item.fields.image) {
           console.log(`-> Estrutura da imagem: ${JSON.stringify(Object.keys(item.fields.image))}`);
@@ -176,7 +181,11 @@ export const getBlogPosts = async (locale: Locale, options: { limit?: number; sk
       });
     }
 
-    return response as unknown as BlogPostCollection;
+    return {
+      ...response,
+      items: filteredItems,
+      total: filteredItems.length // Atualizar o total para refletir os itens filtrados
+    } as unknown as BlogPostCollection;
   } catch (error) {
     console.error('Error fetching blog posts:', error);
     return { items: [], total: 0, skip: 0, limit: 0 };
@@ -185,22 +194,26 @@ export const getBlogPosts = async (locale: Locale, options: { limit?: number; sk
 
 export const getBlogPostBySlug = async (slug: string, locale: Locale, preview: boolean = false): Promise<BlogPost | null> => {
   try {
-    const queryParams: any = {
+    const queryParams = {
       content_type: 'blogPost',
       'fields.slug': slug,
       locale,
       include: 2,
     };
     
-    // Se for locale pt, adicionar parâmetro para forçar a não usar fallback
-    if (locale === 'pt') {
-      queryParams['locale.fallback'] = false;
-    }
-    
     const response = await getClient(preview).getEntries(queryParams);
 
     if (response.items.length === 0) {
       return null;
+    }
+    
+    // Verificar se o post tem conteúdo no locale solicitado
+    if (locale === 'pt') {
+      const post = response.items[0];
+      if (!post.fields.title || typeof post.fields.title !== 'string') {
+        console.log(`Post não tem conteúdo em português: ${slug}`);
+        return null;
+      }
     }
 
     return response.items[0] as unknown as BlogPost;
@@ -212,7 +225,7 @@ export const getBlogPostBySlug = async (slug: string, locale: Locale, preview: b
 
 export const getRelatedPosts = async (postId: string, tags: string[], locale: Locale, limit: number = 3): Promise<BlogPost[]> => {
   try {
-    const queryParams: any = {
+    const queryParams = {
       content_type: 'blogPost',
       'fields.tags[in]': tags.join(','),
       'sys.id[ne]': postId,
@@ -222,14 +235,17 @@ export const getRelatedPosts = async (postId: string, tags: string[], locale: Lo
       order: '-fields.publishDate' as any,
     };
     
-    // Se for locale pt, adicionar parâmetro para forçar a não usar fallback
-    if (locale === 'pt') {
-      queryParams['locale.fallback'] = false;
-    }
-    
     const response = await getClient().getEntries(queryParams);
 
-    return response.items as unknown as BlogPost[];
+    // Filtrar para garantir que só posts com conteúdo no locale solicitado sejam retornados
+    let filteredItems = response.items;
+    if (locale === 'pt') {
+      filteredItems = response.items.filter((item: any) => {
+        return item.fields.title && typeof item.fields.title === 'string';
+      });
+    }
+
+    return filteredItems as unknown as BlogPost[];
   } catch (error) {
     console.error('Error fetching related posts:', error);
     return [];
@@ -240,20 +256,27 @@ export const getCategories = async (locale: Locale): Promise<CategoryCollection>
   try {
     console.log("locale", locale);
     
-    const queryParams: any = {
+    const queryParams = {
       content_type: 'category',
       locale,
       order: 'fields.name' as any,
     };
     
-    // Se for locale pt, adicionar parâmetro para forçar a não usar fallback
-    if (locale === 'pt') {
-      queryParams['locale.fallback'] = false;
-    }
-    
     const response = await getClient().getEntries(queryParams);
 
-    return response as unknown as CategoryCollection;
+    // Filtrar para garantir que só categorias com conteúdo no locale solicitado sejam retornadas
+    let filteredItems = response.items;
+    if (locale === 'pt') {
+      filteredItems = response.items.filter((item: any) => {
+        return item.fields.name && typeof item.fields.name === 'string';
+      });
+    }
+
+    return {
+      ...response,
+      items: filteredItems,
+      total: filteredItems.length
+    } as unknown as CategoryCollection;
   } catch (error) {
     console.error('Error fetching categories:', error);
     return { items: [], total: 0, skip: 0, limit: 0 };
@@ -264,17 +287,12 @@ export const getCategories = async (locale: Locale): Promise<CategoryCollection>
 export const getAssetById = async (assetId: string, locale: Locale = 'pt') => {
   try {
     // Usar getEntries com sys.id em vez de getAsset
-    const queryParams: any = {
+    const queryParams = {
       'sys.id': assetId,
       content_type: 'asset',
       locale,
       include: 1
     };
-    
-    // Se for locale pt, adicionar parâmetro para forçar a não usar fallback
-    if (locale === 'pt') {
-      queryParams['locale.fallback'] = false;
-    }
     
     const response = await getClient().getEntries(queryParams);
     

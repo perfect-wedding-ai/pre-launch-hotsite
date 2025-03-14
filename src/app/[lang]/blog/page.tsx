@@ -87,14 +87,16 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
     category,
   });
   
-  console.log(`Recuperados ${postsResponse.items.length} posts de um total de ${postsResponse.total}`);
+  console.log(`Recuperados ${postsResponse.items.length} posts de um total de ${postsResponse.total} para o locale ${lang}`);
   
   // Buscar todas as categorias
   const categoriesResponse = await getCategories(lang);
+  console.log(`Recuperadas ${categoriesResponse.items.length} categorias para o locale ${lang}`);
   
   // Buscar todos os posts para extrair tags (limitado a 100 para performance)
   const allPostsResponse = await getBlogPosts(lang, { limit: 100 });
   const uniqueTags = extractUniqueTags(allPostsResponse.items);
+  console.log(`Extraídas ${uniqueTags.length} tags únicas dos posts`);
   
   const totalPages = Math.ceil(postsResponse.total / postsPerPage);
   
@@ -142,17 +144,18 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
                 </h2>
                 <p className="text-gray-600 mb-4">
                   {lang === 'pt'
-                    ? 'Não encontramos posts com os filtros selecionados. Tente outros filtros ou volte mais tarde.'
-                    : 'We couldn\'t find any posts with the selected filters. Try other filters or check back later.'}
+                    ? `Não encontramos posts em português${category ? ' nesta categoria' : ''}${tag ? ' com esta tag' : ''}.`
+                    : `We couldn't find any posts in English${category ? ' in this category' : ''}${tag ? ' with this tag' : ''}.`
+                  }
                 </p>
                 <p className="text-gray-600">
                   {lang === 'pt'
-                    ? 'Você também pode verificar se o conteúdo está disponível em inglês.'
-                    : 'You can also check if the content is available in Portuguese.'}
+                    ? 'Você pode verificar se o conteúdo está disponível em inglês.'
+                    : 'You can check if the content is available in Portuguese.'}
                 </p>
                 <div className="mt-6">
                   <a 
-                    href={`/${lang === 'pt' ? 'en' : 'pt'}/blog`} 
+                    href={`/${lang === 'pt' ? 'en' : 'pt'}/blog${category ? `?category=${category}` : ''}${tag ? `${category ? '&' : '?'}tag=${tag}` : ''}`} 
                     className="inline-block bg-primary text-white py-2 px-6 rounded-md hover:bg-primary-dark transition"
                   >
                     {lang === 'pt' ? 'Ver em inglês' : 'View in Portuguese'}
