@@ -103,15 +103,31 @@ export const getBlogPosts = async (locale: Locale, options: { limit?: number; sk
   const { limit = 10, skip = 0, tag, category } = options;
 
   try {
+    console.log(`Buscando posts no Contentful. Locale: ${locale}, Include: 2`);
+    
     const response = await getClient().getEntries({
       content_type: 'blogPost',
       limit,
       skip,
       order: '-fields.publishDate' as any,
       locale,
+      include: 2,
       ...(tag && { 'fields.tags': tag }),
       ...(category && { 'fields.category.sys.id': category }),
     });
+    
+    // Verificar se as imagens estão presentes
+    if (response.items.length > 0) {
+      response.items.forEach((item: any, index: number) => {
+        console.log(`Post ${index + 1} - ${item.fields.title} - Tem imagem: ${!!item.fields.image}`);
+        if (item.fields.image) {
+          console.log(`-> Estrutura da imagem: ${JSON.stringify(Object.keys(item.fields.image))}`);
+          if (item.fields.image.fields) {
+            console.log(`-> Campos da imagem: ${JSON.stringify(Object.keys(item.fields.image.fields))}`);
+          }
+        }
+      });
+    }
 
     return response as unknown as BlogPostCollection;
   } catch (error) {
@@ -148,6 +164,7 @@ export const getRelatedPosts = async (postId: string, tags: string[], locale: Lo
       'sys.id[ne]': postId,
       locale,
       limit,
+      include: 2,
       order: '-fields.publishDate' as any,
     });
 

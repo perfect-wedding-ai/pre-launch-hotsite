@@ -4,14 +4,52 @@ import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 import { BlogPost } from '@/lib/contentful/types';
 import { Locale } from '@/config/i18n.config';
+import BlogImage from './BlogImage';
 
 interface BlogCardProps {
   post: BlogPost;
   locale: Locale;
 }
 
+// Função para extrair URL da imagem de maneira segura, similar à da página de post individual
+function getImageUrl(image: any): string | null {
+  try {
+    if (!image) {
+      return null;
+    }
+    
+    // CASO 1: Formato da Content Delivery API
+    if (image.fields && image.fields.file && image.fields.file.url) {
+      return `https:${image.fields.file.url}`;
+    }
+    
+    // CASO 2: Referência com ID
+    if (image.sys && typeof image.sys === 'object' && image.sys.id) {
+      // No lugar de gerar uma URL estática com "image.jpg", vamos usar a mesma
+      // lógica da página de post individual, retornando null para usar o componente
+      // BlogImage que testa diversas URLs até encontrar uma que funcione
+      return null;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Error getting image URL:', error);
+    return null;
+  }
+}
+
 export default function BlogCard({ post, locale }: BlogCardProps) {
   const { title, publishDate, tags = [], image, metadescription, category, slug } = post.fields;
+  
+  const imageUrl = getImageUrl(image);
+  
+  // Extrair assetId de referências
+  const imageAny = image as any;
+  const assetId = imageAny?.sys?.id;
+  const spaceId = process.env.CONTENTFUL_SPACE_ID;
+  
+  // Fallback image
+  const fallbackImageUrl = "/assets/images/placeholder-blog.jpeg";
   
   const dateLocale = locale === 'pt' ? ptBR : enUS;
   
@@ -30,17 +68,32 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
   
   const postUrl = `/${locale}/blog/${slug}`;
   
+  // Verificar se temos uma referência ou uma URL direta
+  const hasImageReference = image && !imageUrl && assetId && spaceId;
+  
   return (
     <article className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
       <Link href={postUrl} className="block">
-        {image && image.fields && image.fields.file ? (
+        {imageUrl ? (
           <div className="relative h-64 w-full">
             <Image
-              src={`https:${image.fields.file.url}`}
-              alt={image.fields.title || 'Blog post image'}
+              src={imageUrl}
+              alt={title || 'Blog post image'}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover"
+            />
+          </div>
+        ) : hasImageReference ? (
+          <div className="relative h-64 w-full">
+            <BlogImage
+              src=""
+              fallbackSrc={fallbackImageUrl}
+              alt={title || 'Blog post image'}
+              aspectRatio="16/9"
+              assetId={assetId}
+              spaceId={spaceId}
+              className="h-64"
             />
           </div>
         ) : (

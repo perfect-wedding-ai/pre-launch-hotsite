@@ -2,11 +2,39 @@ import { BlogPost } from '@/lib/contentful/types';
 import { Locale } from '@/config/i18n.config';
 import Link from 'next/link';
 import Image from 'next/image';
+import BlogImage from './BlogImage';
 
 interface RelatedPostsProps {
   posts: BlogPost[];
   locale: Locale;
   title?: string;
+}
+
+// Função para extrair URL da imagem de maneira segura, similar à do BlogCard
+function getImageUrl(image: any): string | null {
+  try {
+    if (!image) {
+      return null;
+    }
+    
+    // CASO 1: Formato da Content Delivery API
+    if (image.fields && image.fields.file && image.fields.file.url) {
+      return `https:${image.fields.file.url}`;
+    }
+    
+    // CASO 2: Referência com ID
+    if (image.sys && typeof image.sys === 'object' && image.sys.id) {
+      // No lugar de gerar uma URL estática com "image.jpg", vamos usar a mesma
+      // lógica da página de post individual, retornando null para usar o componente
+      // BlogImage que testa diversas URLs até encontrar uma que funcione
+      return null;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Error getting image URL:', error);
+    return null;
+  }
 }
 
 export default function RelatedPosts({ posts, locale, title }: RelatedPostsProps) {
@@ -15,6 +43,11 @@ export default function RelatedPosts({ posts, locale, title }: RelatedPostsProps
   }
 
   const defaultTitle = locale === 'pt' ? 'Posts Relacionados' : 'Related Posts';
+  
+  // Fallback image
+  const fallbackImageUrl = "/assets/images/placeholder-blog.jpeg";
+  // ID do espaço Contentful
+  const spaceId = process.env.CONTENTFUL_SPACE_ID;
 
   return (
     <section className="mt-12 border-t border-gray-200 pt-8">
@@ -26,18 +59,38 @@ export default function RelatedPosts({ posts, locale, title }: RelatedPostsProps
         {posts.map((post) => {
           const { title, slug, image } = post.fields;
           const postUrl = `/${locale}/blog/${slug}`;
+          const imageUrl = getImageUrl(image);
+          
+          // Extrair assetId de referências
+          const imageAny = image as any;
+          const assetId = imageAny?.sys?.id;
+          
+          // Verificar se temos uma referência ou uma URL direta
+          const hasImageReference = image && !imageUrl && assetId && spaceId;
           
           return (
             <article key={post.sys.id} className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
               <Link href={postUrl} className="block">
-                {image ? (
+                {imageUrl ? (
                   <div className="relative h-40 w-full">
                     <Image
-                      src={`https:${image.fields.file.url}`}
-                      alt={image.fields.title}
+                      src={imageUrl}
+                      alt={title || 'Related post image'}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
                       className="object-cover"
+                    />
+                  </div>
+                ) : hasImageReference ? (
+                  <div className="relative h-40 w-full">
+                    <BlogImage
+                      src=""
+                      fallbackSrc={fallbackImageUrl}
+                      alt={title || 'Related post image'}
+                      aspectRatio="16/9"
+                      assetId={assetId}
+                      spaceId={spaceId}
+                      className="h-40"
                     />
                   </div>
                 ) : (
