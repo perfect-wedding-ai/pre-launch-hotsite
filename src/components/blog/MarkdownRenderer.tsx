@@ -14,6 +14,9 @@ export default function MarkdownRenderer({ content, locale }: MarkdownRendererPr
     return <div className="text-gray-500">Conteúdo indisponível</div>;
   }
 
+  // Para depuração
+  console.log('MarkdownRenderer recebeu:', content);
+  
   // Função para processar formatação de texto em uma linha
   const processTextFormatting = (text: string) => {
     // Regex para identificar texto em negrito (**texto** ou __texto__)
@@ -54,6 +57,20 @@ export default function MarkdownRenderer({ content, locale }: MarkdownRendererPr
 
   // Função para converter markdown para elementos HTML
   const renderMarkdown = (markdown: string) => {
+    console.log('Processando markdown:', markdown);
+    
+    // Função auxiliar para verificar se uma linha é um item de lista não ordenada
+    const isUnorderedListItem = (line: string) => {
+      const trimmedLine = line.trim();
+      return trimmedLine.match(/^[\-\*]\s/) !== null;
+    };
+    
+    // Função auxiliar para verificar se uma linha é um item de lista ordenada
+    const isOrderedListItem = (line: string) => {
+      const trimmedLine = line.trim();
+      return trimmedLine.match(/^\d+\.\s/) !== null;
+    };
+    
     // Quebrar em linhas
     const lines = markdown.split('\n');
     const elements = [];
@@ -65,7 +82,30 @@ export default function MarkdownRenderer({ content, locale }: MarkdownRendererPr
     
     // Processa linha por linha
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
+      const line = lines[i].trim();
+      
+      // Se a linha estiver vazia, pular
+      if (line === '') {
+        // Finaliza listas abertas
+        if (inUnorderedList) {
+          console.log('Fechando lista não ordenada:', listItems);
+          elements.push(<ul key={`ul-${i}`} className="list-disc pl-10 mb-6 space-y-2">{listItems}</ul>);
+          listItems = [];
+          inUnorderedList = false;
+        }
+        if (inOrderedList) {
+          console.log('Fechando lista ordenada:', listItems);
+          elements.push(<ol key={`ol-${i}`} className="list-decimal pl-10 mb-6 space-y-2">{listItems}</ol>);
+          listItems = [];
+          inOrderedList = false;
+        }
+        
+        // Só adiciona espaçador se não for no início ou fim
+        if (i > 0 && i < lines.length - 1) {
+          elements.push(<div key={i} className="h-4"></div>);
+        }
+        continue;
+      }
       
       // Headings
       if (line.startsWith('### ')) {
@@ -178,7 +218,9 @@ export default function MarkdownRenderer({ content, locale }: MarkdownRendererPr
         );
       } 
       // Listas não ordenadas (- item ou * item)
-      else if (line.trim().match(/^[\-\*]\s/)) {
+      else if (isUnorderedListItem(line)) {
+        console.log('Detectado item de lista não ordenada:', line);
+        
         // Se não estávamos em lista não ordenada, finaliza lista ordenada se estava aberta
         if (!inUnorderedList) {
           if (inOrderedList) {
@@ -191,7 +233,7 @@ export default function MarkdownRenderer({ content, locale }: MarkdownRendererPr
         }
         
         // Adiciona item
-        const itemContent = line.trim().substring(2);
+        const itemContent = line.substring(line.indexOf(' ') + 1);
         listItems.push(
           <li key={`li-${i}`} className="text-gray-800">
             {processTextFormatting(itemContent)}
@@ -199,7 +241,9 @@ export default function MarkdownRenderer({ content, locale }: MarkdownRendererPr
         );
       }
       // Listas ordenadas (1. item)
-      else if (line.trim().match(/^\d+\.\s/)) {
+      else if (isOrderedListItem(line)) {
+        console.log('Detectado item de lista ordenada:', line);
+        
         // Se não estávamos em lista ordenada, finaliza lista não ordenada se estava aberta
         if (!inOrderedList) {
           if (inUnorderedList) {
@@ -212,27 +256,12 @@ export default function MarkdownRenderer({ content, locale }: MarkdownRendererPr
         }
         
         // Adiciona item
-        const itemContent = line.trim().replace(/^\d+\.\s/, '');
+        const itemContent = line.replace(/^\d+\.\s/, '');
         listItems.push(
           <li key={`li-${i}`} className="text-gray-800">
             {processTextFormatting(itemContent)}
           </li>
         );
-      }
-      // Se linha estiver vazia, finaliza listas abertas
-      else if (line.trim() === '') {
-        if (inUnorderedList) {
-          elements.push(<ul key={`ul-${i}`} className="list-disc pl-10 mb-6 space-y-2">{listItems}</ul>);
-          listItems = [];
-          inUnorderedList = false;
-        }
-        if (inOrderedList) {
-          elements.push(<ol key={`ol-${i}`} className="list-decimal pl-10 mb-6 space-y-2">{listItems}</ol>);
-          listItems = [];
-          inOrderedList = false;
-        }
-        
-        elements.push(<div key={i} className="h-4"></div>);
       }
       // Parágrafo normal
       else {

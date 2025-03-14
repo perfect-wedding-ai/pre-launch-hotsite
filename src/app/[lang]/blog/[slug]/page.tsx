@@ -205,31 +205,222 @@ function getImageTitle(image: any): string {
   return 'Blog post image';
 }
 
-// Função auxiliar para converter rich text para texto simples quando necessário
-function richTextToString(document: Document): string {
+// Função auxiliar para inspecionar e imprimir a estrutura do documento Rich Text
+function inspectRichTextDocument(document: Document, maxDepth = 3): void {
   try {
-    if (!document) return '';
+    console.log('Rich Text Document structure (simplified):');
     
-    // Um método simples para extrair texto do rich text
-    const extractTextFromNode = (node: any): string => {
-      // Se for nó de texto, retorna o valor
-      if (node.nodeType === 'text') {
-        return node.value || '';
+    const inspectNode = (node: any, depth = 0, path = ''): void => {
+      if (depth > maxDepth) return;
+      
+      const indent = '  '.repeat(depth);
+      const displayPath = path ? path + '.' : '';
+      
+      if (node === null || node === undefined) {
+        console.log(`${indent}${displayPath}NULL`);
+        return;
       }
       
-      // Se for parágrafo ou outro container, processa os filhos
-      if (node.content && Array.isArray(node.content)) {
-        return node.content.map(extractTextFromNode).join('\n');
+      if (typeof node !== 'object') {
+        console.log(`${indent}${displayPath}${typeof node}: ${node}`);
+        return;
       }
       
-      return '';
+      if (Array.isArray(node)) {
+        console.log(`${indent}${displayPath}Array (${node.length} items)`);
+        if (depth < maxDepth) {
+          node.forEach((item, idx) => {
+            inspectNode(item, depth + 1, `${displayPath}[${idx}]`);
+          });
+        }
+        return;
+      }
+      
+      // Para nós do rich text
+      if (node.nodeType) {
+        console.log(`${indent}${displayPath}${node.nodeType}`);
+        if (node.content && depth < maxDepth) {
+          node.content.forEach((item: any, idx: number) => {
+            inspectNode(item, depth + 1, `${displayPath}content[${idx}]`);
+          });
+        }
+        return;
+      }
+      
+      // Para outros objetos
+      console.log(`${indent}${displayPath}Object keys: ${Object.keys(node).join(', ')}`);
+      
+      if (depth < maxDepth) {
+        Object.keys(node).forEach(key => {
+          inspectNode(node[key], depth + 1, `${displayPath}${key}`);
+        });
+      }
     };
     
-    // Processa o documento inteiro
-    let result = '';
-    if (document.content && Array.isArray(document.content)) {
-      result = document.content.map(extractTextFromNode).join('\n');
-    }
+    inspectNode(document);
+  } catch (error) {
+    console.error('Error inspecting Rich Text document:', error);
+  }
+}
+
+// Função auxiliar para converter rich text para texto markdown
+function richTextToString(document: Document): string {
+  if (!document) return '';
+  
+  // Debug
+  inspectRichTextDocument(document);
+  
+  try {
+    // Definir tipos para listType
+    type ListType = null | { type: 'ol' | 'ul', index?: number };
+    
+    const extractTextFromNode = (node: any, listType: ListType = null, listDepth = 0): string => {
+      // Se não for um nó válido
+      if (!node) return '';
+      
+      // Se for nó de texto
+      if (node.nodeType === 'text') {
+        let text = node.value || '';
+        
+        // Aplicar formatações do Contentful
+        if (node.marks && Array.isArray(node.marks)) {
+          node.marks.forEach((mark: any) => {
+            if (mark.type === 'bold') {
+              text = `**${text}**`;
+            } else if (mark.type === 'italic') {
+              text = `*${text}*`;
+            } else if (mark.type === 'underline') {
+              text = `<u>${text}</u>`;
+            } else if (mark.type === 'code') {
+              text = `\`${text}\``;
+            }
+          });
+        }
+        
+        return text;
+      }
+      
+      // Para outros tipos de nós
+      let result = '';
+      
+      // Processar diferentes tipos de nós
+      switch (node.nodeType) {
+        case 'document':
+          if (node.content) {
+            result = node.content.map((child: any) => extractTextFromNode(child)).join('');
+          }
+          break;
+          
+        case 'paragraph':
+          if (node.content) {
+            // Se estivermos dentro de uma lista, não adicione quebras de linha extras
+            result = node.content.map((child: any) => extractTextFromNode(child)).join('');
+            if (!listType) {
+              result += '\n\n';
+            }
+          }
+          break;
+          
+        case 'heading-1':
+          if (node.content) {
+            result = '# ' + node.content.map((child: any) => extractTextFromNode(child)).join('') + '\n\n';
+          }
+          break;
+          
+        case 'heading-2':
+          if (node.content) {
+            result = '## ' + node.content.map((child: any) => extractTextFromNode(child)).join('') + '\n\n';
+          }
+          break;
+          
+        case 'heading-3':
+          if (node.content) {
+            result = '### ' + node.content.map((child: any) => extractTextFromNode(child)).join('') + '\n\n';
+          }
+          break;
+          
+        case 'heading-4':
+          if (node.content) {
+            result = '#### ' + node.content.map((child: any) => extractTextFromNode(child)).join('') + '\n\n';
+          }
+          break;
+          
+        case 'heading-5':
+          if (node.content) {
+            result = '##### ' + node.content.map((child: any) => extractTextFromNode(child)).join('') + '\n\n';
+          }
+          break;
+          
+        case 'heading-6':
+          if (node.content) {
+            result = '###### ' + node.content.map((child: any) => extractTextFromNode(child)).join('') + '\n\n';
+          }
+          break;
+          
+        case 'unordered-list':
+          if (node.content) {
+            result = node.content.map((child: any) => extractTextFromNode(child, { type: 'ul' }, listDepth + 1)).join('') + '\n';
+          }
+          break;
+          
+        case 'ordered-list':
+          if (node.content) {
+            result = node.content.map((child: any, index: number) => {
+              // Passar explicitamente o índice e o tipo da lista
+              return extractTextFromNode(child, { type: 'ol', index: index + 1 }, listDepth + 1);
+            }).join('') + '\n';
+          }
+          break;
+          
+        case 'list-item':
+          if (node.content) {
+            // Formatar o item baseado no tipo de lista
+            const prefix = listType && listType.type === 'ol' && listType.index 
+              ? `${listType.index}. ` 
+              : '- ';
+            const indent = '  '.repeat(listDepth);
+            const content = node.content.map((child: any) => extractTextFromNode(child, listType, listDepth)).join('');
+            result = `${indent}${prefix}${content}\n`;
+          }
+          break;
+          
+        case 'hyperlink':
+          if (node.content) {
+            const text = node.content.map((child: any) => extractTextFromNode(child)).join('');
+            result = `[${text}](${node.data.uri})`;
+          }
+          break;
+          
+        case 'embedded-asset-block':
+          result = '\n![Embedded Asset](embedded-asset)\n\n';
+          break;
+          
+        case 'hr':
+          result = '\n---\n\n';
+          break;
+          
+        case 'blockquote':
+          if (node.content) {
+            const quote = node.content.map((child: any) => extractTextFromNode(child)).join('');
+            result = `> ${quote.replace(/\n/g, '\n> ')}\n\n`;
+          }
+          break;
+          
+        default:
+          // Se o nó tiver conteúdo, processar recursivamente
+          if (node.content && Array.isArray(node.content)) {
+            result = node.content.map((child: any) => extractTextFromNode(child, listType, listDepth)).join('');
+          }
+      }
+      
+      return result;
+    };
+    
+    // Processar documento inteiro
+    const result = extractTextFromNode(document);
+    
+    // Debug
+    console.log('Markdown content:', result);
     
     return result;
   } catch (error) {
