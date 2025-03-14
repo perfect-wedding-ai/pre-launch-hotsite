@@ -10,7 +10,59 @@ interface RichTextRendererProps {
   locale: Locale;
 }
 
+// Função auxiliar para extrair campos de assets com segurança
+function getAssetFields(node: any) {
+  try {
+    // Para debug
+    console.log('Asset node structure:', JSON.stringify(node?.data?.target, null, 2));
+    
+    // Tenta obter os campos no formato que a Content Delivery API retorna
+    if (node.data?.target?.fields) {
+      const fields = node.data.target.fields;
+      
+      // Verificar se os campos estão no formato localizado
+      if (fields.title && typeof fields.title === 'object') {
+        // Encontrar o locale correto
+        const locales = Object.keys(fields.title);
+        const locale = locales[0]; // Usa o primeiro locale disponível
+        
+        // Extrair campos localizados
+        return {
+          title: fields.title[locale],
+          description: fields.description?.[locale],
+          file: fields.file?.[locale]
+        };
+      }
+      
+      // Formato da API de entrega
+      return {
+        title: fields.title,
+        description: fields.description,
+        file: fields.file
+      };
+    }
+    
+    // Tenta acessar diretamente a propriedade file sem passar por fields
+    if (node.data?.target?.file) {
+      return {
+        title: node.data.target.title || '',
+        description: node.data.target.description || '',
+        file: node.data.target.file
+      };
+    }
+    
+    return { title: '', description: '', file: null };
+  } catch (error) {
+    console.error('Error extracting asset fields:', error, node);
+    return { title: '', description: '', file: null };
+  }
+}
+
 export default function RichTextRenderer({ content, locale }: RichTextRendererProps) {
+  if (!content) {
+    return <div className="text-gray-500">Conteúdo indisponível</div>;
+  }
+  
   const options = {
     renderMark: {
       [MARKS.BOLD]: (text: React.ReactNode) => <strong className="font-bold">{text}</strong>,
@@ -58,25 +110,57 @@ export default function RichTextRenderer({ content, locale }: RichTextRendererPr
       ),
       [BLOCKS.HR]: () => <hr className="mb-6 border-gray-300" />,
       [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
-        const { title, description, file } = node.data.target.fields;
-        const { url, details } = file;
-        const { image } = details;
-        const { width, height } = image;
-
-        return (
-          <div className="mb-6">
-            <Image
-              src={`https:${url}`}
-              alt={description || title || 'Blog image'}
-              width={width}
-              height={height}
-              className="rounded-lg mx-auto"
-            />
-            {description && (
-              <p className="text-center text-sm text-gray-500 mt-2">{description}</p>
-            )}
-          </div>
-        );
+        try {
+          const { title, description, file } = getAssetFields(node);
+          
+          console.log('Extracted file data:', file);
+          
+          if (!file || !file.url) {
+            console.error('File URL not found in asset', file);
+            return (
+              <div className="mb-6 p-4 bg-gray-100 rounded-lg text-center">
+                <p className="text-gray-500">Imagem indisponível</p>
+              </div>
+            );
+          }
+          
+          const url = file.url.startsWith('//') ? `https:${file.url}` : 
+                     file.url.startsWith('/') ? `https:${file.url}` : file.url;
+          
+          // Tentar obter as dimensões da imagem
+          let width = 800;
+          let height = 600;
+          
+          if (file.details && file.details.image) {
+            width = file.details.image.width || width;
+            height = file.details.image.height || height;
+          }
+          
+          console.log('Image URL prepared:', url);
+          console.log('Image dimensions:', width, height);
+          
+          return (
+            <div className="mb-6">
+              <Image
+                src={url}
+                alt={description || title || 'Blog image'}
+                width={width}
+                height={height}
+                className="rounded-lg mx-auto"
+              />
+              {description && (
+                <p className="text-center text-sm text-gray-500 mt-2">{description}</p>
+              )}
+            </div>
+          );
+        } catch (error) {
+          console.error('Error rendering embedded asset:', error);
+          return (
+            <div className="mb-6 p-4 bg-gray-100 rounded-lg text-center">
+              <p className="text-gray-500">Erro ao carregar imagem</p>
+            </div>
+          );
+        }
       },
       [INLINES.HYPERLINK]: (node: any, children: React.ReactNode) => {
         const { uri } = node.data;
@@ -101,16 +185,36 @@ export default function RichTextRenderer({ content, locale }: RichTextRendererPr
         );
       },
       [INLINES.ENTRY_HYPERLINK]: (node: any, children: React.ReactNode) => {
-        const { slug } = node.data.target.fields;
-        
-        return (
-          <Link
-            href={`/${locale}/blog/${slug}`}
-            className="text-pink-700 hover:text-pink-900 underline"
-          >
-            {children}
-          </Link>
-        );
+        try {
+          // Tenta extrair o slug de forma segura
+          let slug = '';
+          
+          if (node.data?.target?.fields?.slug) {
+            const slugField = node.data.target.fields.slug;
+            // Verificar se é um objeto localizado
+            if (typeof slugField === 'object') {
+              slug = slugField[locale] || slugField['en'] || slugField[Object.keys(slugField)[0]];
+            } else {
+              slug = slugField;
+            }
+          }
+          
+          if (!slug) {
+            return <span className="text-gray-500">{children}</span>;
+          }
+          
+          return (
+            <Link
+              href={`/${locale}/blog/${slug}`}
+              className="text-pink-700 hover:text-pink-900 underline"
+            >
+              {children}
+            </Link>
+          );
+        } catch (error) {
+          console.error('Error rendering entry hyperlink:', error);
+          return <span className="text-gray-500">{children}</span>;
+        }
       },
     },
   };

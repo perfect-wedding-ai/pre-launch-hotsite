@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 import { getBlogPostBySlug, getRelatedPosts } from '@/lib/contentful/client';
@@ -8,12 +7,179 @@ import { Locale } from '@/config/i18n.config';
 import RichTextRenderer from '@/components/blog/RichTextRenderer';
 import BlogHeader from '@/components/blog/BlogHeader';
 import RelatedPosts from '@/components/blog/RelatedPosts';
+import BlogImage from '@/components/blog/BlogImage';
 
 interface BlogPostPageProps {
   params: {
     lang: Locale;
     slug: string;
   };
+}
+
+// Função auxiliar para obter o URL da imagem de forma segura
+function getImageUrl(image: any): string | null {
+  try {
+    if (!image) {
+      console.log('Image is null or undefined');
+      return null;
+    }
+    
+    // Para debug - versão simplificada para evitar logs enormes
+    console.log('Image type:', typeof image);
+    console.log('Image has fields:', !!image.fields);
+    console.log('Image has sys:', !!image.sys);
+    
+    if (image.fields) {
+      console.log('Image fields keys:', Object.keys(image.fields));
+      if (image.fields.file) {
+        console.log('File type:', typeof image.fields.file);
+        if (typeof image.fields.file === 'object') {
+          console.log('File keys:', Object.keys(image.fields.file));
+        }
+      }
+    }
+    
+    // CASO 1: Formato da Content Delivery API
+    if (image.fields && image.fields.file && image.fields.file.url) {
+      console.log('CASO 1: Formato CDA padrão');
+      return `https:${image.fields.file.url}`;
+    }
+    
+    // CASO 2: Formato da Content Management API (campos localizados)
+    if (image.fields && image.fields.file && typeof image.fields.file === 'object') {
+      console.log('CASO 2: Campos localizados');
+      // Verificar se o campo file é um objeto com chaves de locale
+      const fileField = image.fields.file;
+      
+      // Tentar encontrar qualquer chave de locale (en, pt, etc.)
+      for (const locale in fileField) {
+        console.log(`Verificando locale ${locale} em file`);
+        if (fileField[locale] && fileField[locale].url) {
+          console.log(`URL encontrada em locale ${locale}:`, fileField[locale].url);
+          return `https:${fileField[locale].url}`;
+        }
+      }
+    }
+    
+    // CASO 3: Verificar se a imagem tem um campo url diretamente
+    if (image.fields && image.fields.url) {
+      console.log('CASO 3: URL direto nos fields');
+      return image.fields.url.startsWith('http') ? 
+        image.fields.url : `https:${image.fields.url}`;
+    }
+    
+    // CASO 4: Verificar se a imagem tem uma URL aninhada em algum lugar
+    if (image.fields) {
+      for (const key in image.fields) {
+        const field = image.fields[key];
+        
+        // Se o campo é um objeto e tem uma propriedade url
+        if (field && typeof field === 'object' && field.url) {
+          console.log(`CASO 4: URL encontrada em fields.${key}`);
+          return field.url.startsWith('http') ? field.url : `https:${field.url}`;
+        }
+        
+        // Se o campo é um objeto que pode ter propriedades aninhadas
+        if (field && typeof field === 'object') {
+          for (const subkey in field) {
+            const subfield = field[subkey];
+            
+            // Verificar se o subcampo tem uma url
+            if (subfield && typeof subfield === 'object' && subfield.url) {
+              console.log(`CASO 4: URL aninhada encontrada em fields.${key}.${subkey}`);
+              return subfield.url.startsWith('http') ? 
+                subfield.url : `https:${subfield.url}`;
+            }
+          }
+        }
+      }
+    }
+    
+    // CASO 5: O próprio image é a URL ou tem uma propriedade url direta
+    if (typeof image === 'string') {
+      console.log('CASO 5: Image é uma string');
+      return image.startsWith('http') ? image : `https:${image}`;
+    }
+    
+    if (image.url) {
+      console.log('CASO 5: Image tem url direta');
+      return image.url.startsWith('http') ? image.url : `https:${image.url}`;
+    }
+    
+    // CASO 6: Verificar se há uma referência com ID e usar uma URL construída para o Contentful
+    if (image.sys && typeof image.sys === 'object' && image.sys.id) {
+      console.log('CASO 6: Imagem é referência com ID', image.sys.id);
+      // Aqui poderíamos construir uma URL do Contentful, mas é arriscado sem saber o formato exato
+      // Se tivermos o spaceId e environmentId, podemos construir uma URL do Assets API
+      return null;
+    }
+    
+    console.error('Estrutura de imagem não reconhecida:', image);
+    return null;
+  } catch (error) {
+    console.error('Error getting image URL:', error);
+    return null;
+  }
+}
+
+// Função para extrair dimensões da imagem com segurança
+function getImageDimensions(image: any): { width: number; height: number } {
+  try {
+    // Formato da Content Delivery API
+    if (
+      image?.fields?.file?.details?.image?.width &&
+      image?.fields?.file?.details?.image?.height
+    ) {
+      return {
+        width: image.fields.file.details.image.width,
+        height: image.fields.file.details.image.height
+      };
+    }
+    
+    // Formato da Content Management API com campos localizados
+    if (image?.fields?.file) {
+      const fileField = image.fields.file;
+      if (typeof fileField === 'object') {
+        // Tentar encontrar qualquer chave de locale
+        for (const locale in fileField) {
+          if (fileField[locale]?.details?.image) {
+            return {
+              width: fileField[locale].details.image.width || 1200,
+              height: fileField[locale].details.image.height || 630
+            };
+          }
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error getting image dimensions:', error);
+  }
+  
+  // Valores padrão
+  return { width: 1200, height: 630 };
+}
+
+// Função para extrair título da imagem
+function getImageTitle(image: any): string {
+  try {
+    // Formato da Content Delivery API
+    if (image?.fields?.title) {
+      return image.fields.title;
+    }
+    
+    // Formato da Content Management API com campos localizados
+    if (image?.fields?.title && typeof image.fields.title === 'object') {
+      for (const locale in image.fields.title) {
+        if (image.fields.title[locale]) {
+          return image.fields.title[locale];
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error getting image title:', error);
+  }
+  
+  return 'Blog post image';
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
@@ -28,6 +194,9 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   }
   
   const { title, metadescription, image } = post.fields;
+  const imageUrl = getImageUrl(image);
+  const { width, height } = getImageDimensions(image);
+  const imageTitle = getImageTitle(image);
   
   return {
     title: `${title} | Perfect Wedding Blog`,
@@ -37,12 +206,12 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       description: metadescription || undefined,
       type: 'article',
       url: `https://perfectwedding.ai/${lang}/blog/${slug}`,
-      images: image ? [
+      images: imageUrl ? [
         {
-          url: `https:${image.fields.file.url}`,
-          width: image.fields.file.details.image.width,
-          height: image.fields.file.details.image.height,
-          alt: image.fields.title,
+          url: imageUrl,
+          width,
+          height,
+          alt: imageTitle,
         },
       ] : [
         {
@@ -57,7 +226,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       card: 'summary_large_image',
       title: `${title} | Perfect Wedding Blog`,
       description: metadescription || undefined,
-      images: image ? [`https:${image.fields.file.url}`] : ['https://perfectwedding.ai/images/og-image.jpg'],
+      images: imageUrl ? [imageUrl] : ['https://perfectwedding.ai/images/og-image.jpg'],
     },
   };
 }
@@ -71,22 +240,59 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
   
-  const { title, body, image, tags, publishDate, lastUpdateDate, category } = post.fields;
+  const { title, body, image, tags = [], publishDate, lastUpdateDate, category } = post.fields;
+  console.log("Post data:", { title, hasImage: !!image, imageType: image ? typeof image : 'undefined' });
+  
+  // Se disponível no console, imprimir apenas os campos mais importantes para não poluir
+  if (image) {
+    const hasSys = typeof image === 'object' && 'sys' in image && typeof image.sys === 'object';
+    const hasFields = typeof image === 'object' && 'fields' in image;
+    
+    console.log("Image estrutura:", {
+      hasFields,
+      hasSys,
+      fieldsKeys: hasFields ? Object.keys(image.fields) : [],
+      sysKeys: hasSys ? Object.keys((image as any).sys) : []
+    });
+  }
+  
+  const imageUrl = getImageUrl(image);
+  console.log("Image URL extracted:", imageUrl);
   
   // Formatar datas
   const dateLocale = lang === 'pt' ? ptBR : enUS;
-  const formattedPublishDate = format(new Date(publishDate), 'dd MMMM, yyyy', { locale: dateLocale });
-  const formattedUpdateDate = format(new Date(lastUpdateDate), 'dd MMMM, yyyy', { locale: dateLocale });
+  
+  // Tratar datas potencialmente inválidas
+  let formattedPublishDate = '';
+  let formattedUpdateDate = '';
+  
+  try {
+    if (publishDate) {
+      const pubDate = new Date(publishDate);
+      if (!isNaN(pubDate.getTime())) {
+        formattedPublishDate = format(pubDate, 'dd MMMM, yyyy', { locale: dateLocale });
+      }
+    }
+    
+    if (lastUpdateDate) {
+      const updateDate = new Date(lastUpdateDate);
+      if (!isNaN(updateDate.getTime())) {
+        formattedUpdateDate = format(updateDate, 'dd MMMM, yyyy', { locale: dateLocale });
+      }
+    }
+  } catch (error) {
+    console.error('Error formatting dates:', error);
+  }
   
   // Buscar posts relacionados
-  const relatedPosts = await getRelatedPosts(post.sys.id, tags, lang);
+  const relatedPosts = await getRelatedPosts(post.sys.id, Array.isArray(tags) ? tags : [], lang);
   
   // Estruturar dados para JSON-LD
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     'headline': title,
-    'image': image ? `https:${image.fields.file.url}` : 'https://perfectwedding.ai/images/og-image.jpg',
+    'image': imageUrl || 'https://perfectwedding.ai/images/og-image.jpg',
     'datePublished': publishDate,
     'dateModified': lastUpdateDate,
     'author': {
@@ -109,6 +315,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     },
   };
   
+  // URL de fallback para quando não conseguimos extrair a URL da imagem
+  const fallbackImageUrl = "/assets/images/placeholder-blog.jpeg";
+  
   return (
     <div className="container mx-auto px-4 py-12">
       <article className="max-w-4xl mx-auto">
@@ -123,38 +332,34 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </h1>
           
           <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-6">
-            <time dateTime={publishDate}>
-              {lang === 'pt' ? 'Publicado em' : 'Published on'} {formattedPublishDate}
-            </time>
+            {formattedPublishDate && (
+              <time dateTime={publishDate}>
+                {lang === 'pt' ? 'Publicado em' : 'Published on'} {formattedPublishDate}
+              </time>
+            )}
             
-            {publishDate !== lastUpdateDate && (
+            {formattedPublishDate !== formattedUpdateDate && formattedUpdateDate && (
               <time dateTime={lastUpdateDate}>
                 {lang === 'pt' ? 'Atualizado em' : 'Updated on'} {formattedUpdateDate}
               </time>
             )}
             
-            {category && (
+            {category && category.fields && category.fields.name && (
               <span className="text-purple-700">
                 {lang === 'pt' ? 'Categoria:' : 'Category:'} {category.fields.name}
               </span>
             )}
           </div>
           
-          {image && (
-            <div className="relative h-96 w-full mb-8">
-              <Image
-                src={`https:${image.fields.file.url}`}
-                alt={image.fields.title}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover rounded-lg"
-                priority
-              />
-            </div>
-          )}
+          {/* Usar o componente BlogImage que é um Client Component */}
+          <BlogImage 
+            src={imageUrl || fallbackImageUrl}
+            fallbackSrc={fallbackImageUrl}
+            alt={getImageTitle(image)}
+          />
           
           <div className="flex flex-wrap gap-2 mb-8">
-            {tags.map((tag) => (
+            {Array.isArray(tags) && tags.map((tag) => (
               <a
                 key={tag}
                 href={`/${lang}/blog?tag=${encodeURIComponent(tag)}`}
