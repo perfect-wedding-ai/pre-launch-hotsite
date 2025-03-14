@@ -589,7 +589,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <Header lang={lang as any} t={t} />
       
       <div className="container mx-auto px-4 py-16 mt-24">
-        <BlogHeader locale={lang} showBackLink={true} />
+        <BlogHeader locale={lang} showBackLink={false} />
         
         <article className="max-w-4xl mx-auto">
           <header className="mb-8">

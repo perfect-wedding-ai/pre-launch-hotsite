@@ -100,10 +100,6 @@ export default function MarkdownRenderer({ content, locale }: MarkdownRendererPr
           inOrderedList = false;
         }
         
-        // Só adiciona espaçador se não for no início ou fim
-        if (i > 0 && i < lines.length - 1) {
-          elements.push(<div key={i} className="h-4"></div>);
-        }
         continue;
       }
       
