@@ -218,7 +218,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   const imageTitle = getImageTitle(image);
   
   // URL de fallback para quando não conseguimos extrair a URL da imagem
-  const fallbackImageUrl = "/assets/placeholder-blog.jpeg";
+  const fallbackImageUrl = "/assets/images/placeholder-blog.jpeg";
   
   return {
     title: `${title} | Perfect Wedding Blog`,
@@ -282,7 +282,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const spaceId = process.env.CONTENTFUL_SPACE_ID || '';
   
   // URL de fallback para quando não conseguimos extrair a URL da imagem
-  const fallbackImageUrl = "/assets/placeholder-blog.jpeg";
+  const fallbackImageUrl = "/assets/images/placeholder-blog.jpeg";
   
   // Extrair o ID do asset se a imagem for uma referência
   // Usando tipagem 'any' temporariamente para acessar .sys sem erro de TypeScript
