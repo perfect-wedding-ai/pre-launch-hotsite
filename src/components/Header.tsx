@@ -3,6 +3,7 @@ interface HeaderProps {
         howItWorks: string
         benefits: string
         faq: string
+        blog: string
         tryForFree: string
     }
 }
@@ -20,6 +21,7 @@ export default function Header({ dict }: HeaderProps) {
                             <li><a href="#como-funciona" className="text-gray-600 hover:text-primary">{dict.howItWorks}</a></li>
                             <li><a href="#beneficios" className="text-gray-600 hover:text-primary">{dict.benefits}</a></li>
                             <li><a href="#faq" className="text-gray-600 hover:text-primary">{dict.faq}</a></li>
+                            <li><a href="/blog" className="text-gray-600 hover:text-primary">{dict.blog}</a></li>
                         </ul>
                     </nav>
                     <div>

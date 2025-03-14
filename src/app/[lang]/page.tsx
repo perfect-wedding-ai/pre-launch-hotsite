@@ -105,6 +105,7 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
                 <li><Link href="#como-funciona" className="nav-link">{t.nav.howItWorks}</Link></li>
                 <li><Link href="#beneficios" className="nav-link">{t.nav.benefits}</Link></li>
                 <li><Link href="#faq" className="nav-link">{t.nav.faq}</Link></li>
+                <li><Link href="/blog" className="nav-link">{t.nav.blog}</Link></li>
               </ul>
             </nav>
             <div className="cta-button">
@@ -504,6 +505,7 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
                 <li><Link href="#como-funciona" className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.howItWorks}</Link></li>
                 <li><Link href="#beneficios" className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.benefits}</Link></li>
                 <li><Link href="#faq" className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.faq}</Link></li>
+                <li><Link href="/blog" className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.blog}</Link></li>
               </ul>
             </div>
             <div className="footer-contact">

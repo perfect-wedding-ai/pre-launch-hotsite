@@ -4,6 +4,7 @@ export const translations = {
       howItWorks: "Como Funciona",
       benefits: "Benefícios",
       faq: "Perguntas Frequentes",
+      blog: "Blog",
       tryFree: "Experimente Grátis"
     },
     hero: {
@@ -107,7 +108,8 @@ export const translations = {
         items: {
           howItWorks: "Como Funciona",
           benefits: "Benefícios",
-          faq: "Perguntas Frequentes"
+          faq: "Perguntas Frequentes",
+          blog: "Blog"
         }
       },
       contact: {
@@ -131,6 +133,7 @@ export const translations = {
       howItWorks: "How It Works",
       benefits: "Benefits",
       faq: "FAQ",
+      blog: "Blog",
       tryFree: "Try Free"
     },
     hero: {
@@ -234,7 +237,8 @@ export const translations = {
         items: {
           howItWorks: "How It Works",
           benefits: "Benefits",
-          faq: "FAQ"
+          faq: "FAQ",
+          blog: "Blog"
         }
       },
       contact: {
@@ -258,6 +262,7 @@ export const translations = {
       howItWorks: "Cómo Funciona",
       benefits: "Beneficios",
       faq: "Preguntas Frecuentes",
+      blog: "Blog",
       tryFree: "Prueba Gratis"
     },
     hero: {
@@ -361,7 +366,8 @@ export const translations = {
         items: {
           howItWorks: "Cómo Funciona",
           benefits: "Beneficios",
-          faq: "Preguntas Frecuentes"
+          faq: "Preguntas Frecuentes",
+          blog: "Blog"
         }
       },
       contact: {
