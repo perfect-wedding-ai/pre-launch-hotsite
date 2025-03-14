@@ -5,11 +5,13 @@ import { ptBR, enUS } from 'date-fns/locale';
 import { getBlogPostBySlug, getRelatedPosts, getContentfulImageUrl } from '@/lib/contentful/client';
 import { Locale } from '@/config/i18n.config';
 import RichTextRenderer from '@/components/blog/RichTextRenderer';
+import MarkdownRenderer from '@/components/blog/MarkdownRenderer';
 import BlogHeader from '@/components/blog/BlogHeader';
 import RelatedPosts from '@/components/blog/RelatedPosts';
 import BlogImage from '@/components/blog/BlogImage';
 import Header from '@/components/Header';
 import { translations } from '../../translations';
+import { Document } from '@contentful/rich-text-types';
 
 interface BlogPostPageProps {
   params: {
@@ -201,6 +203,39 @@ function getImageTitle(image: any): string {
   }
   
   return 'Blog post image';
+}
+
+// Função auxiliar para converter rich text para texto simples quando necessário
+function richTextToString(document: Document): string {
+  try {
+    if (!document) return '';
+    
+    // Um método simples para extrair texto do rich text
+    const extractTextFromNode = (node: any): string => {
+      // Se for nó de texto, retorna o valor
+      if (node.nodeType === 'text') {
+        return node.value || '';
+      }
+      
+      // Se for parágrafo ou outro container, processa os filhos
+      if (node.content && Array.isArray(node.content)) {
+        return node.content.map(extractTextFromNode).join('\n');
+      }
+      
+      return '';
+    };
+    
+    // Processa o documento inteiro
+    let result = '';
+    if (document.content && Array.isArray(document.content)) {
+      result = document.content.map(extractTextFromNode).join('\n');
+    }
+    
+    return result;
+  } catch (error) {
+    console.error('Error converting rich text to string:', error);
+    return '';
+  }
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
@@ -431,7 +466,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </header>
           
           <div className="prose prose-lg max-w-none">
-            <RichTextRenderer content={body} locale={lang} />
+            <MarkdownRenderer content={richTextToString(body)} locale={lang} />
           </div>
           
           {relatedPosts.length > 0 && (

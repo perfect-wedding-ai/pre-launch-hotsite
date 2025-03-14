@@ -58,6 +58,95 @@ function getAssetFields(node: any) {
   }
 }
 
+// Função para processar markdown em texto simples
+function processMarkdownHeadings(node: any, children: React.ReactNode) {
+  // Debug para analisar o conteúdo
+  console.log('Node content:', node);
+  console.log('Children type:', typeof children);
+  console.log('Children content:', children);
+  
+  // Verificar se temos um texto ou um array de elementos
+  if (!children) {
+    return <p className="mb-6 leading-relaxed text-gray-800"></p>;
+  }
+  
+  // Converter para string se for um texto simples ou tentar extrair o texto se for um elemento complexo
+  let textContent = '';
+  
+  if (typeof children === 'string') {
+    textContent = children;
+    console.log('Text content (string):', textContent);
+  } else if (Array.isArray(children)) {
+    // Se for um array, verificar o primeiro elemento
+    console.log('Children array:', children);
+    if (children.length > 0 && typeof children[0] === 'string') {
+      textContent = children[0];
+      console.log('Text content (array[0]):', textContent);
+    } else {
+      // Tentar extrair texto do array mais complexo
+      const childrenText = children.map(child => {
+        if (typeof child === 'string') return child;
+        if (typeof child === 'object' && child !== null) {
+          // Tentar acessar propriedades de texto
+          if ('props' in child && typeof child.props.children === 'string') {
+            return child.props.children;
+          }
+        }
+        return '';
+      }).join('');
+      
+      if (childrenText) {
+        textContent = childrenText;
+        console.log('Text extracted from complex children:', textContent);
+      } else {
+        // Se não conseguir extrair texto, retorna o parágrafo normal
+        console.log('Could not extract text from children array');
+        return <p className="mb-6 leading-relaxed text-gray-800">{children}</p>;
+      }
+    }
+  } else if (typeof children === 'object' && children !== null) {
+    // Tentar extrair texto de objetos React
+    console.log('Children is object:', children);
+    if ('props' in children && typeof children.props.children === 'string') {
+      textContent = children.props.children;
+      console.log('Text content (object.props.children):', textContent);
+    } else {
+      // Retorna o parágrafo normal para outros casos
+      console.log('Could not extract text from object');
+      return <p className="mb-6 leading-relaxed text-gray-800">{children}</p>;
+    }
+  } else {
+    // Retorna o parágrafo normal para outros casos
+    console.log('Unknown children type');
+    return <p className="mb-6 leading-relaxed text-gray-800">{children}</p>;
+  }
+  
+  // Se chegou aqui, temos algum texto para verificar
+  if (textContent.startsWith('### ')) {
+    console.log('Converting to h3:', textContent);
+    return <h3 className="text-2xl font-bold mb-4 mt-6 font-playfair">{textContent.substring(4)}</h3>;
+  } else if (textContent.startsWith('#### ')) {
+    console.log('Converting to h4:', textContent);
+    return <h4 className="text-xl font-bold mb-3 mt-5 font-playfair">{textContent.substring(5)}</h4>;
+  } else if (textContent.startsWith('## ')) {
+    console.log('Converting to h2:', textContent);
+    return <h2 className="text-3xl font-bold mb-5 mt-8 font-playfair">{textContent.substring(3)}</h2>;
+  } else if (textContent.startsWith('# ')) {
+    console.log('Converting to h1:', textContent);
+    return <h1 className="text-4xl font-bold mb-6 mt-8 font-playfair">{textContent.substring(2)}</h1>;
+  } else if (textContent.startsWith('##### ')) {
+    console.log('Converting to h5:', textContent);
+    return <h5 className="text-lg font-bold mb-2 mt-4 font-playfair">{textContent.substring(6)}</h5>;
+  } else if (textContent.startsWith('###### ')) {
+    console.log('Converting to h6:', textContent);
+    return <h6 className="text-base font-bold mb-2 mt-3 font-playfair">{textContent.substring(7)}</h6>;
+  }
+  
+  // Caso não seja nenhum título, retorna o parágrafo normal
+  console.log('Not a heading, returning paragraph');
+  return <p className="mb-6 leading-relaxed text-gray-800">{children}</p>;
+}
+
 export default function RichTextRenderer({ content, locale }: RichTextRendererProps) {
   if (!content) {
     return <div className="text-gray-500">Conteúdo indisponível</div>;
@@ -73,9 +162,8 @@ export default function RichTextRenderer({ content, locale }: RichTextRendererPr
       ),
     },
     renderNode: {
-      [BLOCKS.PARAGRAPH]: (node: any, children: React.ReactNode) => (
-        <p className="mb-6 leading-relaxed text-gray-800">{children}</p>
-      ),
+      [BLOCKS.PARAGRAPH]: (node: any, children: React.ReactNode) => 
+        processMarkdownHeadings(node, children),
       [BLOCKS.HEADING_1]: (node: any, children: React.ReactNode) => (
         <h1 className="text-4xl font-bold mb-6 mt-8 font-playfair">{children}</h1>
       ),
