@@ -356,6 +356,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             src={imageUrl || fallbackImageUrl}
             fallbackSrc={fallbackImageUrl}
             alt={getImageTitle(image)}
+            objectFit="contain"
+            aspectRatio="2048/1152"
+            maxHeight="600px"
           />
           
           <div className="flex flex-wrap gap-2 mb-8">
