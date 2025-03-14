@@ -172,4 +172,60 @@ export const getCategories = async (locale: Locale): Promise<CategoryCollection>
     console.error('Error fetching categories:', error);
     return { items: [], total: 0, skip: 0, limit: 0 };
   }
+};
+
+// Obter um asset específico pelo ID
+export const getAssetById = async (assetId: string, locale: Locale = 'pt') => {
+  try {
+    // Usar getEntries com sys.id em vez de getAsset
+    const response = await getClient().getEntries({
+      'sys.id': assetId,
+      content_type: 'asset',
+      locale,
+      include: 1
+    });
+    
+    if (response && response.items && response.items.length > 0) {
+      return response.items[0];
+    }
+    return null;
+  } catch (error) {
+    console.error(`Error fetching asset with ID ${assetId}:`, error);
+    return null;
+  }
+};
+
+// Helper para construir URLs de imagens do Contentful
+export const getContentfulImageUrl = (assetId: string, options = {}) => {
+  if (!assetId) return null;
+  
+  const spaceId = process.env.CONTENTFUL_SPACE_ID;
+  if (!spaceId) {
+    console.error('CONTENTFUL_SPACE_ID não está definido');
+    return null;
+  }
+  
+  // Opções padrão
+  const defaultOptions = {
+    width: 2048,
+    height: 1152,
+    format: 'jpg',      // Jpg é mais compatível
+    quality: 85,
+    fit: 'fill'
+  };
+  
+  // Mesclar opções
+  const imageOptions = { ...defaultOptions, ...options };
+  
+  // Parâmetros para a URL
+  const params = new URLSearchParams({
+    fm: imageOptions.format,
+    q: imageOptions.quality.toString(),
+    fit: imageOptions.fit,
+    w: imageOptions.width.toString(),
+    h: imageOptions.height.toString(),
+  });
+  
+  // Construir URLs simples sem parâmetros (testamos vários formatos) 
+  return `https://images.ctfassets.net/${spaceId}/${assetId}/image.${imageOptions.format}?${params.toString()}`;
 }; 

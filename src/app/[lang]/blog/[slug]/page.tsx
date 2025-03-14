@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
-import { getBlogPostBySlug, getRelatedPosts } from '@/lib/contentful/client';
+import { getBlogPostBySlug, getRelatedPosts, getContentfulImageUrl } from '@/lib/contentful/client';
 import { Locale } from '@/config/i18n.config';
 import RichTextRenderer from '@/components/blog/RichTextRenderer';
 import BlogHeader from '@/components/blog/BlogHeader';
@@ -108,10 +108,29 @@ function getImageUrl(image: any): string | null {
     
     // CASO 6: Verificar se há uma referência com ID e usar uma URL construída para o Contentful
     if (image.sys && typeof image.sys === 'object' && image.sys.id) {
+      // Log detalhado para diagnóstico
+      console.log('CASO 6: Objeto completo da imagem:', JSON.stringify(image));
       console.log('CASO 6: Imagem é referência com ID', image.sys.id);
-      // Aqui poderíamos construir uma URL do Contentful, mas é arriscado sem saber o formato exato
-      // Se tivermos o spaceId e environmentId, podemos construir uma URL do Assets API
-      return null;
+      console.log('CASO 6: Tipo de referência:', image.sys.linkType);
+      
+      // Verificar se é realmente um link para um asset
+      if (image.sys.linkType === 'Asset') {
+        const assetId = image.sys.id;
+        
+        // Este formato parece funcionar melhor com a Images API do Contentful
+        const spaceId = process.env.CONTENTFUL_SPACE_ID;
+        if (!spaceId) {
+          console.error('CONTENTFUL_SPACE_ID não está definido');
+          return null;
+        }
+        
+        // Retornamos null para forçar o uso do fallback - o componente BlogImage
+        // vai tentar várias URLs diferentes usando o assetId e spaceId
+        return null;
+      }
+      
+      // Se chegou aqui, não é um link para Asset ou tem outro formato
+      return getContentfulImageUrl(image.sys.id);
     }
     
     console.error('Estrutura de imagem não reconhecida:', image);
@@ -198,6 +217,9 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   const { width, height } = getImageDimensions(image);
   const imageTitle = getImageTitle(image);
   
+  // URL de fallback para quando não conseguimos extrair a URL da imagem
+  const fallbackImageUrl = "/assets/placeholder-blog.jpeg";
+  
   return {
     title: `${title} | Perfect Wedding Blog`,
     description: metadescription || undefined,
@@ -215,9 +237,9 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
         },
       ] : [
         {
-          url: 'https://perfectwedding.ai/images/og-image.jpg',
-          width: 1200,
-          height: 630,
+          url: fallbackImageUrl,
+          width: 2048,
+          height: 1152,
           alt: 'Perfect Wedding Blog',
         },
       ],
@@ -226,7 +248,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       card: 'summary_large_image',
       title: `${title} | Perfect Wedding Blog`,
       description: metadescription || undefined,
-      images: imageUrl ? [imageUrl] : ['https://perfectwedding.ai/images/og-image.jpg'],
+      images: imageUrl ? [imageUrl] : [fallbackImageUrl],
     },
   };
 }
@@ -255,6 +277,22 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       sysKeys: hasSys ? Object.keys((image as any).sys) : []
     });
   }
+  
+  // Adicionar configurações do Contentful para acesso a imagens
+  const spaceId = process.env.CONTENTFUL_SPACE_ID || '';
+  
+  // URL de fallback para quando não conseguimos extrair a URL da imagem
+  const fallbackImageUrl = "/assets/placeholder-blog.jpeg";
+  
+  // Extrair o ID do asset se a imagem for uma referência
+  // Usando tipagem 'any' temporariamente para acessar .sys sem erro de TypeScript
+  const imageAny = image as any;
+  const assetId = imageAny?.sys?.id;
+  
+  // Log para debug
+  console.log("Image object:", JSON.stringify(image, null, 2));
+  console.log("Asset ID:", assetId);
+  console.log("Space ID:", spaceId);
   
   const imageUrl = getImageUrl(image);
   console.log("Image URL extracted:", imageUrl);
@@ -292,7 +330,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     'headline': title,
-    'image': imageUrl || 'https://perfectwedding.ai/images/og-image.jpg',
+    'image': imageUrl || fallbackImageUrl,
     'datePublished': publishDate,
     'dateModified': lastUpdateDate,
     'author': {
@@ -314,9 +352,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       '@id': `https://perfectwedding.ai/${lang}/blog/${slug}`,
     },
   };
-  
-  // URL de fallback para quando não conseguimos extrair a URL da imagem
-  const fallbackImageUrl = "/assets/images/placeholder-blog.jpeg";
   
   return (
     <div className="container mx-auto px-4 py-12">
@@ -351,15 +386,18 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             )}
           </div>
           
-          {/* Usar o componente BlogImage que é um Client Component */}
-          <BlogImage 
-            src={imageUrl || fallbackImageUrl}
-            fallbackSrc={fallbackImageUrl}
-            alt={getImageTitle(image)}
-            objectFit="contain"
-            aspectRatio="2048/1152"
-            maxHeight="600px"
-          />
+          {image && (
+            <BlogImage 
+              src={imageUrl || ''}
+              fallbackSrc={fallbackImageUrl}
+              alt={post.fields.title || 'Blog post image'}
+              objectFit="contain"
+              aspectRatio="2048/1152"
+              maxHeight="600px"
+              assetId={assetId}
+              spaceId={spaceId}
+            />
+          )}
           
           <div className="flex flex-wrap gap-2 mb-8">
             {Array.isArray(tags) && tags.map((tag) => (
