@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { imageAlts, translations } from './translations';
 import OptimizedImage from '@/components/OptimizedImage';
+import Header from '@/components/Header';
 
 type ValidLang = 'pt' | 'en' | 'es';
 
@@ -92,28 +93,7 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
         }
       `}</style>
 
-      <header className="fixed w-full top-0 left-0 z-[1000] bg-white py-5 shadow-[0_2px_10px_rgba(0,0,0,0.05)]">
-        <div className="container">
-          <div className="flex justify-between items-center">
-            <div className="logo">
-            <Link href={process.env.NEXT_PUBLIC_BASE_URL || '/'}>
-                <h1 className="text-[28.8px] m-0 text-[rgb(90,90,90)]">Perfect Wedding</h1>
-              </Link>
-            </div>
-            <nav>
-              <ul className="flex gap-6">
-                <li><Link href="#como-funciona" className="nav-link">{t.nav.howItWorks}</Link></li>
-                <li><Link href="#beneficios" className="nav-link">{t.nav.benefits}</Link></li>
-                <li><Link href="#faq" className="nav-link">{t.nav.faq}</Link></li>
-                <li><Link href="/blog" className="nav-link">{t.nav.blog}</Link></li>
-              </ul>
-            </nav>
-            <div className="cta-button">
-              <Link href="#cadastro" className="btn-primary">{t.nav.tryFree}</Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header lang={lang} t={t} />
 
       <section className="hero pt-24 pb-16 bg-light-bg relative overflow-hidden">
         <div className="absolute inset-0 z-0">
@@ -133,10 +113,10 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
                 {t.hero.description}
               </p>
               <div className="flex gap-4">
-                <Link href="#cadastro" className="btn-primary">
+                <Link href={`/${lang}#cadastro`} className="btn-primary">
                   {t.hero.tryNow}
                 </Link>
-                <Link href="#como-funciona" className="btn-secondary">
+                <Link href={`/${lang}#como-funciona`} className="btn-secondary">
                   {t.hero.learnMore}
                 </Link>
               </div>
@@ -502,10 +482,10 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
             <div className="footer-links">
               <h3 className="text-lg text-[rgb(90,90,90)] mb-4 relative after:content-[''] after:absolute after:left-0 after:-bottom-2 after:w-12 after:h-[2px] after:bg-[rgb(255,192,203)]">{t.footer.quickLinks.title}</h3>
               <ul className="space-y-2">
-                <li><Link href="#como-funciona" className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.howItWorks}</Link></li>
-                <li><Link href="#beneficios" className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.benefits}</Link></li>
-                <li><Link href="#faq" className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.faq}</Link></li>
-                <li><Link href="/blog" className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.blog}</Link></li>
+                <li><Link href={`/${lang}#como-funciona`} className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.howItWorks}</Link></li>
+                <li><Link href={`/${lang}#beneficios`} className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.benefits}</Link></li>
+                <li><Link href={`/${lang}#faq`} className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.faq}</Link></li>
+                <li><Link href={`/${lang}/blog`} className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.blog}</Link></li>
               </ul>
             </div>
             <div className="footer-contact">

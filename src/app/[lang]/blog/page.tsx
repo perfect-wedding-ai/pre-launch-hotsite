@@ -5,6 +5,8 @@ import BlogCard from '@/components/blog/BlogCard';
 import BlogHeader from '@/components/blog/BlogHeader';
 import BlogFilters from '@/components/blog/BlogFilters';
 import Pagination from '@/components/blog/Pagination';
+import Header from '@/components/Header';
+import { translations } from '../translations';
 
 interface BlogPageProps {
   params: {
@@ -89,51 +91,58 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
   
   const totalPages = Math.ceil(postsResponse.total / postsPerPage);
   
+  // Obter as traduções para o idioma atual
+  const t = translations[lang as keyof typeof translations] || translations.pt;
+  
   return (
-    <div className="container mx-auto px-4 py-12">
-      <BlogHeader locale={lang} />
+    <>
+      <Header lang={lang as any} t={t} />
       
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <div className="lg:col-span-1">
-          <BlogFilters
-            categories={categoriesResponse.items}
-            tags={uniqueTags}
-            locale={lang}
-            activeCategory={category}
-            activeTag={tag}
-          />
-        </div>
+      <div className="container mx-auto px-4 py-12 mt-24">
+        <BlogHeader locale={lang} />
         
-        <div className="lg:col-span-3">
-          {postsResponse.items.length > 0 ? (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {postsResponse.items.map((post) => (
-                  <BlogCard key={post.sys.id} post={post} locale={lang} />
-                ))}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          <div className="lg:col-span-1">
+            <BlogFilters
+              categories={categoriesResponse.items}
+              tags={uniqueTags}
+              locale={lang}
+              activeCategory={category}
+              activeTag={tag}
+            />
+          </div>
+          
+          <div className="lg:col-span-3">
+            {postsResponse.items.length > 0 ? (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {postsResponse.items.map((post) => (
+                    <BlogCard key={post.sys.id} post={post} locale={lang} />
+                  ))}
+                </div>
+                
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  locale={lang}
+                  baseUrl={`/${lang}/blog`}
+                />
+              </>
+            ) : (
+              <div className="text-center py-12">
+                <h2 className="text-2xl font-playfair font-bold text-gray-900 mb-4">
+                  {lang === 'pt' ? 'Nenhum post encontrado' : 'No posts found'}
+                </h2>
+                <p className="text-gray-600">
+                  {lang === 'pt'
+                    ? 'Não encontramos posts com os filtros selecionados. Tente outros filtros ou volte mais tarde.'
+                    : 'We couldn\'t find any posts with the selected filters. Try other filters or check back later.'}
+                </p>
               </div>
-              
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                locale={lang}
-                baseUrl={`/${lang}/blog`}
-              />
-            </>
-          ) : (
-            <div className="text-center py-12">
-              <h2 className="text-2xl font-playfair font-bold text-gray-900 mb-4">
-                {lang === 'pt' ? 'Nenhum post encontrado' : 'No posts found'}
-              </h2>
-              <p className="text-gray-600">
-                {lang === 'pt'
-                  ? 'Não encontramos posts com os filtros selecionados. Tente outros filtros ou volte mais tarde.'
-                  : 'We couldn\'t find any posts with the selected filters. Try other filters or check back later.'}
-              </p>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 } 
