@@ -1,21 +1,18 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { i18n, Locale } from './config/i18n.config'
 
-const supportedLocales = ['en', 'pt', 'es']
-const defaultLocale = 'en'
+const supportedLocales = i18n.locales
+const defaultLocale = i18n.defaultLocale
 
 // Mapeia variações de idiomas para os idiomas suportados
-const localeMap: { [key: string]: string } = {
+const localeMap: { [key: string]: Locale } = {
   'en': 'en',
   'en-us': 'en',
   'en-gb': 'en',
   'pt': 'pt',
   'pt-br': 'pt',
   'pt-pt': 'pt',
-  'es': 'es',
-  'es-es': 'es',
-  'es-mx': 'es',
-  'es-ar': 'es'
 }
 
 export function middleware(request: NextRequest) {
@@ -37,18 +34,18 @@ export function middleware(request: NextRequest) {
     })
 
   // Tenta encontrar uma correspondência para cada variação de idioma
-  let targetLocale = defaultLocale
+  let targetLocale: Locale = defaultLocale
   for (const locale of browserLocales) {
     // Tenta o código completo (ex: en-us)
-    if (localeMap[locale]) {
+    if (locale in localeMap) {
       targetLocale = localeMap[locale]
       break
     }
     
     // Tenta apenas o idioma principal (ex: en)
     const mainLang = locale.split('-')[0]
-    if (localeMap[mainLang]) {
-      targetLocale = localeMap[mainLang]
+    if (mainLang in localeMap) {
+      targetLocale = localeMap[mainLang as keyof typeof localeMap]
       break
     }
   }

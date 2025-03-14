@@ -3,6 +3,13 @@ import { createClient as createManagementClient } from 'contentful-management';
 import { BlogPost, BlogPostCollection, Category, CategoryCollection } from './types';
 import { Locale } from '@/config/i18n.config';
 
+// IMPORTANTE: No Contentful, atualmente o inglês (en) é o locale padrão,
+// e o português (pt) tem um fallback para o inglês. 
+// Para forçar a exibição somente de conteúdo em português, estamos usando o
+// parâmetro 'locale.fallback=false' em todas as consultas com locale 'pt'.
+// Se no futuro o locale padrão for alterado no Contentful, este código pode precisar
+// ser revisado.
+
 // Content Delivery API client (para conteúdo publicado)
 const contentfulClient = createClient({
   space: process.env.CONTENTFUL_SPACE_ID!,
@@ -28,6 +35,21 @@ async function getManagementEnvironment() {
   const space = await managementClient.getSpace(process.env.CONTENTFUL_SPACE_ID!);
   return await space.getEnvironment(process.env.CONTENTFUL_ENVIRONMENT_ID || 'master');
 }
+
+// Função para verificar os locales configurados no Contentful
+export const getContentfulLocales = async () => {
+  try {
+    const locales = await contentfulClient.getLocales();
+    console.log('Locales configurados no Contentful:');
+    locales.items.forEach(locale => {
+      console.log(`- ${locale.name} (${locale.code}): Padrão: ${locale.default}, Fallback: ${locale.fallbackCode || 'Nenhum'}`);
+    });
+    return locales;
+  } catch (error) {
+    console.error('Erro ao buscar locales:', error);
+    return { items: [] };
+  }
+};
 
 // Função para transformar os dados da Content Management API para o formato da Content Delivery API
 function transformManagementEntryToDeliveryFormat(item: any, locale: string): any {
@@ -80,7 +102,7 @@ export const getClient = (preview: boolean = false) => {
         try {
           const environment = await getManagementEnvironment();
           const entries = await environment.getEntries(query);
-          const locale = query.locale || 'en';
+          const locale = query.locale || 'pt'; // Usar português como fallback
           
           // Transforma os itens para o formato esperado
           return {
@@ -103,9 +125,10 @@ export const getBlogPosts = async (locale: Locale, options: { limit?: number; sk
   const { limit = 10, skip = 0, tag, category } = options;
 
   try {
-    console.log(`Buscando posts no Contentful. Locale: ${locale}, Include: 2`);
+    console.log(`Buscando posts no Contentful. Locale: ${locale}, Tipo: ${typeof locale}, Include: 2`);
     
-    const response = await getClient().getEntries({
+    // Para o locale pt, forçamos a buscar apenas posts em português
+    const queryParams = {
       content_type: 'blogPost',
       limit,
       skip,
@@ -114,7 +137,31 @@ export const getBlogPosts = async (locale: Locale, options: { limit?: number; sk
       include: 2,
       ...(tag && { 'fields.tags': tag }),
       ...(category && { 'fields.category.sys.id': category }),
-    });
+    };
+    
+    // Se for locale pt, adicionar parâmetro para forçar a não usar fallback
+    if (locale === 'pt') {
+      console.log('Forçando locale pt sem fallback');
+      // @ts-ignore - O parâmetro 'locale.fallback' existe na API mas não está tipado
+      queryParams['locale.fallback'] = false;
+    }
+    
+    console.log(`Opções de consulta:`, JSON.stringify(queryParams, null, 2));
+    
+    const response = await getClient().getEntries(queryParams);
+    
+    console.log(`Resposta do Contentful: encontrados ${response.items.length} posts para o locale '${locale}'`);
+    console.log(`Total de posts disponíveis: ${response.total}`);
+    
+    // Verificar se algum dado está ausente na localização solicitada
+    if (response.items.length > 0) {
+      response.items.forEach((item: any, index: number) => {
+        console.log(`Post ${index + 1} - Título: ${item.fields.title || 'Sem título'} - Locale: ${item.sys.locale || 'Não especificado'}`);
+        if (!item.fields.title && locale === 'pt') {
+          console.log(`ALERTA: Post ${index + 1} (ID: ${item.sys.id}) não tem título em português!`);
+        }
+      });
+    }
     
     // Verificar se as imagens estão presentes
     if (response.items.length > 0) {
@@ -138,12 +185,19 @@ export const getBlogPosts = async (locale: Locale, options: { limit?: number; sk
 
 export const getBlogPostBySlug = async (slug: string, locale: Locale, preview: boolean = false): Promise<BlogPost | null> => {
   try {
-    const response = await getClient(preview).getEntries({
+    const queryParams: any = {
       content_type: 'blogPost',
       'fields.slug': slug,
       locale,
       include: 2,
-    });
+    };
+    
+    // Se for locale pt, adicionar parâmetro para forçar a não usar fallback
+    if (locale === 'pt') {
+      queryParams['locale.fallback'] = false;
+    }
+    
+    const response = await getClient(preview).getEntries(queryParams);
 
     if (response.items.length === 0) {
       return null;
@@ -158,7 +212,7 @@ export const getBlogPostBySlug = async (slug: string, locale: Locale, preview: b
 
 export const getRelatedPosts = async (postId: string, tags: string[], locale: Locale, limit: number = 3): Promise<BlogPost[]> => {
   try {
-    const response = await getClient().getEntries({
+    const queryParams: any = {
       content_type: 'blogPost',
       'fields.tags[in]': tags.join(','),
       'sys.id[ne]': postId,
@@ -166,7 +220,14 @@ export const getRelatedPosts = async (postId: string, tags: string[], locale: Lo
       limit,
       include: 2,
       order: '-fields.publishDate' as any,
-    });
+    };
+    
+    // Se for locale pt, adicionar parâmetro para forçar a não usar fallback
+    if (locale === 'pt') {
+      queryParams['locale.fallback'] = false;
+    }
+    
+    const response = await getClient().getEntries(queryParams);
 
     return response.items as unknown as BlogPost[];
   } catch (error) {
@@ -178,11 +239,19 @@ export const getRelatedPosts = async (postId: string, tags: string[], locale: Lo
 export const getCategories = async (locale: Locale): Promise<CategoryCollection> => {
   try {
     console.log("locale", locale);
-    const response = await getClient().getEntries({
+    
+    const queryParams: any = {
       content_type: 'category',
       locale,
       order: 'fields.name' as any,
-    });
+    };
+    
+    // Se for locale pt, adicionar parâmetro para forçar a não usar fallback
+    if (locale === 'pt') {
+      queryParams['locale.fallback'] = false;
+    }
+    
+    const response = await getClient().getEntries(queryParams);
 
     return response as unknown as CategoryCollection;
   } catch (error) {
@@ -195,12 +264,19 @@ export const getCategories = async (locale: Locale): Promise<CategoryCollection>
 export const getAssetById = async (assetId: string, locale: Locale = 'pt') => {
   try {
     // Usar getEntries com sys.id em vez de getAsset
-    const response = await getClient().getEntries({
+    const queryParams: any = {
       'sys.id': assetId,
       content_type: 'asset',
       locale,
       include: 1
-    });
+    };
+    
+    // Se for locale pt, adicionar parâmetro para forçar a não usar fallback
+    if (locale === 'pt') {
+      queryParams['locale.fallback'] = false;
+    }
+    
+    const response = await getClient().getEntries(queryParams);
     
     if (response && response.items && response.items.length > 0) {
       return response.items[0];
