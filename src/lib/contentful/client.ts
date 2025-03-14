@@ -149,34 +149,28 @@ export const getBlogPosts = async (locale: Locale, options: { limit?: number; sk
     console.log(`Resposta do Contentful: encontrados ${response.items.length} posts para o locale '${locale}'`);
     console.log(`Total de posts disponíveis: ${response.total}`);
     
-    // Quando o locale é 'pt', filtrar manualmente para garantir que só posts com conteúdo em português sejam retornados
-    let filteredItems = response.items;
-    if (locale === 'pt') {
-      console.log('Filtrando manualmente posts sem conteúdo em português');
-      filteredItems = response.items.filter((item: any) => {
-        // Verificar se o título existe em português
-        return item.fields.title && typeof item.fields.title === 'string';
+    // Verificar dados básicos de cada post retornado
+    if (response.items.length > 0) {
+      console.log('Informações básicas dos posts:');
+      response.items.slice(0, 3).forEach((item: any, index: number) => {
+        console.log(`Post ${index + 1} - Título: ${item.fields.title || 'Sem título'}`);
       });
-      
-      console.log(`Após filtragem: ${filteredItems.length} posts com conteúdo em português`);
+    } else {
+      console.log('Nenhum post retornado do Contentful');
     }
+
+    // Apenas garantir que os posts tenham pelo menos um título
+    let filteredItems = response.items.filter((item: any) => {
+      return item.fields.title && typeof item.fields.title === 'string';
+    });
     
-    // Verificar se algum dado está ausente na localização solicitada
-    if (filteredItems.length > 0) {
-      filteredItems.forEach((item: any, index: number) => {
-        console.log(`Post ${index + 1} - Título: ${item.fields.title || 'Sem título'} - Locale: ${item.sys.locale || 'Não especificado'}`);
-      });
-    }
+    console.log(`Posts filtrados (com título): ${filteredItems.length}`);
     
     // Verificar se as imagens estão presentes
     if (filteredItems.length > 0) {
       filteredItems.forEach((item: any, index: number) => {
-        console.log(`Post ${index + 1} - ${item.fields.title} - Tem imagem: ${!!item.fields.image}`);
         if (item.fields.image) {
-          console.log(`-> Estrutura da imagem: ${JSON.stringify(Object.keys(item.fields.image))}`);
-          if (item.fields.image.fields) {
-            console.log(`-> Campos da imagem: ${JSON.stringify(Object.keys(item.fields.image.fields))}`);
-          }
+          console.log(`Post ${index + 1} - ${item.fields.title} - Tem imagem`);
         }
       });
     }
@@ -202,18 +196,17 @@ export const getBlogPostBySlug = async (slug: string, locale: Locale, preview: b
     };
     
     const response = await getClient(preview).getEntries(queryParams);
+    console.log(`Buscando post com slug '${slug}' para locale '${locale}'`);
 
     if (response.items.length === 0) {
+      console.log(`Post com slug '${slug}' não encontrado`);
       return null;
     }
     
-    // Verificar se o post tem conteúdo no locale solicitado
-    if (locale === 'pt') {
-      const post = response.items[0];
-      if (!post.fields.title || typeof post.fields.title !== 'string') {
-        console.log(`Post não tem conteúdo em português: ${slug}`);
-        return null;
-      }
+    // Verificar se o post tem pelo menos um título
+    const post = response.items[0];
+    if (!post.fields.title) {
+      console.log(`Post com slug '${slug}' não tem título, mas será exibido mesmo assim`);
     }
 
     return response.items[0] as unknown as BlogPost;
@@ -236,14 +229,14 @@ export const getRelatedPosts = async (postId: string, tags: string[], locale: Lo
     };
     
     const response = await getClient().getEntries(queryParams);
+    console.log(`Encontrados ${response.items.length} posts relacionados para o locale '${locale}'`);
 
-    // Filtrar para garantir que só posts com conteúdo no locale solicitado sejam retornados
-    let filteredItems = response.items;
-    if (locale === 'pt') {
-      filteredItems = response.items.filter((item: any) => {
-        return item.fields.title && typeof item.fields.title === 'string';
-      });
-    }
+    // Filtrar apenas para garantir que os posts tenham título
+    const filteredItems = response.items.filter((item: any) => {
+      return item.fields.title && typeof item.fields.title === 'string';
+    });
+    
+    console.log(`Retornando ${filteredItems.length} posts relacionados após filtragem`);
 
     return filteredItems as unknown as BlogPost[];
   } catch (error) {
@@ -254,28 +247,33 @@ export const getRelatedPosts = async (postId: string, tags: string[], locale: Lo
 
 export const getCategories = async (locale: Locale): Promise<CategoryCollection> => {
   try {
-    console.log("locale", locale);
+    console.log(`Buscando categorias no Contentful. Locale: ${locale}`);
     
     const queryParams = {
       content_type: 'category',
       locale,
       order: 'fields.name' as any,
+      limit: 100, // Aumentar o limite para garantir que todas as categorias sejam retornadas
     };
     
     const response = await getClient().getEntries(queryParams);
+    console.log(`Resposta do Contentful: encontradas ${response.items.length} categorias para o locale '${locale}'`);
 
-    // Filtrar para garantir que só categorias com conteúdo no locale solicitado sejam retornadas
+    // Quando solicitado em português, não filtramos - simplesmente usamos o que o Contentful retornar
+    // O Contentful já faz o fallback automaticamente para inglês se não houver tradução
     let filteredItems = response.items;
-    if (locale === 'pt') {
-      filteredItems = response.items.filter((item: any) => {
-        return item.fields.name && typeof item.fields.name === 'string';
+    
+    console.log(`Retornando ${filteredItems.length} categorias para exibição`);
+    if (filteredItems.length > 0) {
+      console.log('Primeiras 3 categorias:');
+      filteredItems.slice(0, 3).forEach((item: any, index: number) => {
+        console.log(`Categoria ${index + 1}: ${item.fields.name}`);
       });
     }
 
     return {
       ...response,
       items: filteredItems,
-      total: filteredItems.length
     } as unknown as CategoryCollection;
   } catch (error) {
     console.error('Error fetching categories:', error);

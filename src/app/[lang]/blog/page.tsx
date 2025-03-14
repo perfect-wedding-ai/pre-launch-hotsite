@@ -54,16 +54,25 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
 }
 
 // Função para extrair todas as tags únicas dos posts
-const extractUniqueTags = (posts: any[]): string[] => {
+const extractUniqueTags = (posts: any[], locale: Locale): string[] => {
   const tagsSet = new Set<string>();
   
-  posts.forEach((post) => {
+  console.log(`Extraindo tags de ${posts.length} posts no locale ${locale}`);
+  
+  posts.forEach((post, index) => {
     if (post.fields.tags && Array.isArray(post.fields.tags)) {
-      post.fields.tags.forEach((tag: string) => tagsSet.add(tag));
+      post.fields.tags.forEach((tag: string) => {
+        if (tag && typeof tag === 'string') {
+          tagsSet.add(tag);
+        }
+      });
     }
   });
   
-  return Array.from(tagsSet).sort();
+  const uniqueTags = Array.from(tagsSet).sort();
+  console.log(`${uniqueTags.length} tags únicas extraídas`);
+  
+  return uniqueTags;
 };
 
 export default async function BlogPage({ params, searchParams }: BlogPageProps) {
@@ -93,9 +102,17 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
   const categoriesResponse = await getCategories(lang);
   console.log(`Recuperadas ${categoriesResponse.items.length} categorias para o locale ${lang}`);
   
+  // Log detalhado das categorias para depuração
+  if (categoriesResponse.items.length > 0) {
+    console.log('Detalhes das categorias:');
+    categoriesResponse.items.forEach((category: any, index: number) => {
+      console.log(`Categoria ${index + 1}: ID=${category.sys.id}, Nome=${category.fields.name}, Locale=${category.sys.locale || 'Não especificado'}`);
+    });
+  }
+  
   // Buscar todos os posts para extrair tags (limitado a 100 para performance)
   const allPostsResponse = await getBlogPosts(lang, { limit: 100 });
-  const uniqueTags = extractUniqueTags(allPostsResponse.items);
+  const uniqueTags = extractUniqueTags(allPostsResponse.items, lang);
   console.log(`Extraídas ${uniqueTags.length} tags únicas dos posts`);
   
   const totalPages = Math.ceil(postsResponse.total / postsPerPage);
