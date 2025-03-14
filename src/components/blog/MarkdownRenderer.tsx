@@ -19,40 +19,247 @@ export default function MarkdownRenderer({ content, locale }: MarkdownRendererPr
   
   // Função para processar formatação de texto em uma linha
   const processTextFormatting = (text: string) => {
-    // Regex para identificar texto em negrito (**texto** ou __texto__)
-    const boldRegex = /(\*\*|__)(.*?)\1/g;
-    // Regex para identificar texto em itálico (*texto* ou _texto_)
-    const italicRegex = /(\*|_)(.*?)\1/g;
+    // Debug inicial
+    console.log('Texto original:', text);
     
-    // Processa negrito primeiro
-    let formattedText = text.split(boldRegex).map((part, index) => {
-      if (index % 3 === 2) {
-        // Este é o conteúdo entre ** ou __
-        return <strong key={`bold-${index}`} className="font-bold">{part}</strong>;
-      }
-      return part;
-    });
+    // 1. Primeiro passo: identificar e substituir tags HTML literais no texto
+    // Procurar por padrões como <u>texto</u>, <b>texto</b>, <i>texto</i>, etc.
     
-    // Processa o itálico nas partes que não são React elements
-    const processItalic = (textPart: React.ReactNode) => {
-      if (typeof textPart !== 'string') return textPart;
+    // Processar tags <u>...</u> para underline
+    const processHtmlTags = (inputText: string): (string | JSX.Element)[] => {
+      const parts: (string | JSX.Element)[] = [];
       
-      // Divide o texto pelos marcadores de itálico
-      return textPart.split(italicRegex).map((part, index) => {
-        if (index % 3 === 2) {
-          // Este é o conteúdo entre * ou _
-          return <em key={`italic-${index}`} className="italic">{part}</em>;
+      // Função auxiliar para processar diferentes tipos de tags
+      const processTag = (
+        text: string, 
+        tagRegex: RegExp, 
+        createElement: (content: string, key: string) => JSX.Element
+      ): {
+        result: (string | JSX.Element)[];
+        lastProcessedIndex: number;
+      } => {
+        const tagParts: (string | JSX.Element)[] = [];
+        let lastIndex = 0;
+        let match;
+        
+        // Para cada match da tag
+        while ((match = tagRegex.exec(text)) !== null) {
+          // Adicionar o texto antes da tag
+          if (match.index > lastIndex) {
+            tagParts.push(text.substring(lastIndex, match.index));
+          }
+          
+          // Adicionar o conteúdo dentro da tag como um elemento React
+          const content = match[1]; // O texto entre tags
+          tagParts.push(createElement(content, `tag-${match.index}`));
+          
+          lastIndex = match.index + match[0].length;
         }
-        return part;
-      });
+        
+        // Adicionar o texto restante após o último match
+        if (lastIndex < text.length) {
+          tagParts.push(text.substring(lastIndex));
+        }
+        
+        return {
+          result: tagParts,
+          lastProcessedIndex: lastIndex
+        };
+      };
+      
+      // Processar diferentes tipos de tags HTML
+      
+      // 1. Processar tags <u>...</u>
+      const uTagRegex = /<u>(.*?)<\/u>/g;
+      const uTagResult = processTag(
+        inputText, 
+        uTagRegex, 
+        (content, key) => <u key={`html-u-${key}`} className="underline">{content}</u>
+      );
+      
+      // 2. Processar tags <b>...</b>
+      let processedSoFar = uTagResult.result.map(part => {
+        if (typeof part !== 'string') return part;
+        
+        const bTagRegex = /<b>(.*?)<\/b>/g;
+        const bTagResult = processTag(
+          part,
+          bTagRegex,
+          (content, key) => <strong key={`html-b-${key}`} className="font-bold">{content}</strong>
+        );
+        
+        return bTagResult.result;
+      }).flat();
+      
+      // 3. Processar tags <i>...</i>
+      processedSoFar = processedSoFar.map(part => {
+        if (typeof part !== 'string') return part;
+        
+        const iTagRegex = /<i>(.*?)<\/i>/g;
+        const iTagResult = processTag(
+          part,
+          iTagRegex,
+          (content, key) => <em key={`html-i-${key}`} className="italic">{content}</em>
+        );
+        
+        return iTagResult.result;
+      }).flat();
+      
+      // 4. Processar tags <strong>...</strong>
+      processedSoFar = processedSoFar.map(part => {
+        if (typeof part !== 'string') return part;
+        
+        const strongTagRegex = /<strong>(.*?)<\/strong>/g;
+        const strongTagResult = processTag(
+          part,
+          strongTagRegex,
+          (content, key) => <strong key={`html-strong-${key}`} className="font-bold">{content}</strong>
+        );
+        
+        return strongTagResult.result;
+      }).flat();
+      
+      // 5. Processar tags <em>...</em>
+      processedSoFar = processedSoFar.map(part => {
+        if (typeof part !== 'string') return part;
+        
+        const emTagRegex = /<em>(.*?)<\/em>/g;
+        const emTagResult = processTag(
+          part,
+          emTagRegex,
+          (content, key) => <em key={`html-em-${key}`} className="italic">{content}</em>
+        );
+        
+        return emTagResult.result;
+      }).flat();
+      
+      return processedSoFar.length > 0 ? processedSoFar : [inputText];
     };
     
-    // Aplica processamento de itálico a cada parte
-    const finalText = formattedText.map((part, index) => 
-      typeof part === 'string' ? processItalic(part) : part
+    // Processar tags HTML no texto original
+    const htmlProcessed = processHtmlTags(text);
+    
+    // 2. Para cada parte que é string, aplicar as correções de markdown
+    const processMarkdown = (textPart: string | JSX.Element): string | JSX.Element | (string | JSX.Element)[] => {
+      // Se não for string (já for elemento React), retorna sem alteração
+      if (typeof textPart !== 'string') {
+        return textPart;
+      }
+      
+      // Aplicar as correções de markdown ao texto
+      // Substituir *Palavra* por **Palavra**
+      let correctedText = textPart.replace(/\*([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ]+)\*/g, '**$1**');
+      
+      // Substituir *Palavra (um asterisco no início) por **Palavra**
+      correctedText = correctedText.replace(/(\s|^)\*([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ]+)(\s|:|,|$)/g, '$1**$2**$3');
+      
+      // Tratar caso específico de itens de lista com asterisco (como "• *Palavra")
+      correctedText = correctedText.replace(/(•|-|\*|\d+\.)\s+\*([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ]+)/g, '$1 **$2');
+      
+      // Remover asteriscos extras (como *** ou mais)
+      correctedText = correctedText.replace(/\*{3,}/g, '**');
+      
+      // Debug para verificar modificações
+      if (textPart !== correctedText) {
+        console.log('Texto corrigido:', correctedText);
+      }
+      
+      // Regex para identificar texto em negrito (**texto**)
+      const boldRegex = /\*\*(.*?)\*\*/g;
+      
+      // Regex para identificar texto sublinhado (__texto__)
+      const underlineRegex = /__(.*?)__/g;
+      
+      // Regex para identificar texto em itálico (*texto* ou _texto_)
+      const italicRegex = /(\*|_)(.*?)\1/g;
+      
+      // Primeiro passagem: processar underline
+      let underlineProcessed: (string | JSX.Element)[] = [];
+      const underlineSplit = correctedText.split(underlineRegex);
+      
+      for (let i = 0; i < underlineSplit.length; i++) {
+        if (i % 2 === 0) {
+          // Partes que não são underline
+          underlineProcessed.push(underlineSplit[i]);
+        } else {
+          // Partes em underline
+          underlineProcessed.push(<u key={`underline-${i}`} className="underline">{underlineSplit[i]}</u>);
+        }
+      }
+      
+      // Segunda passagem: processar negrito em cada parte
+      let formattedText: (string | JSX.Element)[] = [];
+      
+      // Processa cada parte do texto (que pode já conter underline)
+      underlineProcessed.forEach((part, partIndex) => {
+        if (typeof part !== 'string') {
+          // Se já for um elemento React (underline), adiciona direto
+          formattedText.push(part);
+          return;
+        }
+        
+        // Divide a parte por bold e processa
+        const boldSplit = part.split(boldRegex);
+        let boldProcessed: (string | JSX.Element)[] = [];
+        
+        for (let i = 0; i < boldSplit.length; i++) {
+          if (i % 2 === 0) {
+            // Partes que não são bold
+            boldProcessed.push(boldSplit[i]);
+          } else {
+            // Partes em bold
+            boldProcessed.push(<strong key={`bold-${partIndex}-${i}`} className="font-bold">{boldSplit[i]}</strong>);
+          }
+        }
+        
+        // Adiciona as partes processadas
+        formattedText = formattedText.concat(boldProcessed);
+      });
+      
+      // Terceira passagem: processa itálico em cada parte
+      const processItalic = (textPart: React.ReactNode): React.ReactNode | React.ReactNode[] => {
+        if (typeof textPart !== 'string') return textPart;
+        
+        // Divide o texto pelos marcadores de itálico
+        const italicSplit = textPart.split(italicRegex);
+        let result: (string | JSX.Element)[] = [];
+        
+        for (let i = 0; i < italicSplit.length; i++) {
+          if (i % 3 === 0 || i % 3 === 1) {
+            // Partes que não são itálico ou os próprios delimitadores
+            if (italicSplit[i] !== '') {
+              result.push(italicSplit[i]);
+            }
+          } else {
+            // Partes em itálico
+            result.push(<em key={`italic-${i}`} className="italic">{italicSplit[i]}</em>);
+          }
+        }
+        
+        return result;
+      };
+      
+      // Aplica processamento de itálico a cada parte
+      const finalText = formattedText.map((part, index) => 
+        typeof part === 'string' ? processItalic(part) : part
+      );
+      
+      // Garantindo que todos os itens são string ou JSX.Element
+      const typedFinalText = finalText.flat().filter(item => 
+        item !== undefined && item !== null
+      ) as (string | JSX.Element)[];
+      
+      // Retorna o array final tipado corretamente
+      return typedFinalText;
+    };
+    
+    // Aplicar processamento de markdown a cada parte
+    const processedParts = htmlProcessed.map((part, index) => 
+      processMarkdown(part)
     );
     
-    return finalText;
+    // Achatar o array final
+    return processedParts.flat();
   };
 
   // Função para converter markdown para elementos HTML
