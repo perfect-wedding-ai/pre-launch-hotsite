@@ -104,27 +104,6 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
       </Link>
       
       <div className="p-6">
-        <div className="flex flex-wrap gap-2 mb-3">
-          {Array.isArray(tags) && tags.map((tag) => (
-            <Link
-              key={tag}
-              href={`/${locale}/blog?tag=${encodeURIComponent(tag)}`}
-              className="text-xs font-semibold bg-pink-100 text-pink-800 px-2 py-1 rounded-full hover:bg-pink-200 transition-colors"
-            >
-              {tag}
-            </Link>
-          ))}
-          
-          {category && category.fields && category.fields.name && (
-            <Link
-              href={`/${locale}/blog?category=${category.sys.id}`}
-              className="text-xs font-semibold bg-purple-100 text-purple-800 px-2 py-1 rounded-full hover:bg-purple-200 transition-colors"
-            >
-              {category.fields.name}
-            </Link>
-          )}
-        </div>
-        
         <Link href={postUrl} className="block">
           <h2 className="text-xl font-playfair font-bold mb-2 text-gray-900 hover:text-pink-700 transition-colors line-clamp-2">
             {title}
