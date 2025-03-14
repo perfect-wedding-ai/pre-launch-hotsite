@@ -146,111 +146,126 @@ export default function MarkdownRenderer({ content, locale }: MarkdownRendererPr
         return textPart;
       }
       
-      // Aplicar as correções de markdown ao texto
-      // Substituir *Palavra* por **Palavra**
-      let correctedText = textPart.replace(/\*([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ]+)\*/g, '**$1**');
-      
-      // Substituir *Palavra (um asterisco no início) por **Palavra**
-      correctedText = correctedText.replace(/(\s|^)\*([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ]+)(\s|:|,|$)/g, '$1**$2**$3');
-      
-      // Tratar caso específico de itens de lista com asterisco (como "• *Palavra")
-      correctedText = correctedText.replace(/(•|-|\*|\d+\.)\s+\*([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ]+)/g, '$1 **$2');
-      
-      // Remover asteriscos extras (como *** ou mais)
-      correctedText = correctedText.replace(/\*{3,}/g, '**');
+      // Importante: preservar os padrões originais de markdown antes de aplicar correções
+      let correctedText = textPart;
       
       // Debug para verificar modificações
       if (textPart !== correctedText) {
         console.log('Texto corrigido:', correctedText);
       }
       
-      // Regex para identificar texto em negrito (**texto**)
-      const boldRegex = /\*\*(.*?)\*\*/g;
+      // 1. Primeiro passagem: processar negrito+itálico (***texto***)
+      const boldItalicRegex = /\*\*\*(.*?)\*\*\*/g;
+      let processedText: (string | JSX.Element)[] = [];
       
-      // Regex para identificar texto sublinhado (__texto__)
-      const underlineRegex = /__(.*?)__/g;
+      // Dividir o texto pelo padrão de negrito+itálico
+      const boldItalicSplit = correctedText.split(boldItalicRegex);
       
-      // Regex para identificar texto em itálico (*texto* ou _texto_)
-      const italicRegex = /(\*|_)(.*?)\1/g;
-      
-      // Primeiro passagem: processar underline
-      let underlineProcessed: (string | JSX.Element)[] = [];
-      const underlineSplit = correctedText.split(underlineRegex);
-      
-      for (let i = 0; i < underlineSplit.length; i++) {
+      for (let i = 0; i < boldItalicSplit.length; i++) {
         if (i % 2 === 0) {
-          // Partes que não são underline
-          underlineProcessed.push(underlineSplit[i]);
+          // Partes que não são negrito+itálico
+          processedText.push(boldItalicSplit[i]);
         } else {
-          // Partes em underline
-          underlineProcessed.push(<u key={`underline-${i}`} className="underline">{underlineSplit[i]}</u>);
+          // Partes em negrito+itálico
+          processedText.push(
+            <strong key={`bold-italic-${i}`} className="font-bold">
+              <em className="italic">{boldItalicSplit[i]}</em>
+            </strong>
+          );
         }
       }
       
-      // Segunda passagem: processar negrito em cada parte
-      let formattedText: (string | JSX.Element)[] = [];
+      // 2. Segunda passagem: processar negrito (**texto**)
+      let boldProcessed: (string | JSX.Element)[] = [];
       
-      // Processa cada parte do texto (que pode já conter underline)
-      underlineProcessed.forEach((part, partIndex) => {
+      processedText.forEach((part, partIndex) => {
         if (typeof part !== 'string') {
-          // Se já for um elemento React (underline), adiciona direto
-          formattedText.push(part);
+          // Se já for um elemento React, adiciona direto
+          boldProcessed.push(part);
           return;
         }
         
-        // Divide a parte por bold e processa
+        // Regex para identificar texto em negrito (**texto**)
+        const boldRegex = /\*\*(.*?)\*\*/g;
+        
+        // Dividir por negrito
         const boldSplit = part.split(boldRegex);
-        let boldProcessed: (string | JSX.Element)[] = [];
         
         for (let i = 0; i < boldSplit.length; i++) {
           if (i % 2 === 0) {
-            // Partes que não são bold
+            // Partes que não são negrito
             boldProcessed.push(boldSplit[i]);
           } else {
-            // Partes em bold
+            // Partes em negrito
             boldProcessed.push(<strong key={`bold-${partIndex}-${i}`} className="font-bold">{boldSplit[i]}</strong>);
           }
         }
-        
-        // Adiciona as partes processadas
-        formattedText = formattedText.concat(boldProcessed);
       });
       
-      // Terceira passagem: processa itálico em cada parte
-      const processItalic = (textPart: React.ReactNode): React.ReactNode | React.ReactNode[] => {
-        if (typeof textPart !== 'string') return textPart;
+      // 3. Terceira passagem: processar itálico (*texto*)
+      let italicProcessed: (string | JSX.Element)[] = [];
+      
+      boldProcessed.forEach((part, partIndex) => {
+        if (typeof part !== 'string') {
+          // Se já for um elemento React, adiciona direto
+          italicProcessed.push(part);
+          return;
+        }
         
-        // Divide o texto pelos marcadores de itálico
-        const italicSplit = textPart.split(italicRegex);
-        let result: (string | JSX.Element)[] = [];
+        // Regex para identificar texto em itálico (*texto*)
+        const italicRegex = /\*(.*?)\*/g;
+        
+        // Dividir por itálico
+        const italicSplit = part.split(italicRegex);
         
         for (let i = 0; i < italicSplit.length; i++) {
-          if (i % 3 === 0 || i % 3 === 1) {
-            // Partes que não são itálico ou os próprios delimitadores
+          if (i % 2 === 0) {
+            // Partes que não são itálico
             if (italicSplit[i] !== '') {
-              result.push(italicSplit[i]);
+              italicProcessed.push(italicSplit[i]);
             }
           } else {
             // Partes em itálico
-            result.push(<em key={`italic-${i}`} className="italic">{italicSplit[i]}</em>);
+            italicProcessed.push(<em key={`italic-${partIndex}-${i}`} className="italic">{italicSplit[i]}</em>);
           }
         }
+      });
+      
+      // 4. Quarta passagem: processar underline (__texto__)
+      let underlineProcessed: (string | JSX.Element)[] = [];
+      
+      italicProcessed.forEach((part, partIndex) => {
+        if (typeof part !== 'string') {
+          // Se já for um elemento React, adiciona direto
+          underlineProcessed.push(part);
+          return;
+        }
         
-        return result;
-      };
+        // Regex para identificar texto sublinhado (__texto__)
+        const underlineRegex = /__(.*?)__/g;
+        
+        // Dividir por underline
+        const underlineSplit = part.split(underlineRegex);
+        
+        for (let i = 0; i < underlineSplit.length; i++) {
+          if (i % 2 === 0) {
+            // Partes que não são underline
+            if (underlineSplit[i] !== '') {
+              underlineProcessed.push(underlineSplit[i]);
+            }
+          } else {
+            // Partes em underline
+            underlineProcessed.push(<u key={`underline-${partIndex}-${i}`} className="underline">{underlineSplit[i]}</u>);
+          }
+        }
+      });
       
-      // Aplica processamento de itálico a cada parte
-      const finalText = formattedText.map((part, index) => 
-        typeof part === 'string' ? processItalic(part) : part
-      );
-      
-      // Garantindo que todos os itens são string ou JSX.Element
-      const typedFinalText = finalText.flat().filter(item => 
-        item !== undefined && item !== null
+      // Garantir que todos os itens são válidos
+      const filteredResult = underlineProcessed.filter(item => 
+        item !== undefined && item !== null && item !== ''
       ) as (string | JSX.Element)[];
       
-      // Retorna o array final tipado corretamente
-      return typedFinalText;
+      return filteredResult.length > 0 ? filteredResult : [textPart];
     };
     
     // Aplicar processamento de markdown a cada parte
