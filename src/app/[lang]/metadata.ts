@@ -84,4 +84,19 @@ export const metadata: Metadata = {
       'es-ES': '/es',
     },
   },
+}
+
+export function getMetadataTranslations(locale: string | undefined) {
+  if (!locale) {
+    // Se o locale não for fornecido, usar o idioma padrão
+    const DEFAULT_LOCALE = process.env.NEXT_PUBLIC_DEFAULT_LOCALE || 'en';
+    return metadataTranslations[DEFAULT_LOCALE as keyof typeof metadataTranslations] || metadataTranslations.en;
+  }
+  
+  // Extrair o idioma base (ex: 'pt-BR' -> 'pt')
+  const baseLocale = locale.split('-')[0] as keyof typeof metadataTranslations;
+  
+  // Retornar as traduções para o idioma ou usar o idioma padrão como fallback
+  const DEFAULT_LOCALE = process.env.NEXT_PUBLIC_DEFAULT_LOCALE || 'en';
+  return metadataTranslations[baseLocale] || metadataTranslations[DEFAULT_LOCALE as keyof typeof metadataTranslations] || metadataTranslations.en;
 } 

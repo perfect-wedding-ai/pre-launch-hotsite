@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { imageAlts, translations } from './translations';
+import { imageAlts, translations, getTranslations } from './translations';
 import OptimizedImage from '@/components/OptimizedImage';
 import Header from '@/components/Header';
 
@@ -13,7 +13,7 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const lang = (params?.lang || 'pt') as ValidLang;
   const alts = imageAlts[lang] || imageAlts.pt;
-  const t = translations[lang] || translations.pt;
+  const t = getTranslations(lang);
 
   const toggleFaq = (index: number) => {
     setOpenFaq(openFaq === index ? null : index);

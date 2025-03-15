@@ -10,7 +10,7 @@ import BlogHeader from '@/components/blog/BlogHeader';
 import RelatedPosts from '@/components/blog/RelatedPosts';
 import BlogImage from '@/components/blog/BlogImage';
 import Header from '@/components/Header';
-import { translations } from '../../translations';
+import { getTranslations } from '../../translations';
 import { Document } from '@contentful/rich-text-types';
 
 interface BlogPostPageProps {
@@ -329,8 +329,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   const post = await getBlogPostBySlug(slug, lang);
   
   // Obter as traduções para o idioma atual
-  const baseLocale = lang.split('-')[0] as keyof typeof translations;
-  const t = translations[baseLocale] || translations.pt;
+  const t = getTranslations(lang);
   
   if (!post) {
     return {
@@ -389,8 +388,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
   
   // Obter as traduções para o idioma atual
-  const baseLocale = lang.split('-')[0] as keyof typeof translations;
-  const t = translations[baseLocale] || translations.pt;
+  const t = getTranslations(lang);
+  
+  // Extrair o idioma base para formatação de datas
+  const baseLocale = lang.split('-')[0];
   
   const { title, body, image, tags = [], publishDate, lastUpdateDate, category } = post.fields;
   console.log("Post data:", { title, hasImage: !!image, imageType: image ? typeof image : 'undefined' });

@@ -4,7 +4,7 @@ import { Category } from '@/lib/contentful/types';
 import { Locale } from '@/config/i18n.config';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { translations } from '@/app/[lang]/translations';
+import { getTranslations } from '@/app/[lang]/translations';
 
 interface BlogFiltersProps {
   categories: Category[];
@@ -18,8 +18,10 @@ export default function BlogFilters({ categories, tags, locale, activeCategory, 
   const searchParams = useSearchParams();
   
   // Obter as traduções para o idioma atual
-  const baseLocale = locale.split('-')[0] as keyof typeof translations;
-  const t = translations[baseLocale] || translations.pt;
+  const t = getTranslations(locale);
+  
+  // Extrair o idioma base para URLs (ex: 'pt-BR' -> 'pt')
+  const baseLocale = locale.split('-')[0];
   
   const createFilterUrl = (type: 'category' | 'tag', value: string | null) => {
     const params = new URLSearchParams(searchParams.toString());

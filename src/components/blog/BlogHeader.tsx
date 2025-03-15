@@ -1,6 +1,6 @@
 import { Locale } from '@/config/i18n.config';
 import Link from 'next/link';
-import { translations } from '@/app/[lang]/translations';
+import { getTranslations } from '@/app/[lang]/translations';
 
 interface BlogHeaderProps {
   locale: Locale;
@@ -11,8 +11,7 @@ interface BlogHeaderProps {
 
 export default function BlogHeader({ locale, title, description, showBackLink = false }: BlogHeaderProps) {
   // Obter as traduções para o idioma atual
-  const lang = locale.split('-')[0] as keyof typeof translations;
-  const t = translations[lang] || translations.pt;
+  const t = getTranslations(locale);
   
   return (
     <div className="mb-10 text-center">

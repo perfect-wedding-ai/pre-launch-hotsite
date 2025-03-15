@@ -3,7 +3,7 @@ import { Locale } from '@/config/i18n.config';
 import Link from 'next/link';
 import Image from 'next/image';
 import BlogImage from './BlogImage';
-import { translations } from '@/app/[lang]/translations';
+import { getTranslations } from '@/app/[lang]/translations';
 
 interface RelatedPostsProps {
   posts: BlogPost[];
@@ -40,8 +40,7 @@ export default function RelatedPosts({ posts, locale, title }: RelatedPostsProps
   }
 
   // Obter as traduções para o idioma atual
-  const baseLocale = locale.split('-')[0] as keyof typeof translations;
-  const t = translations[baseLocale] || translations.pt;
+  const t = getTranslations(locale);
   
   // Fallback image
   const fallbackImageUrl = "/assets/images/placeholder-blog.jpeg";

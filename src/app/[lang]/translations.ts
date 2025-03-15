@@ -472,6 +472,29 @@ export const translations = {
   }
 }
 
+// Definindo tipo para o locale
+export type AvailableLocale = keyof typeof translations;
+
+// Obtém o idioma padrão das variáveis de ambiente ou usa 'en' como fallback
+export const DEFAULT_LOCALE = (process.env.NEXT_PUBLIC_DEFAULT_LOCALE as AvailableLocale) || 'en';
+
+/**
+ * Função utilitária para obter as traduções para um determinado locale
+ * @param locale O locale para o qual obter as traduções
+ * @returns O objeto de traduções para o locale, ou para o locale padrão se o locale não existir
+ */
+export function getTranslations(locale: string | undefined) {
+  if (!locale) {
+    return translations[DEFAULT_LOCALE];
+  }
+  
+  // Extrair o idioma base (ex: 'pt-BR' -> 'pt')
+  const baseLocale = locale.split('-')[0] as AvailableLocale;
+  
+  // Retornar as traduções para o idioma ou usar o idioma padrão como fallback
+  return translations[baseLocale] || translations[DEFAULT_LOCALE];
+}
+
 export const imageAlts = {
   pt: {
     heroBride: "Noiva experimentando vestido virtual com tecnologia de IA",

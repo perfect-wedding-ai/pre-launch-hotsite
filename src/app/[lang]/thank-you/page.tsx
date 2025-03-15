@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
-import { translations } from '../translations';
+import { translations, getTranslations } from '../translations';
 
 export default function ThankYou({ params }: { params: { lang: 'pt' | 'en' | 'es' } }) {
   const lang = params?.lang || 'pt';
-  const t = translations[lang as keyof typeof translations] || translations.pt;
+  const t = getTranslations(lang);
 
   useEffect(() => {
     // Redirecionar para a página inicial após 5 segundos

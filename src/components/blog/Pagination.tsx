@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Locale } from '@/config/i18n.config';
-import { translations } from '@/app/[lang]/translations';
+import { getTranslations } from '@/app/[lang]/translations';
 
 interface PaginationProps {
   currentPage: number;
@@ -15,8 +15,7 @@ export default function Pagination({ currentPage, totalPages, locale, baseUrl }:
   }
 
   // Obter as traduções para o idioma atual
-  const lang = locale.split('-')[0] as keyof typeof translations;
-  const t = translations[lang] || translations.pt;
+  const t = getTranslations(locale);
 
   const prevPage = currentPage > 1 ? currentPage - 1 : null;
   const nextPage = currentPage < totalPages ? currentPage + 1 : null;

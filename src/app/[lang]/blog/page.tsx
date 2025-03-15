@@ -6,7 +6,7 @@ import BlogHeader from '@/components/blog/BlogHeader';
 import BlogFilters from '@/components/blog/BlogFilters';
 import Pagination from '@/components/blog/Pagination';
 import Header from '@/components/Header';
-import { translations } from '../translations';
+import { getTranslations } from '../translations';
 
 interface BlogPageProps {
   params: {
@@ -21,8 +21,7 @@ interface BlogPageProps {
 
 export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
   const { lang } = params;
-  const baseLocale = lang.split('-')[0] as keyof typeof translations;
-  const t = translations[baseLocale] || translations.pt;
+  const t = getTranslations(lang);
   
   const title = t.blog.title;
   const description = t.blog.subtitle;
@@ -99,8 +98,10 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
   const totalPages = Math.ceil(postsResponse.total / postsPerPage);
   
   // Obter as traduções para o idioma atual
-  const baseLocale = lang.split('-')[0] as keyof typeof translations;
-  const t = translations[baseLocale] || translations.pt;
+  const t = getTranslations(lang);
+  
+  // Extrair o idioma base (ex: 'pt-BR' -> 'pt')
+  const baseLocale = lang.split('-')[0];
   
   return (
     <>

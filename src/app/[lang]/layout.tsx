@@ -2,9 +2,10 @@ import { Montserrat, Playfair_Display } from 'next/font/google'
 import { Metadata } from 'next'
 import Script from 'next/script'
 import Link from 'next/link'
-import { translations } from './translations'
+import { translations, getTranslations } from './translations'
 import '../globals.css'
-import { metadataTranslations } from './metadata'
+import { metadataTranslations, getMetadataTranslations } from './metadata'
+import { Locale, i18n } from '@/config/i18n.config'
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -24,22 +25,29 @@ type ValidLang = 'pt' | 'en' | 'es';
 
 export async function generateMetadata({ params }: { params: { lang: ValidLang } }): Promise<Metadata> {
   const lang = (params?.lang || 'pt') as ValidLang;
-  const metadata = metadataTranslations[lang] || metadataTranslations.pt;
-  const t = translations[lang] || translations.pt;
-
+  const metadata = getMetadataTranslations(lang);
+  const t = getTranslations(lang);
+  
+  const title = 'Perfect Wedding | AI Virtual Dress Try-On';
+  const description =
+    'Try on hundreds of wedding dresses virtually, save time and find your perfect dress before visiting a boutique. Powered by AI technology.';
+  
   return {
     metadataBase: new URL('https://perfectwedding.ai'),
-    title: metadata.title,
-    description: metadata.description,
+    title,
+    description,
     keywords: metadata.keywords,
     openGraph: {
-      title: metadata.ogTitle,
-      description: metadata.ogDescription,
+      title,
+      description,
       type: 'website',
-      url: `https://perfectwedding.ai/${lang}`,
+      url: 'https://perfectwedding.ai',
       images: [
         {
-          url: '/assets/images/og-image.webp',
+          url: 'https://perfectwedding.ai/images/og-image.jpg',
+          width: 1200,
+          height: 630,
+          alt: 'Perfect Wedding | AI Virtual Dress Try-On',
         },
       ],
     },
@@ -63,7 +71,7 @@ export async function generateMetadata({ params }: { params: { lang: ValidLang }
         "@type": "WebSite",
         "name": "Perfect Wedding",
         "url": `https://perfectwedding.ai/${lang}`,
-        "description": metadata.description,
+        "description": description,
         "inLanguage": lang === 'pt' ? 'pt-BR' : lang === 'en' ? 'en-US' : 'es-ES',
         "potentialAction": {
           "@type": "SearchAction",
@@ -84,16 +92,18 @@ export async function generateMetadata({ params }: { params: { lang: ValidLang }
           }
         }))
       })
-    }
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['https://perfectwedding.ai/images/og-image.jpg'],
+    },
   }
 }
 
 export async function generateStaticParams() {
-  return [
-    { lang: 'pt' },
-    { lang: 'en' },
-    { lang: 'es' }
-  ]
+  return i18n.locales.map(locale => ({ lang: locale }));
 }
 
 export default function RootLayout({
@@ -103,8 +113,10 @@ export default function RootLayout({
   children: React.ReactNode
   params: { lang: ValidLang }
 }) {
+  const { lang } = params;
+  
   return (
-    <html lang={params.lang} className={`${montserrat.variable} ${playfair.variable}`}>
+    <html lang={lang} className={`${montserrat.variable} ${playfair.variable}`}>
       <head>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
         <link
@@ -133,4 +145,4 @@ export default function RootLayout({
       </body>
     </html>
   )
-} 
+}
