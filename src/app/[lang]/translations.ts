@@ -479,6 +479,19 @@ export type AvailableLocale = keyof typeof translations;
 export const DEFAULT_LOCALE = (process.env.NEXT_PUBLIC_DEFAULT_LOCALE as AvailableLocale) || 'en';
 
 /**
+ * Extrai o idioma base de um locale (ex: 'pt-BR' -> 'pt')
+ * @param locale O locale completo
+ * @returns O idioma base
+ */
+export function getBaseLocale(locale: string | undefined): string {
+  if (!locale) {
+    return DEFAULT_LOCALE;
+  }
+  
+  return locale.split('-')[0];
+}
+
+/**
  * Função utilitária para obter as traduções para um determinado locale
  * @param locale O locale para o qual obter as traduções
  * @returns O objeto de traduções para o locale, ou para o locale padrão se o locale não existir
@@ -489,7 +502,7 @@ export function getTranslations(locale: string | undefined) {
   }
   
   // Extrair o idioma base (ex: 'pt-BR' -> 'pt')
-  const baseLocale = locale.split('-')[0] as AvailableLocale;
+  const baseLocale = getBaseLocale(locale) as AvailableLocale;
   
   // Retornar as traduções para o idioma ou usar o idioma padrão como fallback
   return translations[baseLocale] || translations[DEFAULT_LOCALE];

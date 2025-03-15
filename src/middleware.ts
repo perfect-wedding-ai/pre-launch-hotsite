@@ -5,6 +5,15 @@ import { i18n, Locale } from './config/i18n.config'
 const supportedLocales = i18n.locales
 const defaultLocale = i18n.defaultLocale
 
+// Função para extrair o idioma base (ex: 'pt-BR' -> 'pt')
+function getBaseLocale(locale: string): string {
+  if (!locale) {
+    return defaultLocale;
+  }
+  
+  return locale.split('-')[0];
+}
+
 // Mapeia variações de idiomas para os idiomas suportados
 const localeMap: { [key: string]: Locale } = {
   'en': 'en',
@@ -43,7 +52,7 @@ export function middleware(request: NextRequest) {
     }
     
     // Tenta apenas o idioma principal (ex: en)
-    const mainLang = locale.split('-')[0]
+    const mainLang = getBaseLocale(locale)
     if (mainLang in localeMap) {
       targetLocale = localeMap[mainLang as keyof typeof localeMap]
       break

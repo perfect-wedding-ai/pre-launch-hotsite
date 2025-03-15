@@ -28,9 +28,8 @@ export async function generateMetadata({ params }: { params: { lang: ValidLang }
   const metadata = getMetadataTranslations(lang);
   const t = getTranslations(lang);
   
-  const title = 'Perfect Wedding | AI Virtual Dress Try-On';
-  const description =
-    'Try on hundreds of wedding dresses virtually, save time and find your perfect dress before visiting a boutique. Powered by AI technology.';
+  const title = metadata.title;
+  const description = metadata.description;
   
   return {
     metadataBase: new URL('https://perfectwedding.ai'),
@@ -38,8 +37,8 @@ export async function generateMetadata({ params }: { params: { lang: ValidLang }
     description,
     keywords: metadata.keywords,
     openGraph: {
-      title,
-      description,
+      title: metadata.ogTitle || title,
+      description: metadata.ogDescription || description,
       type: 'website',
       url: 'https://perfectwedding.ai',
       images: [
@@ -95,8 +94,8 @@ export async function generateMetadata({ params }: { params: { lang: ValidLang }
     },
     twitter: {
       card: 'summary_large_image',
-      title,
-      description,
+      title: metadata.ogTitle || title,
+      description: metadata.ogDescription || description,
       images: ['https://perfectwedding.ai/images/og-image.jpg'],
     },
   }

@@ -10,7 +10,7 @@ import BlogHeader from '@/components/blog/BlogHeader';
 import RelatedPosts from '@/components/blog/RelatedPosts';
 import BlogImage from '@/components/blog/BlogImage';
 import Header from '@/components/Header';
-import { getTranslations } from '../../translations';
+import { getTranslations, getBaseLocale } from '../../translations';
 import { Document } from '@contentful/rich-text-types';
 
 interface BlogPostPageProps {
@@ -391,7 +391,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const t = getTranslations(lang);
   
   // Extrair o idioma base para formatação de datas
-  const baseLocale = lang.split('-')[0];
+  const baseLocale = getBaseLocale(lang);
   
   const { title, body, image, tags = [], publishDate, lastUpdateDate, category } = post.fields;
   console.log("Post data:", { title, hasImage: !!image, imageType: image ? typeof image : 'undefined' });

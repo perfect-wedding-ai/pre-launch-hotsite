@@ -5,7 +5,7 @@ import { ptBR, enUS } from 'date-fns/locale';
 import { BlogPost } from '@/lib/contentful/types';
 import { Locale } from '@/config/i18n.config';
 import BlogImage from './BlogImage';
-import { getTranslations } from '@/app/[lang]/translations';
+import { getTranslations, getBaseLocale } from '@/app/[lang]/translations';
 
 interface BlogCardProps {
   post: BlogPost;
@@ -42,7 +42,7 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
   const t = getTranslations(locale);
   
   // Extrair o idioma base (ex: 'pt-BR' -> 'pt')
-  const baseLocale = locale.split('-')[0];
+  const baseLocale = getBaseLocale(locale);
   
   const imageUrl = getImageUrl(image);
   

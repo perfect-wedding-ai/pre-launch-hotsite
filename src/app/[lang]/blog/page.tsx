@@ -6,7 +6,7 @@ import BlogHeader from '@/components/blog/BlogHeader';
 import BlogFilters from '@/components/blog/BlogFilters';
 import Pagination from '@/components/blog/Pagination';
 import Header from '@/components/Header';
-import { getTranslations } from '../translations';
+import { getTranslations, getBaseLocale } from '../translations';
 
 interface BlogPageProps {
   params: {
@@ -101,7 +101,7 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
   const t = getTranslations(lang);
   
   // Extrair o idioma base (ex: 'pt-BR' -> 'pt')
-  const baseLocale = lang.split('-')[0];
+  const baseLocale = getBaseLocale(lang);
   
   return (
     <>

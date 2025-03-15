@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { getBaseLocale } from './translations'
 
 type MetadataTranslations = {
   [key in 'pt' | 'en' | 'es']: {
@@ -94,7 +95,7 @@ export function getMetadataTranslations(locale: string | undefined) {
   }
   
   // Extrair o idioma base (ex: 'pt-BR' -> 'pt')
-  const baseLocale = locale.split('-')[0] as keyof typeof metadataTranslations;
+  const baseLocale = getBaseLocale(locale) as keyof typeof metadataTranslations;
   
   // Retornar as traduções para o idioma ou usar o idioma padrão como fallback
   const DEFAULT_LOCALE = process.env.NEXT_PUBLIC_DEFAULT_LOCALE || 'en';
