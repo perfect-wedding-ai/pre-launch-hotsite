@@ -4,6 +4,7 @@ import { Category } from '@/lib/contentful/types';
 import { Locale } from '@/config/i18n.config';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { translations } from '@/app/[lang]/translations';
 
 interface BlogFiltersProps {
   categories: Category[];
@@ -16,8 +17,9 @@ interface BlogFiltersProps {
 export default function BlogFilters({ categories, tags, locale, activeCategory, activeTag }: BlogFiltersProps) {
   const searchParams = useSearchParams();
   
-  // Colapsar variantes de idioma (en-US -> en, pt-BR -> pt)
-  const baseLocale = locale.split('-')[0];
+  // Obter as traduções para o idioma atual
+  const baseLocale = locale.split('-')[0] as keyof typeof translations;
+  const t = translations[baseLocale] || translations.pt;
   
   const createFilterUrl = (type: 'category' | 'tag', value: string | null) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -43,7 +45,7 @@ export default function BlogFilters({ categories, tags, locale, activeCategory, 
     <div className="mb-8">
       <div className="flex flex-wrap items-center justify-between mb-4">
         <h2 className="text-xl font-playfair font-bold text-gray-900">
-          {baseLocale === 'pt' ? 'Filtros' : 'Filters'}
+          {t.blog.filters}
         </h2>
         
         {hasActiveFilters && (
@@ -51,7 +53,7 @@ export default function BlogFilters({ categories, tags, locale, activeCategory, 
             href={clearFiltersUrl}
             className="text-sm text-pink-700 hover:text-pink-900 transition-colors"
           >
-            {baseLocale === 'pt' ? 'Limpar filtros' : 'Clear filters'}
+            {t.blog.clearFilters}
           </Link>
         )}
       </div>
@@ -60,7 +62,7 @@ export default function BlogFilters({ categories, tags, locale, activeCategory, 
       {categories.length > 0 && (
         <div className="mb-6">
           <h3 className="text-lg font-semibold mb-2 text-gray-800">
-            {baseLocale === 'pt' ? 'Categorias' : 'Categories'}
+            {t.blog.categories}
           </h3>
           
           <div className="flex flex-wrap gap-2">
@@ -77,7 +79,7 @@ export default function BlogFilters({ categories, tags, locale, activeCategory, 
                       : 'bg-purple-100 text-purple-800 hover:bg-purple-200'
                   }`}
                 >
-                  {category.fields.name || 'Sem nome'}
+                  {category.fields.name || t.blog.noCategory}
                 </Link>
               );
             })}
@@ -89,7 +91,7 @@ export default function BlogFilters({ categories, tags, locale, activeCategory, 
       {tags.length > 0 && (
         <div>
           <h3 className="text-lg font-semibold mb-2 text-gray-800">
-            {baseLocale === 'pt' ? 'Tags' : 'Tags'}
+            {t.blog.tags}
           </h3>
           
           <div className="flex flex-wrap gap-2">

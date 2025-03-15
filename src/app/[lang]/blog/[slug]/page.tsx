@@ -328,9 +328,13 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   
   const post = await getBlogPostBySlug(slug, lang);
   
+  // Obter as traduções para o idioma atual
+  const baseLocale = lang.split('-')[0] as keyof typeof translations;
+  const t = translations[baseLocale] || translations.pt;
+  
   if (!post) {
     return {
-      title: 'Post não encontrado | Perfect Wedding',
+      title: t.blog.postNotFound,
     };
   }
   
@@ -343,10 +347,10 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   const fallbackImageUrl = "/assets/images/placeholder-blog.jpeg";
   
   return {
-    title: `${title} | Perfect Wedding Blog`,
+    title: `${title} | ${t.blog.title}`,
     description: metadescription || undefined,
     openGraph: {
-      title: `${title} | Perfect Wedding Blog`,
+      title: `${title} | ${t.blog.title}`,
       description: metadescription || undefined,
       type: 'article',
       url: `https://perfectwedding.ai/${lang}/blog/${slug}`,
@@ -362,13 +366,13 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
           url: fallbackImageUrl,
           width: 2048,
           height: 1152,
-          alt: 'Perfect Wedding Blog',
+          alt: t.blog.title,
         },
       ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${title} | Perfect Wedding Blog`,
+      title: `${title} | ${t.blog.title}`,
       description: metadescription || undefined,
       images: imageUrl ? [imageUrl] : [fallbackImageUrl],
     },
@@ -385,7 +389,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
   
   // Obter as traduções para o idioma atual
-  const t = translations[lang as keyof typeof translations] || translations.pt;
+  const baseLocale = lang.split('-')[0] as keyof typeof translations;
+  const t = translations[baseLocale] || translations.pt;
   
   const { title, body, image, tags = [], publishDate, lastUpdateDate, category } = post.fields;
   console.log("Post data:", { title, hasImage: !!image, imageType: image ? typeof image : 'undefined' });
@@ -423,7 +428,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   console.log("Image URL extracted:", imageUrl);
   
   // Formatar datas
-  const dateLocale = lang === 'pt' ? ptBR : enUS;
+  const dateLocale = baseLocale === 'pt' ? ptBR : enUS;
   
   // Tratar datas potencialmente inválidas
   let formattedPublishDate = '';
@@ -433,14 +438,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     if (publishDate) {
       const pubDate = new Date(publishDate);
       if (!isNaN(pubDate.getTime())) {
-        formattedPublishDate = format(pubDate, 'dd MMMM, yyyy', { locale: dateLocale });
+        formattedPublishDate = format(pubDate, 'PPP', { locale: dateLocale });
       }
     }
     
     if (lastUpdateDate) {
       const updateDate = new Date(lastUpdateDate);
       if (!isNaN(updateDate.getTime())) {
-        formattedUpdateDate = format(updateDate, 'dd MMMM, yyyy', { locale: dateLocale });
+        formattedUpdateDate = format(updateDate, 'PPP', { locale: dateLocale });
       }
     }
   } catch (error) {
@@ -498,7 +503,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     {format(
                       new Date(publishDate),
                       'PPP',
-                      { locale: lang === 'pt' ? ptBR : enUS }
+                      { locale: dateLocale }
                     )}
                   </time>
                 </span>
@@ -506,12 +511,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               
               {lastUpdateDate && (
                 <span>
-                  {lang === 'pt' ? 'Atualizado em' : 'Updated on'}{' '}
+                  {t.blog.updatedOn}{' '}
                   <time dateTime={lastUpdateDate}>
                     {format(
                       new Date(lastUpdateDate),
                       'PPP',
-                      { locale: lang === 'pt' ? ptBR : enUS }
+                      { locale: dateLocale }
                     )}
                   </time>
                 </span>
@@ -519,7 +524,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               
               {category && category.fields && category.fields.name && (
                 <span className="text-purple-700">
-                  {lang === 'pt' ? 'Categoria:' : 'Category:'} {category.fields.name}
+                  {t.blog.category} {category.fields.name}
                 </span>
               )}
             </div>

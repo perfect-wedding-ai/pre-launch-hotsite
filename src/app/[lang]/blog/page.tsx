@@ -21,11 +21,11 @@ interface BlogPageProps {
 
 export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
   const { lang } = params;
+  const baseLocale = lang.split('-')[0] as keyof typeof translations;
+  const t = translations[baseLocale] || translations.pt;
   
-  const title = lang === 'pt' ? 'Blog Perfect Wedding' : 'Perfect Wedding Blog';
-  const description = lang === 'pt'
-    ? 'Dicas, inspirações e tendências para o seu casamento perfeito'
-    : 'Tips, inspirations and trends for your perfect wedding';
+  const title = t.blog.title;
+  const description = t.blog.subtitle;
   
   return {
     title,
@@ -99,7 +99,8 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
   const totalPages = Math.ceil(postsResponse.total / postsPerPage);
   
   // Obter as traduções para o idioma atual
-  const t = translations[lang as keyof typeof translations] || translations.pt;
+  const baseLocale = lang.split('-')[0] as keyof typeof translations;
+  const t = translations[baseLocale] || translations.pt;
   
   return (
     <>
@@ -138,25 +139,22 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
             ) : (
               <div className="text-center py-12">
                 <h2 className="text-2xl font-playfair font-bold text-gray-900 mb-4">
-                  {lang === 'pt' ? 'Nenhum post encontrado' : 'No posts found'}
+                  {t.blog.notFound.title}
                 </h2>
                 <p className="text-gray-600 mb-4">
-                  {lang === 'pt'
-                    ? `Não encontramos posts em português${category ? ' nesta categoria' : ''}${tag ? ' com esta tag' : ''}.`
-                    : `We couldn't find any posts in English${category ? ' in this category' : ''}${tag ? ' with this tag' : ''}.`
-                  }
+                  {t.blog.notFound.description}
+                  {category ? t.blog.notFound.withCategory : ''}
+                  {tag ? t.blog.notFound.withTag : ''}
                 </p>
                 <p className="text-gray-600">
-                  {lang === 'pt'
-                    ? 'Você pode verificar se o conteúdo está disponível em inglês.'
-                    : 'You can check if the content is available in Portuguese.'}
+                  {t.blog.notFound.checkOtherLanguage}
                 </p>
                 <div className="mt-6">
                   <a 
-                    href={`/${lang === 'pt' ? 'en' : 'pt'}/blog${category ? `?category=${category}` : ''}${tag ? `${category ? '&' : '?'}tag=${tag}` : ''}`} 
+                    href={`/${baseLocale === 'pt' ? 'en' : 'pt'}/blog${category ? `?category=${category}` : ''}${tag ? `${category ? '&' : '?'}tag=${tag}` : ''}`} 
                     className="inline-block bg-primary text-white py-2 px-6 rounded-md hover:bg-primary-dark transition"
                   >
-                    {lang === 'pt' ? 'Ver em inglês' : 'View in Portuguese'}
+                    {t.blog.notFound.viewInOtherLanguage}
                   </a>
                 </div>
               </div>

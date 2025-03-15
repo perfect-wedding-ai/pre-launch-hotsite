@@ -1,5 +1,6 @@
 import { Locale } from '@/config/i18n.config';
 import Link from 'next/link';
+import { translations } from '@/app/[lang]/translations';
 
 interface BlogHeaderProps {
   locale: Locale;
@@ -9,10 +10,9 @@ interface BlogHeaderProps {
 }
 
 export default function BlogHeader({ locale, title, description, showBackLink = false }: BlogHeaderProps) {
-  const defaultTitle = locale === 'pt' ? 'Blog Perfect Wedding' : 'Perfect Wedding Blog';
-  const defaultDescription = locale === 'pt' 
-    ? 'Dicas, inspirações e tendências para o seu casamento perfeito'
-    : 'Tips, inspirations and trends for your perfect wedding';
+  // Obter as traduções para o idioma atual
+  const lang = locale.split('-')[0] as keyof typeof translations;
+  const t = translations[lang] || translations.pt;
   
   return (
     <div className="mb-10 text-center">
@@ -36,13 +36,13 @@ export default function BlogHeader({ locale, title, description, showBackLink = 
                 d="M15 19l-7-7 7-7" 
               />
             </svg>
-            {locale === 'pt' ? 'Voltar para o blog' : 'Back to blog'}
+            {t.blog.backToHome}
           </Link>
         </div>
       )}
       
       <h1 className="text-4xl md:text-5xl font-playfair font-bold text-gray-900 mb-4">
-        {title || defaultTitle}
+        {title || t.blog.title}
       </h1>
       
       {description && (
@@ -53,7 +53,7 @@ export default function BlogHeader({ locale, title, description, showBackLink = 
       
       {!description && !title && (
         <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-          {defaultDescription}
+          {t.blog.subtitle}
         </p>
       )}
     </div>

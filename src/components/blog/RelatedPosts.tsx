@@ -3,6 +3,7 @@ import { Locale } from '@/config/i18n.config';
 import Link from 'next/link';
 import Image from 'next/image';
 import BlogImage from './BlogImage';
+import { translations } from '@/app/[lang]/translations';
 
 interface RelatedPostsProps {
   posts: BlogPost[];
@@ -38,7 +39,9 @@ export default function RelatedPosts({ posts, locale, title }: RelatedPostsProps
     return null;
   }
 
-  const defaultTitle = locale === 'pt' ? 'Posts Relacionados' : 'Related Posts';
+  // Obter as traduções para o idioma atual
+  const baseLocale = locale.split('-')[0] as keyof typeof translations;
+  const t = translations[baseLocale] || translations.pt;
   
   // Fallback image
   const fallbackImageUrl = "/assets/images/placeholder-blog.jpeg";
@@ -48,7 +51,7 @@ export default function RelatedPosts({ posts, locale, title }: RelatedPostsProps
   return (
     <section className="mt-12 border-t border-gray-200 pt-8">
       <h2 className="text-2xl font-playfair font-bold mb-6 text-gray-900">
-        {title || defaultTitle}
+        {title || t.blog.relatedPosts}
       </h2>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -91,7 +94,7 @@ export default function RelatedPosts({ posts, locale, title }: RelatedPostsProps
                   </div>
                 ) : (
                   <div className="relative h-40 w-full bg-gray-200 flex items-center justify-center">
-                    <span className="text-gray-400 text-sm">Perfect Wedding Blog</span>
+                    <span className="text-gray-400 text-sm">{t.blog.title}</span>
                   </div>
                 )}
               </Link>
@@ -107,7 +110,7 @@ export default function RelatedPosts({ posts, locale, title }: RelatedPostsProps
                   href={postUrl}
                   className="mt-2 inline-block text-sm font-medium text-pink-700 hover:text-pink-900 transition-colors"
                 >
-                  {locale === 'pt' ? 'Leia mais' : 'Read more'}
+                  {t.blog.readMore}
                 </Link>
               </div>
             </article>

@@ -126,6 +126,34 @@ export const translations = {
       subtitle: "Estamos muito felizes em ter você como parte da comunidade Perfect Wedding.",
       description: "Em breve entraremos em contato para iniciar sua experiência com nossa tecnologia revolucionária.",
       backToHome: "Voltar para a Página Inicial"
+    },
+    blog: {
+      title: "Blog Perfect Wedding",
+      subtitle: "Dicas, inspirações e tendências para o seu casamento perfeito",
+      backToHome: "Voltar para o blog",
+      categories: "Categorias",
+      tags: "Tags",
+      filters: "Filtros",
+      clearFilters: "Limpar filtros",
+      noCategory: "Sem nome",
+      readMore: "Leia mais",
+      category: "Categoria:",
+      updatedOn: "Atualizado em",
+      postNotFound: "Post não encontrado | Perfect Wedding",
+      relatedPosts: "Posts Relacionados",
+      notFound: {
+        title: "Nenhum post encontrado",
+        description: "Não encontramos posts em português",
+        withCategory: " nesta categoria",
+        withTag: " com esta tag",
+        checkOtherLanguage: "Você pode verificar se o conteúdo está disponível em inglês.",
+        viewInOtherLanguage: "Ver em inglês"
+      },
+      pagination: {
+        previous: "Anterior",
+        next: "Próxima",
+        goToPage: "Ir para página"
+      }
     }
   },
   en: {
@@ -255,6 +283,34 @@ export const translations = {
       subtitle: "We are very happy to have you as part of the Perfect Wedding community.",
       description: "We will contact you soon to start your experience with our revolutionary technology.",
       backToHome: "Back to Home Page"
+    },
+    blog: {
+      title: "Perfect Wedding Blog",
+      subtitle: "Tips, inspirations and trends for your perfect wedding",
+      backToHome: "Back to blog",
+      categories: "Categories",
+      tags: "Tags",
+      filters: "Filters",
+      clearFilters: "Clear filters",
+      noCategory: "Unnamed",
+      readMore: "Read more",
+      category: "Category:",
+      updatedOn: "Updated on",
+      postNotFound: "Post not found | Perfect Wedding",
+      relatedPosts: "Related Posts",
+      notFound: {
+        title: "No posts found",
+        description: "We couldn't find any posts in English",
+        withCategory: " in this category",
+        withTag: " with this tag",
+        checkOtherLanguage: "You can check if the content is available in Portuguese.",
+        viewInOtherLanguage: "View in Portuguese"
+      },
+      pagination: {
+        previous: "Previous",
+        next: "Next",
+        goToPage: "Go to page"
+      }
     }
   },
   es: {
@@ -384,6 +440,34 @@ export const translations = {
       subtitle: "Estamos muy felices de tenerte como parte de la comunidad Perfect Wedding.",
       description: "Pronto nos pondremos en contacto contigo para iniciar tu experiencia con nuestra tecnología revolucionaria.",
       backToHome: "Volver a la Página Principal"
+    },
+    blog: {
+      title: "Blog Perfect Wedding",
+      subtitle: "Consejos, inspiraciones y tendencias para tu boda perfecta",
+      backToHome: "Volver al blog",
+      categories: "Categorías",
+      tags: "Etiquetas",
+      filters: "Filtros",
+      clearFilters: "Limpiar filtros",
+      noCategory: "Sin nombre",
+      readMore: "Leer más",
+      category: "Categoría:",
+      updatedOn: "Actualizado el",
+      postNotFound: "Publicación no encontrada | Perfect Wedding",
+      relatedPosts: "Publicaciones Relacionadas",
+      notFound: {
+        title: "No se encontraron publicaciones",
+        description: "No encontramos publicaciones en español",
+        withCategory: " en esta categoría",
+        withTag: " con esta etiqueta",
+        checkOtherLanguage: "Puedes verificar si el contenido está disponible en otro idioma.",
+        viewInOtherLanguage: "Ver en otro idioma"
+      },
+      pagination: {
+        previous: "Anterior",
+        next: "Siguiente",
+        goToPage: "Ir a la página"
+      }
     }
   }
 }

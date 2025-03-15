@@ -5,6 +5,7 @@ import { ptBR, enUS } from 'date-fns/locale';
 import { BlogPost } from '@/lib/contentful/types';
 import { Locale } from '@/config/i18n.config';
 import BlogImage from './BlogImage';
+import { translations } from '@/app/[lang]/translations';
 
 interface BlogCardProps {
   post: BlogPost;
@@ -37,6 +38,10 @@ function getImageUrl(image: any): string | null {
 export default function BlogCard({ post, locale }: BlogCardProps) {
   const { title, publishDate, tags = [], image, metadescription, category, slug } = post.fields;
   
+  // Obter as traduções para o idioma atual
+  const baseLocale = locale.split('-')[0] as keyof typeof translations;
+  const t = translations[baseLocale] || translations.pt;
+  
   const imageUrl = getImageUrl(image);
   
   // Extrair assetId de referências
@@ -47,7 +52,7 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
   // Fallback image
   const fallbackImageUrl = "/assets/images/placeholder-blog.jpeg";
   
-  const dateLocale = locale === 'pt' ? ptBR : enUS;
+  const dateLocale = baseLocale === 'pt' ? ptBR : enUS;
   
   // Tratar datas potencialmente inválidas
   let formattedDate = '';
@@ -93,7 +98,7 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
           </div>
         ) : (
           <div className="relative h-64 w-full bg-gray-200 flex items-center justify-center">
-            <span className="text-gray-400 text-lg">Perfect Wedding Blog</span>
+            <span className="text-gray-400 text-lg">{t.blog.title}</span>
           </div>
         )}
       </Link>
@@ -118,7 +123,7 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
             href={postUrl}
             className="font-medium text-pink-700 hover:text-pink-900 transition-colors"
           >
-            {locale === 'pt' ? 'Leia mais' : 'Read more'}
+            {t.blog.readMore}
           </Link>
         </div>
       </div>

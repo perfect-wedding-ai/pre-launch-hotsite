@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Locale } from '@/config/i18n.config';
+import { translations } from '@/app/[lang]/translations';
 
 interface PaginationProps {
   currentPage: number;
@@ -12,6 +13,10 @@ export default function Pagination({ currentPage, totalPages, locale, baseUrl }:
   if (totalPages <= 1) {
     return null;
   }
+
+  // Obter as traduções para o idioma atual
+  const lang = locale.split('-')[0] as keyof typeof translations;
+  const t = translations[lang] || translations.pt;
 
   const prevPage = currentPage > 1 ? currentPage - 1 : null;
   const nextPage = currentPage < totalPages ? currentPage + 1 : null;
@@ -77,15 +82,15 @@ export default function Pagination({ currentPage, totalPages, locale, baseUrl }:
             <Link
               href={getPageUrl(prevPage)}
               className="px-3 py-2 rounded-md border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50"
-              aria-label={locale === 'pt' ? 'Página anterior' : 'Previous page'}
+              aria-label={`${t.blog.pagination.previous} ${t.blog.pagination.goToPage}`}
             >
-              {locale === 'pt' ? 'Anterior' : 'Previous'}
+              {t.blog.pagination.previous}
             </Link>
           </li>
         ) : (
           <li>
             <span className="px-3 py-2 rounded-md border border-gray-200 text-sm font-medium text-gray-400 cursor-not-allowed">
-              {locale === 'pt' ? 'Anterior' : 'Previous'}
+              {t.blog.pagination.previous}
             </span>
           </li>
         )}
@@ -111,7 +116,7 @@ export default function Pagination({ currentPage, totalPages, locale, baseUrl }:
                 <Link
                   href={getPageUrl(page as number)}
                   className="px-3 py-2 rounded-md border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                  aria-label={locale === 'pt' ? `Ir para página ${page}` : `Go to page ${page}`}
+                  aria-label={`${t.blog.pagination.goToPage} ${page}`}
                 >
                   {page}
                 </Link>
@@ -126,15 +131,15 @@ export default function Pagination({ currentPage, totalPages, locale, baseUrl }:
             <Link
               href={getPageUrl(nextPage)}
               className="px-3 py-2 rounded-md border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50"
-              aria-label={locale === 'pt' ? 'Próxima página' : 'Next page'}
+              aria-label={`${t.blog.pagination.next} ${t.blog.pagination.goToPage}`}
             >
-              {locale === 'pt' ? 'Próxima' : 'Next'}
+              {t.blog.pagination.next}
             </Link>
           </li>
         ) : (
           <li>
             <span className="px-3 py-2 rounded-md border border-gray-200 text-sm font-medium text-gray-400 cursor-not-allowed">
-              {locale === 'pt' ? 'Próxima' : 'Next'}
+              {t.blog.pagination.next}
             </span>
           </li>
         )}
