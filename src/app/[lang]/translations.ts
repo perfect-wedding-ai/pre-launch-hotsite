@@ -5,13 +5,13 @@ export const translations = {
       benefits: "Benefícios",
       faq: "Perguntas Frequentes",
       blog: "Blog",
-      tryFree: "Experimente Grátis"
+      tryFree: "Quero Testar"
     },
     hero: {
       title: "Experimente Vestidos de Noiva Virtualmente",
       subtitle: "Descubra o vestido dos seus sonhos sem sair de casa",
       description: "Economize tempo e encontre o vestido perfeito antes mesmo de ir ao ateliê. Nossa tecnologia de inteligência artificial permite que você experimente dezenas de modelos exclusivos em segundos com nossa prova virtual de vestidos.",
-      tryNow: "Experimente Agora",
+      tryNow: "Quero Testar",
       learnMore: "Saiba Mais"
     },
     howItWorks: {
@@ -67,12 +67,12 @@ export const translations = {
       }
     },
     signup: {
-      title: "Experimente Gratuitamente",
-      subtitle: "Seja uma das primeiras a testar nossa tecnologia revolucionária de prova virtual de vestidos",
+      title: "Entre na Lista de Espera",
+      subtitle: "Seja uma das primeiras a testar nossa tecnologia revolucionária de prova virtual de vestidos assim que estiver disponível",
       form: {
         name: "Seu Nome",
         email: "Seu E-mail",
-        button: "Quero Experimentar"
+        button: "Entrar na Lista de Espera"
       }
     },
     faq: {
@@ -89,7 +89,7 @@ export const translations = {
         },
         {
           question: "Quanto custa usar o Perfect Wedding?",
-          answer: "Atualmente estamos em fase de testes e oferecendo acesso gratuito para um número limitado de noivas. Cadastre-se agora para garantir sua vaga!"
+          answer: "Atualmente estamos em fase de desenvolvimento e criando uma lista de espera. Cadastre-se agora para ser notificada assim que o produto estiver disponível!"
         },
         {
           question: "Posso experimentar vestidos de qualquer marca?",
@@ -162,13 +162,13 @@ export const translations = {
       benefits: "Benefits",
       faq: "FAQ",
       blog: "Blog",
-      tryFree: "Try Free"
+      tryFree: "I Want to Try"
     },
     hero: {
       title: "Try On Wedding Dresses Virtually",
       subtitle: "Find your dream dress without leaving home",
       description: "Save time and find the perfect dress before visiting a boutique. Our AI technology lets you try on dozens of exclusive designs in seconds with our virtual dress fitting.",
-      tryNow: "Try Now",
+      tryNow: "I Want to Try",
       learnMore: "Learn More"
     },
     howItWorks: {
@@ -224,12 +224,12 @@ export const translations = {
       }
     },
     signup: {
-      title: "Try It Free",
-      subtitle: "Be one of the first to test our revolutionary virtual dress fitting technology",
+      title: "Join the Waitlist",
+      subtitle: "Be one of the first to test our revolutionary virtual dress fitting technology as soon as it becomes available",
       form: {
         name: "Your Name",
         email: "Your Email",
-        button: "I Want to Try"
+        button: "Join the Waitlist"
       }
     },
     faq: {
@@ -246,7 +246,7 @@ export const translations = {
         },
         {
           question: "How much does Perfect Wedding cost?",
-          answer: "We are currently in testing phase and offering free access to a limited number of brides. Sign up now to secure your spot!"
+          answer: "We are currently in development phase and creating a waitlist. Sign up now to be notified as soon as the product becomes available!"
         },
         {
           question: "Can I try on dresses from any brand?",
@@ -319,13 +319,13 @@ export const translations = {
       benefits: "Beneficios",
       faq: "Preguntas Frecuentes",
       blog: "Blog",
-      tryFree: "Prueba Gratis"
+      tryFree: "Quiero Probar"
     },
     hero: {
       title: "Prueba Vestidos de Novia Virtualmente",
       subtitle: "Encuentra el vestido de tus sueños sin salir de casa",
       description: "Ahorra tiempo y encuentra el vestido perfecto antes de ir a la tienda. Nuestra tecnología de inteligencia artificial te permite probar decenas de diseños exclusivos en segundos con nuestra prueba virtual de vestidos.",
-      tryNow: "Prueba Ahora",
+      tryNow: "Quiero Probar",
       learnMore: "Saber Más"
     },
     howItWorks: {
@@ -381,12 +381,12 @@ export const translations = {
       }
     },
     signup: {
-      title: "Prueba Gratuitamente",
-      subtitle: "Sé una de las primeras en probar nuestra revolucionaria tecnología de prueba virtual de vestidos",
+      title: "Únete a la Lista de Espera",
+      subtitle: "Sé una de las primeras en probar nuestra revolucionaria tecnología de prueba virtual de vestidos tan pronto como esté disponible",
       form: {
         name: "Tu Nombre",
         email: "Tu Email",
-        button: "Quiero Probar"
+        button: "Unirme a la Lista de Espera"
       }
     },
     faq: {
@@ -403,7 +403,7 @@ export const translations = {
         },
         {
           question: "¿Cuánto cuesta usar Perfect Wedding?",
-          answer: "Actualmente estamos en fase de pruebas y ofreciendo acceso gratuito a un número limitado de novias. ¡Regístrate ahora para asegurar tu lugar!"
+          answer: "Actualmente estamos en fase de desarrollo y creando una lista de espera. ¡Regístrate ahora para ser notificada tan pronto como el producto esté disponible!"
         },
         {
           question: "¿Puedo probar vestidos de cualquier marca?",
