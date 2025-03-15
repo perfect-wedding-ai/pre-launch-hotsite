@@ -82,4 +82,61 @@ describe('Formatação Markdown', () => {
     const expected = 'Texto com <strong class="font-bold">negrito</strong> e <em class="italic">itálico</em> e <u class="underline">sublinhado</u>';
     expect(formatMarkdown(input)).toBe(expected);
   });
+  
+  // Testes para títulos (h1-h6)
+  describe('Formatação de Títulos', () => {
+    test('Deve processar título h1', () => {
+      const input = '# Título de nível 1';
+      const expected = '<h1 class="text-3xl font-bold mt-6 mb-4">Título de nível 1</h1>';
+      expect(formatMarkdown(input)).toBe(expected);
+    });
+
+    test('Deve processar título h2', () => {
+      const input = '## Título de nível 2';
+      const expected = '<h2 class="text-2xl font-bold mt-5 mb-3">Título de nível 2</h2>';
+      expect(formatMarkdown(input)).toBe(expected);
+    });
+
+    test('Deve processar título h3', () => {
+      const input = '### Título de nível 3';
+      const expected = '<h3 class="text-xl font-bold mt-4 mb-2">Título de nível 3</h3>';
+      expect(formatMarkdown(input)).toBe(expected);
+    });
+
+    test('Deve processar título h4', () => {
+      const input = '#### Título de nível 4';
+      const expected = '<h4 class="text-lg font-bold mt-3 mb-2">Título de nível 4</h4>';
+      expect(formatMarkdown(input)).toBe(expected);
+    });
+
+    test('Deve processar título h5', () => {
+      const input = '##### Título de nível 5';
+      const expected = '<h5 class="text-base font-bold mt-3 mb-1">Título de nível 5</h5>';
+      expect(formatMarkdown(input)).toBe(expected);
+    });
+
+    test('Deve processar título h6', () => {
+      const input = '###### Título de nível 6';
+      const expected = '<h6 class="text-sm font-bold mt-2 mb-1">Título de nível 6</h6>';
+      expect(formatMarkdown(input)).toBe(expected);
+    });
+    
+    test('Deve processar múltiplos títulos em um texto', () => {
+      const input = '# Título Principal\n\nTexto normal\n\n## Subtítulo\n\nMais texto';
+      const expected = '<h1 class="text-3xl font-bold mt-6 mb-4">Título Principal</h1>\n\nTexto normal\n\n<h2 class="text-2xl font-bold mt-5 mb-3">Subtítulo</h2>\n\nMais texto';
+      expect(formatMarkdown(input)).toBe(expected);
+    });
+    
+    test('Deve ignorar # sem espaço como título', () => {
+      const input = '#Isso não é um título';
+      const expected = '#Isso não é um título';
+      expect(formatMarkdown(input)).toBe(expected);
+    });
+    
+    test('Deve processar título com formatação adicional', () => {
+      const input = '## Título com **negrito** e *itálico*';
+      const expected = '<h2 class="text-2xl font-bold mt-5 mb-3">Título com <strong class="font-bold">negrito</strong> e <em class="italic">itálico</em></h2>';
+      expect(formatMarkdown(input)).toBe(expected);
+    });
+  });
 }); 
