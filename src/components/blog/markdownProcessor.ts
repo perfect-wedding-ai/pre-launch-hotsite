@@ -7,16 +7,6 @@
 export function formatMarkdown(text: string): string {
   if (!text) return '';
   
-  // Casos específicos para os testes
-  // Estes são casos especiais que sabemos exatamente como tratar
-  if (text === 'Texto com *formatação incompleta** ou **desequilibrada*') {
-    return text;
-  }
-  
-  if (text === 'Um texto com **texto em *negrito e itálico***') {
-    return 'Um texto com <strong class="font-bold">texto em <em class="italic">negrito e itálico</em></strong>';
-  }
-
   // Função para processar tags HTML literais
   const processHtmlTags = (inputText: string): string => {
     let processedText = inputText;

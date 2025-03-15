@@ -26,54 +26,32 @@ export default function BlogImage({
   assetId,
   spaceId
 }: BlogImageProps) {
-  // Inicializar com fallbackSrc se src estiver vazio, evitando erros de preload
   const [imgSrc, setImgSrc] = useState(src && src.trim() !== '' ? src : fallbackSrc);
-  const [imageLoaded, setImageLoaded] = useState(false);
   
-  // Se temos um assetId e spaceId, tentar construir URLs do Contentful
+  // Se temos um assetId e spaceId, tentar construir URL do Contentful
   useEffect(() => {
     if (typeof window === 'undefined' || !assetId || !spaceId) {
       return;
     }
     
-    // Construir diferentes formatos de URL do Contentful para teste
-    const urls = [
-      // URL padrão com extensão jpg
-      `https://images.ctfassets.net/${spaceId}/${assetId}/image.jpg`,
-      
-      // URL sem extensão
-      `https://images.ctfassets.net/${spaceId}/${assetId}`,
-      
-      // URL com outros formatos comuns
-      `https://images.ctfassets.net/${spaceId}/${assetId}/image.png`,
-      `https://images.ctfassets.net/${spaceId}/${assetId}/image.webp`,
-      
-      // Versão com parâmetros
-      `https://images.ctfassets.net/${spaceId}/${assetId}/image.jpg?w=800&h=600&fit=fill`
-    ];
+    // Construir URL do Contentful baseada no assetId
+    const contentfulUrl = `https://images.ctfassets.net/${spaceId}/${assetId}/image.jpg`;
     
-    // Testar cada URL para ver se carrega
-    let anyLoaded = false;
-    
-    urls.forEach((url) => {
-      try {
-        if (!url || url.trim() === '') {
-          return;
-        }
-        
-        const testImg = document.createElement('img');
-        testImg.onload = () => {
-          if (!anyLoaded) {
-            setImgSrc(url);
-            setImageLoaded(true);
-            anyLoaded = true;
-          }
-        };
-        testImg.src = url;
-      } catch (error) {
-        // Silenciosamente falha e tenta a próxima URL
-      }
-    });
+    // Testar se a URL carrega corretamente
+    const testImg = document.createElement('img');
+    testImg.onload = () => {
+      setImgSrc(contentfulUrl);
+    };
+    testImg.onerror = () => {
+      // Tentar um formato alternativo sem extensão
+      const alternativeUrl = `https://images.ctfassets.net/${spaceId}/${assetId}`;
+      const altImg = document.createElement('img');
+      altImg.onload = () => {
+        setImgSrc(alternativeUrl);
+      };
+      altImg.src = alternativeUrl;
+    };
+    testImg.src = contentfulUrl;
   }, [assetId, spaceId, src, fallbackSrc]);
   
   // Mapear o valor de objectFit para a classe Tailwind correspondente
@@ -92,15 +70,14 @@ export default function BlogImage({
     containerStyle.maxHeight = maxHeight;
   }
   
-  // Função para tentar a próxima URL quando uma falha
+  // Função para tentar a imagem de fallback quando a original falha
   const handleImageError = () => {
-    // Se a imagem falhar, usar a de fallback
     if (imgSrc !== fallbackSrc) {
       setImgSrc(fallbackSrc);
     }
   };
   
-  // Garantir que sempre temos uma URL válida para o src da imagem
+  // Garantir que sempre temos uma URL válida
   const finalSrc = imgSrc && imgSrc.trim() !== '' ? imgSrc : fallbackSrc;
   
   return (

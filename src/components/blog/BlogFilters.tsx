@@ -4,7 +4,6 @@ import { Category } from '@/lib/contentful/types';
 import { Locale } from '@/config/i18n.config';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
 
 interface BlogFiltersProps {
   categories: Category[];
@@ -19,21 +18,6 @@ export default function BlogFilters({ categories, tags, locale, activeCategory, 
   
   // Colapsar variantes de idioma (en-US -> en, pt-BR -> pt)
   const baseLocale = locale.split('-')[0];
-  
-  // Log de categorias no cliente para debugging
-  useEffect(() => {
-    console.log(`BlogFilters - Locale: ${locale}, Categorias recebidas: ${categories.length}`);
-    if (categories.length > 0) {
-      categories.slice(0, 3).forEach((category, index) => {
-        console.log(`Categoria ${index + 1}: ${category.fields.name || 'Sem nome'} (ID: ${category.sys.id})`);
-      });
-    }
-    
-    console.log(`Tags recebidas: ${tags.length}`);
-    if (tags.length > 0) {
-      console.log(`Primeiras tags: ${tags.slice(0, 5).join(', ')}`);
-    }
-  }, [categories, tags, locale]);
   
   const createFilterUrl = (type: 'category' | 'tag', value: string | null) => {
     const params = new URLSearchParams(searchParams.toString());

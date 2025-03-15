@@ -11,29 +11,25 @@ interface BlogCardProps {
   locale: Locale;
 }
 
-// Função para extrair URL da imagem de maneira segura, similar à da página de post individual
+// Função para extrair URL da imagem de maneira segura
 function getImageUrl(image: any): string | null {
   try {
     if (!image) {
       return null;
     }
     
-    // CASO 1: Formato da Content Delivery API
+    // Formato da Content Delivery API
     if (image.fields && image.fields.file && image.fields.file.url) {
       return `https:${image.fields.file.url}`;
     }
     
-    // CASO 2: Referência com ID
+    // Referência com ID
     if (image.sys && typeof image.sys === 'object' && image.sys.id) {
-      // No lugar de gerar uma URL estática com "image.jpg", vamos usar a mesma
-      // lógica da página de post individual, retornando null para usar o componente
-      // BlogImage que testa diversas URLs até encontrar uma que funcione
       return null;
     }
     
     return null;
   } catch (error) {
-    console.error('Error getting image URL:', error);
     return null;
   }
 }
@@ -62,7 +58,6 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
       formattedDate = format(dateObj, 'dd MMM, yyyy', { locale: dateLocale });
     }
   } catch (error) {
-    console.error('Error formatting date:', error);
     formattedDate = '';
   }
   

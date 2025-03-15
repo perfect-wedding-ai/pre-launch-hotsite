@@ -57,9 +57,7 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
 const extractUniqueTags = (posts: any[], locale: Locale): string[] => {
   const tagsSet = new Set<string>();
   
-  console.log(`Extraindo tags de ${posts.length} posts no locale ${locale}`);
-  
-  posts.forEach((post, index) => {
+  posts.forEach((post) => {
     if (post.fields.tags && Array.isArray(post.fields.tags)) {
       post.fields.tags.forEach((tag: string) => {
         if (tag && typeof tag === 'string') {
@@ -69,17 +67,12 @@ const extractUniqueTags = (posts: any[], locale: Locale): string[] => {
     }
   });
   
-  const uniqueTags = Array.from(tagsSet).sort();
-  console.log(`${uniqueTags.length} tags únicas extraídas`);
-  
-  return uniqueTags;
+  return Array.from(tagsSet).sort();
 };
 
 export default async function BlogPage({ params, searchParams }: BlogPageProps) {
   const { lang } = params;
   const { page = '1', tag, category } = searchParams;
-  
-  console.log(`Renderizando página do blog. Parâmetro lang: ${lang}, Tipo: ${typeof lang}`);
   
   // Verificar locales configurados no Contentful
   await getContentfulLocales();
@@ -96,24 +89,12 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
     category,
   });
   
-  console.log(`Recuperados ${postsResponse.items.length} posts de um total de ${postsResponse.total} para o locale ${lang}`);
-  
   // Buscar todas as categorias
   const categoriesResponse = await getCategories(lang);
-  console.log(`Recuperadas ${categoriesResponse.items.length} categorias para o locale ${lang}`);
-  
-  // Log detalhado das categorias para depuração
-  if (categoriesResponse.items.length > 0) {
-    console.log('Detalhes das categorias:');
-    categoriesResponse.items.forEach((category: any, index: number) => {
-      console.log(`Categoria ${index + 1}: ID=${category.sys.id}, Nome=${category.fields.name}, Locale=${category.sys.locale || 'Não especificado'}`);
-    });
-  }
   
   // Buscar todos os posts para extrair tags (limitado a 100 para performance)
   const allPostsResponse = await getBlogPosts(lang, { limit: 100 });
   const uniqueTags = extractUniqueTags(allPostsResponse.items, lang);
-  console.log(`Extraídas ${uniqueTags.length} tags únicas dos posts`);
   
   const totalPages = Math.ceil(postsResponse.total / postsPerPage);
   

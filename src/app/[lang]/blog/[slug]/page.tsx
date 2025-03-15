@@ -24,42 +24,22 @@ interface BlogPostPageProps {
 function getImageUrl(image: any): string | null {
   try {
     if (!image) {
-      console.log('Image is null or undefined');
       return null;
-    }
-    
-    // Para debug - versão simplificada para evitar logs enormes
-    console.log('Image type:', typeof image);
-    console.log('Image has fields:', !!image.fields);
-    console.log('Image has sys:', !!image.sys);
-    
-    if (image.fields) {
-      console.log('Image fields keys:', Object.keys(image.fields));
-      if (image.fields.file) {
-        console.log('File type:', typeof image.fields.file);
-        if (typeof image.fields.file === 'object') {
-          console.log('File keys:', Object.keys(image.fields.file));
-        }
-      }
     }
     
     // CASO 1: Formato da Content Delivery API
     if (image.fields && image.fields.file && image.fields.file.url) {
-      console.log('CASO 1: Formato CDA padrão');
       return `https:${image.fields.file.url}`;
     }
     
     // CASO 2: Formato da Content Management API (campos localizados)
     if (image.fields && image.fields.file && typeof image.fields.file === 'object') {
-      console.log('CASO 2: Campos localizados');
       // Verificar se o campo file é um objeto com chaves de locale
       const fileField = image.fields.file;
       
       // Tentar encontrar qualquer chave de locale (en, pt, etc.)
       for (const locale in fileField) {
-        console.log(`Verificando locale ${locale} em file`);
         if (fileField[locale] && fileField[locale].url) {
-          console.log(`URL encontrada em locale ${locale}:`, fileField[locale].url);
           return `https:${fileField[locale].url}`;
         }
       }
@@ -67,7 +47,6 @@ function getImageUrl(image: any): string | null {
     
     // CASO 3: Verificar se a imagem tem um campo url diretamente
     if (image.fields && image.fields.url) {
-      console.log('CASO 3: URL direto nos fields');
       return image.fields.url.startsWith('http') ? 
         image.fields.url : `https:${image.fields.url}`;
     }
@@ -79,7 +58,6 @@ function getImageUrl(image: any): string | null {
         
         // Se o campo é um objeto e tem uma propriedade url
         if (field && typeof field === 'object' && field.url) {
-          console.log(`CASO 4: URL encontrada em fields.${key}`);
           return field.url.startsWith('http') ? field.url : `https:${field.url}`;
         }
         
@@ -90,7 +68,6 @@ function getImageUrl(image: any): string | null {
             
             // Verificar se o subcampo tem uma url
             if (subfield && typeof subfield === 'object' && subfield.url) {
-              console.log(`CASO 4: URL aninhada encontrada em fields.${key}.${subkey}`);
               return subfield.url.startsWith('http') ? 
                 subfield.url : `https:${subfield.url}`;
             }
@@ -101,46 +78,27 @@ function getImageUrl(image: any): string | null {
     
     // CASO 5: O próprio image é a URL ou tem uma propriedade url direta
     if (typeof image === 'string') {
-      console.log('CASO 5: Image é uma string');
       return image.startsWith('http') ? image : `https:${image}`;
     }
     
     if (image.url) {
-      console.log('CASO 5: Image tem url direta');
       return image.url.startsWith('http') ? image.url : `https:${image.url}`;
     }
     
-    // CASO 6: Verificar se há uma referência com ID e usar uma URL construída para o Contentful
+    // CASO 6: Verificar se há uma referência com ID e usar getContentfulImageUrl
     if (image.sys && typeof image.sys === 'object' && image.sys.id) {
-      // Log detalhado para diagnóstico
-      console.log('CASO 6: Objeto completo da imagem:', JSON.stringify(image));
-      console.log('CASO 6: Imagem é referência com ID', image.sys.id);
-      console.log('CASO 6: Tipo de referência:', image.sys.linkType);
-      
       // Verificar se é realmente um link para um asset
       if (image.sys.linkType === 'Asset') {
-        const assetId = image.sys.id;
-        
-        // Este formato parece funcionar melhor com a Images API do Contentful
-        const spaceId = process.env.CONTENTFUL_SPACE_ID;
-        if (!spaceId) {
-          console.error('CONTENTFUL_SPACE_ID não está definido');
-          return null;
-        }
-        
         // Retornamos null para forçar o uso do fallback - o componente BlogImage
         // vai tentar várias URLs diferentes usando o assetId e spaceId
         return null;
       }
       
-      // Se chegou aqui, não é um link para Asset ou tem outro formato
       return getContentfulImageUrl(image.sys.id);
     }
     
-    console.error('Estrutura de imagem não reconhecida:', image);
     return null;
   } catch (error) {
-    console.error('Error getting image URL:', error);
     return null;
   }
 }
@@ -205,70 +163,9 @@ function getImageTitle(image: any): string {
   return 'Blog post image';
 }
 
-// Função auxiliar para inspecionar e imprimir a estrutura do documento Rich Text
-function inspectRichTextDocument(document: Document, maxDepth = 3): void {
-  try {
-    console.log('Rich Text Document structure (simplified):');
-    
-    const inspectNode = (node: any, depth = 0, path = ''): void => {
-      if (depth > maxDepth) return;
-      
-      const indent = '  '.repeat(depth);
-      const displayPath = path ? path + '.' : '';
-      
-      if (node === null || node === undefined) {
-        console.log(`${indent}${displayPath}NULL`);
-        return;
-      }
-      
-      if (typeof node !== 'object') {
-        console.log(`${indent}${displayPath}${typeof node}: ${node}`);
-        return;
-      }
-      
-      if (Array.isArray(node)) {
-        console.log(`${indent}${displayPath}Array (${node.length} items)`);
-        if (depth < maxDepth) {
-          node.forEach((item, idx) => {
-            inspectNode(item, depth + 1, `${displayPath}[${idx}]`);
-          });
-        }
-        return;
-      }
-      
-      // Para nós do rich text
-      if (node.nodeType) {
-        console.log(`${indent}${displayPath}${node.nodeType}`);
-        if (node.content && depth < maxDepth) {
-          node.content.forEach((item: any, idx: number) => {
-            inspectNode(item, depth + 1, `${displayPath}content[${idx}]`);
-          });
-        }
-        return;
-      }
-      
-      // Para outros objetos
-      console.log(`${indent}${displayPath}Object keys: ${Object.keys(node).join(', ')}`);
-      
-      if (depth < maxDepth) {
-        Object.keys(node).forEach(key => {
-          inspectNode(node[key], depth + 1, `${displayPath}${key}`);
-        });
-      }
-    };
-    
-    inspectNode(document);
-  } catch (error) {
-    console.error('Error inspecting Rich Text document:', error);
-  }
-}
-
 // Função auxiliar para converter rich text para texto markdown
 function richTextToString(document: Document): string {
   if (!document) return '';
-  
-  // Debug
-  inspectRichTextDocument(document);
   
   try {
     // Definir tipos para listType
@@ -418,9 +315,6 @@ function richTextToString(document: Document): string {
     
     // Processar documento inteiro
     const result = extractTextFromNode(document);
-    
-    // Debug
-    console.log('Markdown content:', result);
     
     return result;
   } catch (error) {
