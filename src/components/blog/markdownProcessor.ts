@@ -17,7 +17,8 @@ export function formatMarkdown(text: string): string {
       [/<b>(.*?)<\/b>/g, '<strong class="font-bold">$1</strong>'],
       [/<i>(.*?)<\/i>/g, '<em class="italic">$1</em>'],
       [/<strong>(.*?)<\/strong>/g, '<strong class="font-bold">$1</strong>'],
-      [/<em>(.*?)<\/em>/g, '<em class="italic">$1</em>']
+      [/<em>(.*?)<\/em>/g, '<em class="italic">$1</em>'],
+      [/<a\s+href="(.*?)">(.*?)<\/a>/g, '<a href="$1" class="text-blue-600 hover:text-blue-800 underline">$2</a>']
     ];
     
     // Aplicar cada substituição
@@ -26,6 +27,25 @@ export function formatMarkdown(text: string): string {
     });
     
     return processedText;
+  };
+  
+  // Função para processar links no formato markdown [texto](url)
+  const processLinks = (inputText: string): string => {
+    // Regex para pegar links no formato [texto](url)
+    const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+    
+    // Substituir cada link encontrado pelo HTML correspondente
+    return inputText.replace(linkRegex, (match, text, url) => {
+      // Verificar se a URL começa com http:// ou https://
+      if (!url.startsWith('http://') && !url.startsWith('https://') && !url.startsWith('/')) {
+        // Para URLs relativas sem barra, adicionar /
+        if (!url.startsWith('#')) {
+          url = `/${url}`;
+        }
+      }
+      
+      return `<a href="${url}" class="text-blue-600 hover:text-blue-800 underline">${text}</a>`;
+    });
   };
   
   // Função para processar títulos (h1-h6)
@@ -108,6 +128,9 @@ export function formatMarkdown(text: string): string {
   
   // Segunda etapa: processar títulos (h1-h6)
   result = processHeadings(result);
+  
+  // Terceira etapa: processar links
+  result = processLinks(result);
 
   // Lista de padrões a serem processados, em ordem de complexidade
   // Essa ordenação é crucial para evitar processamentos parciais
@@ -164,6 +187,9 @@ export function formatMarkdown(text: string): string {
       // Sublinhado (__) dentro de outro elemento
       processedContent = processedContent.replace(/__(.+?)__/g, (match, p1) => 
         `<u class="underline">${p1}</u>`);
+      
+      // Links dentro de outro elemento
+      processedContent = processLinks(processedContent);
     }
     
     return processedContent;

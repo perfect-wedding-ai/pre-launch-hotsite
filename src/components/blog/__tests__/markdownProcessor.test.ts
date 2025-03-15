@@ -139,4 +139,55 @@ describe('Formatação Markdown', () => {
       expect(formatMarkdown(input)).toBe(expected);
     });
   });
+  
+  // Testes para links
+  describe('Formatação de Links', () => {
+    test('Deve processar link simples', () => {
+      const input = '[Perfect Wedding](https://perfectwedding.ai)';
+      const expected = '<a href="https://perfectwedding.ai" class="text-blue-600 hover:text-blue-800 underline">Perfect Wedding</a>';
+      expect(formatMarkdown(input)).toBe(expected);
+    });
+    
+    test('Deve processar link no meio de um texto', () => {
+      const input = 'Visite o site [Perfect Wedding](https://perfectwedding.ai) para mais informações.';
+      const expected = 'Visite o site <a href="https://perfectwedding.ai" class="text-blue-600 hover:text-blue-800 underline">Perfect Wedding</a> para mais informações.';
+      expect(formatMarkdown(input)).toBe(expected);
+    });
+    
+    test('Deve processar múltiplos links', () => {
+      const input = '[Link 1](https://site1.com) e [Link 2](https://site2.com)';
+      const expected = '<a href="https://site1.com" class="text-blue-600 hover:text-blue-800 underline">Link 1</a> e <a href="https://site2.com" class="text-blue-600 hover:text-blue-800 underline">Link 2</a>';
+      expect(formatMarkdown(input)).toBe(expected);
+    });
+    
+    test('Deve processar link com formatação no texto', () => {
+      const input = '[**Texto em negrito**](https://exemplo.com)';
+      const expected = '<a href="https://exemplo.com" class="text-blue-600 hover:text-blue-800 underline"><strong class="font-bold">Texto em negrito</strong></a>';
+      expect(formatMarkdown(input)).toBe(expected);
+    });
+    
+    test('Deve processar link com URL relativa', () => {
+      const input = '[Página Inicial](blog)';
+      const expected = '<a href="/blog" class="text-blue-600 hover:text-blue-800 underline">Página Inicial</a>';
+      expect(formatMarkdown(input)).toBe(expected);
+    });
+    
+    test('Deve processar link com âncora', () => {
+      const input = '[Ir para seção](#secao)';
+      const expected = '<a href="#secao" class="text-blue-600 hover:text-blue-800 underline">Ir para seção</a>';
+      expect(formatMarkdown(input)).toBe(expected);
+    });
+    
+    test('Deve processar link dentro de formatação', () => {
+      const input = '**[Link em negrito](https://exemplo.com)**';
+      const expected = '<strong class="font-bold"><a href="https://exemplo.com" class="text-blue-600 hover:text-blue-800 underline">Link em negrito</a></strong>';
+      expect(formatMarkdown(input)).toBe(expected);
+    });
+    
+    test('Deve processar tags <a> HTML já existentes', () => {
+      const input = '<a href="https://exemplo.com">Link HTML</a>';
+      const expected = '<a href="https://exemplo.com" class="text-blue-600 hover:text-blue-800 underline">Link HTML</a>';
+      expect(formatMarkdown(input)).toBe(expected);
+    });
+  });
 }); 
