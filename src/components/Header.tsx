@@ -30,7 +30,9 @@ export default function Header({ lang, t }: HeaderProps) {
                             <li><Link href={`/${lang}#como-funciona`} className="nav-link">{t.nav.howItWorks}</Link></li>
                             <li><Link href={`/${lang}#beneficios`} className="nav-link">{t.nav.benefits}</Link></li>
                             <li><Link href={`/${lang}#faq`} className="nav-link">{t.nav.faq}</Link></li>
-                            <li><Link href={`/${lang}/blog`} className="nav-link">{t.nav.blog}</Link></li>
+                            {lang !== 'es' && (
+                                <li><Link href={`/${lang}/blog`} className="nav-link">{t.nav.blog}</Link></li>
+                            )}
                         </ul>
                     </nav>
                     <div className="cta-button">

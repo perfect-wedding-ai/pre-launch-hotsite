@@ -485,7 +485,9 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
                 <li><Link href={`/${lang}#como-funciona`} className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.howItWorks}</Link></li>
                 <li><Link href={`/${lang}#beneficios`} className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.benefits}</Link></li>
                 <li><Link href={`/${lang}#faq`} className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.faq}</Link></li>
-                <li><Link href={`/${lang}/blog`} className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.blog}</Link></li>
+                {lang !== 'es' && (
+                  <li><Link href={`/${lang}/blog`} className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.blog}</Link></li>
+                )}
               </ul>
             </div>
             <div className="footer-contact">

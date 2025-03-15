@@ -22,6 +22,11 @@ const localeMap: { [key: string]: Locale } = {
   'pt': 'pt',
   'pt-br': 'pt',
   'pt-pt': 'pt',
+  'es': 'es',
+  'es-es': 'es',
+  'es-mx': 'es',
+  'es-ar': 'es',
+  'es-co': 'es',
 }
 
 export function middleware(request: NextRequest) {
