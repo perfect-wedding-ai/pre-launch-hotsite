@@ -15,8 +15,8 @@ import {
     NoScrollLockDropdownMenu 
 } from "@/components/ui/custom-dropdown-menu";
 import { useEffect, useState } from "react";
-import ScrollbarPreserver from "./ScrollbarPreserver";
-import LanguageSelector from "./LanguageSelector";
+import ScrollbarPreserver from "@/components/ScrollbarPreserver";
+import LanguageSelector from "@/components/LanguageSelector";
 
 type ValidLang = 'pt' | 'en' | 'es';
 
@@ -95,23 +95,7 @@ export default function Header({ lang, t }: HeaderProps) {
                                             {userButton}
                                         </DropdownMenuTrigger>
                                         <CustomDropdownMenuContent className="min-w-48 z-[1001]" sideOffset={5} align="end">
-                                            <DropdownMenuLabel>{t.userMenu.account}</DropdownMenuLabel>
-                                            <DropdownMenuSeparator />
-                                            <DropdownMenuItem>
-                                                <Link href={`/${lang}/profile`} className="w-full">
-                                                    {t.userMenu.profile}
-                                                </Link>
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem>
-                                                <Link href={`/${lang}/dashboard`} className="w-full">
-                                                    {t.userMenu.dashboard}
-                                                </Link>
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem>
-                                                <Link href={`/${lang}/settings`} className="w-full">
-                                                    {t.userMenu.settings}
-                                                </Link>
-                                            </DropdownMenuItem>
+                                            <DropdownMenuLabel>{t.userMenu.language}</DropdownMenuLabel>
                                             <DropdownMenuSeparator />
                                             <LanguageSelector 
                                                 currentLang={lang} 
@@ -120,12 +104,6 @@ export default function Header({ lang, t }: HeaderProps) {
                                                     languageNames: t.userMenu.languageNames
                                                 }}
                                             />
-                                            <DropdownMenuSeparator />
-                                            <DropdownMenuItem>
-                                                <button className="w-full text-left text-red-500">
-                                                    {t.userMenu.signOut}
-                                                </button>
-                                            </DropdownMenuItem>
                                         </CustomDropdownMenuContent>
                                     </NoScrollLockDropdownMenu>
                                 ) : (
