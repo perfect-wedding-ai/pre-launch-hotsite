@@ -11,18 +11,5 @@
         "description": "Economize tempo e encontre o vestido perfeito antes mesmo de ir ao ateliê. Nossa tecnologia de inteligência artificial permite que você experimente dezenas de modelos exclusivos em segundos com nossa prova virtual de vestidos.",
         "tryNow": "Experimente Agora",
         "learnMore": "Saiba Mais"
-    },
-    "userMenu": {
-        "profile": "Perfil",
-        "dashboard": "Painel",
-        "settings": "Configurações",
-        "signOut": "Sair",
-        "account": "Conta do usuário",
-        "language": "Idioma",
-        "languageNames": {
-            "pt": "Português",
-            "en": "Inglês",
-            "es": "Espanhol"
-        }
     }
 } 

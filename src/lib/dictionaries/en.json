@@ -11,18 +11,5 @@
         "description": "Save time and find the perfect dress before visiting the atelier. Our artificial intelligence technology allows you to try dozens of exclusive models in seconds with our virtual dress fitting.",
         "tryNow": "Try Now",
         "learnMore": "Learn More"
-    },
-    "userMenu": {
-        "profile": "Profile",
-        "dashboard": "Dashboard",
-        "settings": "Settings",
-        "signOut": "Sign Out",
-        "account": "User Account",
-        "language": "Language",
-        "languageNames": {
-            "pt": "Portuguese",
-            "en": "English",
-            "es": "Spanish"
-        }
     }
 } 

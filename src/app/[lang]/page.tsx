@@ -372,7 +372,7 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
 
       <BackgroundEffect className="py-16">
         <div className="container">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div id="cadastro" className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="signup-content">
               <div className="text-center mb-12">
                 <h2 className="text-4xl mb-4">{t.signup.title}</h2>

@@ -28,18 +28,6 @@ body[data-radix-scroll-lock-scrollbar-width] {
   margin-right: 0 !important;
 }
 
-/* Força o estilo do body independente de atributos */
-body {
-  overflow-y: scroll !important; 
-  margin-right: 0 !important;
-  padding-right: var(--scrollbar-width) !important;
-}
-
-/* Este seletor pega todos os filhos diretos do body e garante que não manipulem o scroll */
-body > * {
-  overflow: visible !important;
-}
-
 :root {
   --primary-color: rgb(248, 200, 220);
   --primary-dark: rgb(238, 180, 200);
