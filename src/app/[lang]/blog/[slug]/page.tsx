@@ -339,7 +339,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     };
   }
   
-  const { title, metadescription, image } = post.fields;
+  const { title, metadescription, image, category } = post.fields;
   const imageUrl = getImageUrl(image);
   const { width, height } = getImageDimensions(image);
   const imageTitle = getImageTitle(image);
@@ -347,12 +347,19 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   // URL de fallback para quando não conseguimos extrair a URL da imagem
   const fallbackImageUrl = "/assets/images/placeholder-blog.jpeg";
   
+  // Incluir categoria na descrição, se existir
+  let enhancedDescription = metadescription || '';
+  if (category && category.fields && category.fields.name) {
+    enhancedDescription = `${category.fields.name}: ${enhancedDescription}`;
+  }
+  
   return {
     title: `${title} | ${t.blog.title}`,
-    description: metadescription || undefined,
+    description: enhancedDescription,
+    keywords: category?.fields?.name ? [category.fields.name] : undefined,
     openGraph: {
       title: `${title} | ${t.blog.title}`,
-      description: metadescription || undefined,
+      description: enhancedDescription,
       type: 'article',
       url: `https://perfectwedding.ai/${lang}/blog/${slug}`,
       images: imageUrl ? [
@@ -374,7 +381,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     twitter: {
       card: 'summary_large_image',
       title: `${title} | ${t.blog.title}`,
-      description: metadescription || undefined,
+      description: enhancedDescription,
       images: imageUrl ? [imageUrl] : [fallbackImageUrl],
     },
   };
@@ -493,6 +500,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       '@type': 'WebPage',
       '@id': `https://perfectwedding.ai/${lang}/blog/${slug}`,
     },
+    // Adicionar categoria se existir
+    ...(category && category.fields && category.fields.name ? {
+      'articleSection': category.fields.name
+    } : {})
   };
   
   return (
@@ -534,20 +545,29 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     </time>
                   </span>
                 )}
-                
+              </div>
+              
+              <div className="flex flex-wrap gap-2 mb-8 w-full">
                 {category && category.fields && category.fields.name && (
-                  <span className="text-gray-600">
-                    {t.blog.category}{' '}
-                    <Link 
-                      href={`/${lang}/blog?category_name=${encodeURIComponent(category.fields.slug || category.fields.name)}`} 
-                      className="hover:text-purple-700 hover:underline transition-colors"
-                      prefetch={false}
-                      data-category-id={category.sys.id}
-                    >
-                      {category.fields.name}
-                    </Link>
-                  </span>
+                  <Link 
+                    href={`/${lang}/blog?category_name=${encodeURIComponent(category.fields.slug || category.fields.name)}`} 
+                    className="text-xs font-semibold bg-purple-100 text-purple-800 px-3 py-1 rounded-full hover:bg-purple-200 transition-colors"
+                    prefetch={false}
+                    data-category-id={category.sys.id}
+                  >
+                    {t.blog.category}: {category.fields.name}
+                  </Link>
                 )}
+                
+                {Array.isArray(tags) && tags.map((tag) => (
+                  <a
+                    key={tag}
+                    href={`/${lang}/blog?tag=${encodeURIComponent(tag)}`}
+                    className="text-xs font-semibold bg-pink-100 text-pink-800 px-3 py-1 rounded-full hover:bg-pink-200 transition-colors"
+                  >
+                    {tag}
+                  </a>
+                ))}
               </div>
               
               {image && (
@@ -563,18 +583,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   className="w-full"
                 />
               )}
-              
-              <div className="flex flex-wrap gap-2 mb-8 w-full">
-                {Array.isArray(tags) && tags.map((tag) => (
-                  <a
-                    key={tag}
-                    href={`/${lang}/blog?tag=${encodeURIComponent(tag)}`}
-                    className="text-xs font-semibold bg-pink-100 text-pink-800 px-3 py-1 rounded-full hover:bg-pink-200 transition-colors"
-                  >
-                    {tag}
-                  </a>
-                ))}
-              </div>
             </header>
             
             <div className="prose prose-lg w-full max-w-none">
