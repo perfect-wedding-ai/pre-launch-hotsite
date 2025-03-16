@@ -492,12 +492,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <BlogHeader locale={lang} showBackLink={false} />
         
         <article className="max-w-4xl mx-auto">
-          <header className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-playfair font-bold text-gray-900 mb-4">
+          <header className="mb-8 w-full">
+            <h1 className="text-3xl md:text-4xl font-playfair font-bold text-gray-900 mb-4 w-full">
               {title}
             </h1>
             
-            <div className="flex flex-wrap items-center text-gray-600 text-sm mb-4 gap-6">
+            <div className="flex flex-wrap items-center text-gray-600 text-sm mb-4 gap-6 w-full">
               {publishDate && (
                 <span>
                   <time dateTime={publishDate}>
@@ -540,10 +540,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 maxHeight="600px"
                 assetId={assetId}
                 spaceId={spaceId}
+                className="w-full"
               />
             )}
             
-            <div className="flex flex-wrap gap-2 mb-8">
+            <div className="flex flex-wrap gap-2 mb-8 w-full">
               {Array.isArray(tags) && tags.map((tag) => (
                 <a
                   key={tag}
@@ -556,7 +557,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
           </header>
           
-          <div className="prose prose-lg max-w-none">
+          <div className="prose prose-lg w-full max-w-none">
             <MarkdownRenderer content={richTextToString(body)} locale={lang} />
           </div>
           

@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@formatjs/intl-localematcher": "0.6.0",
+    "@tailwindcss/typography": "^0.5.16",
     "@types/jest": "^29.5.14",
     "@types/negotiator": "0.6.3",
     "@types/node": "^20",

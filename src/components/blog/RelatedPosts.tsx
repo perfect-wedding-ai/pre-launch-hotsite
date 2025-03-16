@@ -48,12 +48,12 @@ export default function RelatedPosts({ posts, locale, title }: RelatedPostsProps
   const spaceId = process.env.CONTENTFUL_SPACE_ID;
 
   return (
-    <section className="mt-12 border-t border-gray-200 pt-8">
-      <h2 className="text-2xl font-playfair font-bold mb-6 text-gray-900">
+    <section className="mt-12 border-t border-gray-200 pt-8 w-full">
+      <h2 className="text-2xl font-playfair font-bold mb-6 text-gray-900 w-full">
         {title || t.blog.relatedPosts}
       </h2>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
         {posts.map((post) => {
           const { title, slug, image } = post.fields;
           const postUrl = `/${locale}/blog/${slug}`;

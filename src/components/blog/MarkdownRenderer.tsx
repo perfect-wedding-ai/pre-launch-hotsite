@@ -243,7 +243,7 @@ export default function MarkdownRenderer({ content, locale }: MarkdownRendererPr
         }
         
         elements.push(
-          <p key={i} className="mb-6 leading-relaxed text-gray-800">
+          <p key={i} className="mb-6 leading-relaxed text-gray-800 w-full" style={{ maxWidth: '100% !important' }}>
             {processTextFormatting(line)}
           </p>
         );
@@ -262,7 +262,7 @@ export default function MarkdownRenderer({ content, locale }: MarkdownRendererPr
   };
 
   return (
-    <div className="rich-text-content">
+    <div className="rich-text-content w-full max-w-full">
       {renderMarkdown(content)}
     </div>
   );

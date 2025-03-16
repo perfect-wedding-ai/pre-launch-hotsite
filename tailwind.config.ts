@@ -41,9 +41,58 @@ const config: Config = {
         'height': 'height',
         'spacing': 'margin, padding',
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: '100%',
+            color: 'var(--text-color, #333)',
+            p: {
+              width: 'auto',
+            },
+            a: {
+              color: 'var(--primary-color)',
+              '&:hover': {
+                color: 'var(--secondary-color)',
+              },
+            },
+            h1: {
+              fontFamily: 'var(--font-playfair)',
+              color: 'var(--h1-color)',
+              width: 'auto',
+            },
+            h2: {
+              fontFamily: 'var(--font-playfair)',
+              color: 'var(--h2-color)',
+              width: 'auto',
+            },
+            h3: {
+              fontFamily: 'var(--font-playfair)',
+              width: 'auto',
+            },
+            h4: {
+              fontFamily: 'var(--font-playfair)',
+              width: 'auto',
+            },
+            ul: {
+              width: 'auto',
+            },
+            ol: {
+              width: 'auto',
+            },
+            li: {
+              width: 'auto',
+            },
+            blockquote: {
+              width: 'auto',
+            },
+          },
+        },
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
   safelist: [
     'bg-primary',
     'bg-secondary',

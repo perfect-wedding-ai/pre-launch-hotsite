@@ -45,13 +45,13 @@ export default function BlogHeader({ locale, title, description, showBackLink = 
       </h1>
       
       {description && (
-        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+        <p className="text-lg text-gray-600">
           {description}
         </p>
       )}
       
       {!description && !title && (
-        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+        <p className="text-lg text-gray-600">
           {t.blog.subtitle}
         </p>
       )}
