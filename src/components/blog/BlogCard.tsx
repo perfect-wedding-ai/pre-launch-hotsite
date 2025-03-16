@@ -74,7 +74,7 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
   const hasImageReference = image && !imageUrl && assetId && spaceId;
   
   return (
-    <article className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+    <article className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 h-full flex flex-col">
       <Link href={postUrl} className="block">
         {imageUrl ? (
           <div className="relative h-64 w-full">
@@ -105,9 +105,9 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
         )}
       </Link>
       
-      <div className="p-6">
-        <Link href={postUrl} className="block">
-          <h2 className="text-xl font-playfair font-bold mb-2 text-gray-900 hover:text-pink-700 transition-colors line-clamp-2">
+      <div className="p-6 flex-1 flex flex-col">
+        <Link href={postUrl} className="block mb-auto">
+          <h2 className="text-xl font-playfair font-bold mb-3 text-gray-900 hover:text-pink-700 transition-colors min-h-[4rem]">
             {title}
           </h2>
         </Link>
