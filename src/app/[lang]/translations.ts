@@ -141,6 +141,7 @@ export const translations = {
       updatedOn: "Atualizado em",
       postNotFound: "Post não encontrado | Perfect Wedding",
       relatedPosts: "Posts Relacionados",
+      aiDisclaimer: "Este conteúdo foi criado com carinho e o auxílio de inteligência artificial.",
       notFound: {
         title: "Nenhum post encontrado",
         description: "Não encontramos posts em português",
@@ -298,6 +299,7 @@ export const translations = {
       updatedOn: "Updated on",
       postNotFound: "Post not found | Perfect Wedding",
       relatedPosts: "Related Posts",
+      aiDisclaimer: "This content was created with care and the assistance of artificial intelligence.",
       notFound: {
         title: "No posts found",
         description: "We couldn't find any posts in English",
@@ -455,6 +457,7 @@ export const translations = {
       updatedOn: "Actualizado el",
       postNotFound: "Publicación no encontrada | Perfect Wedding",
       relatedPosts: "Publicaciones Relacionadas",
+      aiDisclaimer: "Este contenido fue creado con cariño y la ayuda de inteligencia artificial.",
       notFound: {
         title: "No se encontraron publicaciones",
         description: "No encontramos publicaciones en español",

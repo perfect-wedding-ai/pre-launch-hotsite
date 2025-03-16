@@ -596,6 +596,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <div className="prose prose-lg w-full max-w-none">
               <MarkdownRenderer content={richTextToString(body)} locale={lang} />
             </div>
+
+            <div className="text-right text-xs text-gray-400 italic mt-8 mb-12 flex items-center justify-end">
+              {t.blog.aiDisclaimer}
+              <i className="fas fa-heart text-pink-400 ml-2"></i>
+            </div>
             
             {relatedPosts.length > 0 && (
               <RelatedPosts posts={relatedPosts} locale={lang} />
