@@ -601,9 +601,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               {t.blog.aiDisclaimer}
               <i className="fas fa-heart text-pink-400 ml-2"></i>
             </div>
-            
+
             {relatedPosts.length > 0 && (
-              <RelatedPosts posts={relatedPosts} locale={lang} />
+              <div className="bg-white rounded-lg overflow-hidden mb-8 shadow-sm">
+                <RelatedPosts posts={relatedPosts} locale={lang} />
+              </div>
             )}
           </article>
           
