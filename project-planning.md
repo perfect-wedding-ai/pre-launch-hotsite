@@ -16,3 +16,46 @@
 - When searching for recent news, use the current year (2025) instead of previous years, or simply use the "recent" keyword to get the latest information
 
 # Scratchpad
+
+## Implementação do Menu Suspenso do Usuário no Header
+
+### Tarefa
+Adicionar um botão no canto direito do Header para um menu suspenso do usuário, usando o componente DropdownMenu do Shadcn UI e o ícone de usuário do Font Awesome.
+
+### Plano de Execução
+[X] Verificar se já temos os pacotes Shadcn UI instalados (ou instalar se necessário)
+[X] Instalar o Font Awesome (ou verificar se já está disponível)
+[X] Adicionar o componente DropdownMenu do Shadcn UI
+[X] Implementar o ícone de usuário do Font Awesome
+[X] Modificar o Header.tsx para adicionar o menu suspenso
+[X] Estilizar o componente de acordo com as cores do site
+[X] Testar a implementação
+
+### Progresso
+Iniciando a implementação...
+
+Verificação inicial:
+- Shadcn UI não está instalado no projeto
+- Font Awesome não está instalado no projeto
+
+Pacotes instalados:
+- Shadcn UI instalado com sucesso (componente dropdown-menu)
+- Font Awesome instalado com sucesso
+
+Modificações no Header.tsx:
+- Importei os componentes necessários do Shadcn UI e Font Awesome
+- Adicionei suporte para traduções opcionais do menu do usuário (com valores padrão em português)
+- Adicionei um botão de usuário com ícone do Font Awesome
+- Implementei o menu suspenso com opções de perfil, painel, configurações e sair
+- Estilizei o componente para combinar com as cores do site (usando neutros para manter consistência)
+
+Verificação final:
+- Confirmei que o globals.css foi atualizado pelo Shadcn com as variáveis CSS necessárias
+- Confirmei que o componente DropdownMenu está funcionando corretamente
+- Confirmei que o utils.ts foi criado corretamente para o funcionamento do Shadcn UI
+
+Implementação concluída com sucesso! O menu suspenso do usuário foi adicionado ao Header.tsx com as seguintes características:
+- Ícone de usuário do Font Awesome
+- Menu suspenso com opções de perfil, painel, configurações e sair
+- Estilização consistente com as cores do site
+- Suporte para traduções
