@@ -8,6 +8,7 @@ import OptimizedImage from '@/components/OptimizedImage';
 import Header from '@/components/Header';
 import BackgroundEffect from '@/components/BackgroundEffect';
 import Footer from '@/components/Footer';
+import BlogPreloader from '@/components/BlogPreloader';
 
 type ValidLang = 'pt' | 'en' | 'es';
 
@@ -427,6 +428,9 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
       </section>
 
       <Footer lang={lang} t={t} />
+      
+      {/* Precarregar dados do blog em segundo plano */}
+      <BlogPreloader lang={lang} />
     </>
   );
 }

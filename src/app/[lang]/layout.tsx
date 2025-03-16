@@ -6,6 +6,7 @@ import { translations, getTranslations } from './translations'
 import '../globals.css'
 import { metadataTranslations, getMetadataTranslations } from './metadata'
 import { Locale, i18n } from '@/config/i18n.config'
+import Providers from '../providers'
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -126,7 +127,9 @@ export default function RootLayout({
         />
       </head>
       <body className={`${montserrat.className} antialiased`}>
-        {children}
+        <Providers>
+          {children}
+        </Providers>
 
         {/* Google Analytics */}
         <Script

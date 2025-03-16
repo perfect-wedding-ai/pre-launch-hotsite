@@ -17,6 +17,7 @@ import {
 import { useEffect, useState } from "react";
 import ScrollbarPreserver from "@/components/ScrollbarPreserver";
 import LanguageSelector from "@/components/LanguageSelector";
+import { useRouter } from "next/navigation";
 
 type ValidLang = 'pt' | 'en' | 'es';
 
@@ -64,10 +65,17 @@ interface HeaderProps {
 
 export default function Header({ lang, t }: HeaderProps) {
     const [mounted, setMounted] = useState(false);
+    const router = useRouter();
     
     useEffect(() => {
         setMounted(true);
     }, []);
+    
+    // Função para precarregar a página do blog ao passar o mouse
+    const handleBlogLinkHover = () => {
+        // Precarrega a página do blog
+        router.prefetch(`/${lang}/blog`);
+    };
     
     // Renderizar o botão de usuário
     const userButton = (
@@ -96,7 +104,15 @@ export default function Header({ lang, t }: HeaderProps) {
                                 <li><Link href={`/${lang}#${t.anchors.benefits}`} className="nav-link">{t.nav.benefits}</Link></li>
                                 <li><Link href={`/${lang}#${t.anchors.faq}`} className="nav-link">{t.nav.faq}</Link></li>
                                 {lang !== 'es' && (
-                                    <li><Link href={`/${lang}/blog`} className="nav-link">{t.nav.blog}</Link></li>
+                                    <li>
+                                        <Link 
+                                            href={`/${lang}/blog`} 
+                                            className="nav-link"
+                                            onMouseEnter={handleBlogLinkHover}
+                                        >
+                                            {t.nav.blog}
+                                        </Link>
+                                    </li>
                                 )}
                             </ul>
                         </nav>
