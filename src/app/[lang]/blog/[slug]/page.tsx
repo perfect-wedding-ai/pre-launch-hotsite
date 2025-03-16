@@ -545,29 +545,37 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     </time>
                   </span>
                 )}
+                
+                {category && category.fields && category.fields.name && (
+                  <span className="text-gray-600">
+                    {t.blog.category}:{' '}
+                    <Link 
+                      href={`/${lang}/blog?category_name=${encodeURIComponent(category.fields.slug || category.fields.name)}`} 
+                      className="inline-block text-xs font-semibold bg-purple-100 text-purple-800 px-3 py-1 rounded-full hover:bg-purple-200 transition-colors"
+                      prefetch={false}
+                      data-category-id={category.sys.id}
+                    >
+                      {category.fields.name}
+                    </Link>
+                  </span>
+                )}
               </div>
               
               <div className="flex flex-wrap gap-2 mb-8 w-full">
-                {category && category.fields && category.fields.name && (
-                  <Link 
-                    href={`/${lang}/blog?category_name=${encodeURIComponent(category.fields.slug || category.fields.name)}`} 
-                    className="text-xs font-semibold bg-purple-100 text-purple-800 px-3 py-1 rounded-full hover:bg-purple-200 transition-colors"
-                    prefetch={false}
-                    data-category-id={category.sys.id}
-                  >
-                    {t.blog.category}: {category.fields.name}
-                  </Link>
+                {Array.isArray(tags) && tags.length > 0 && (
+                  <>
+                    <span className="text-gray-600 text-sm">{t.blog.tags}:</span>
+                    {tags.map((tag) => (
+                      <a
+                        key={tag}
+                        href={`/${lang}/blog?tag=${encodeURIComponent(tag)}`}
+                        className="text-xs font-semibold bg-pink-100 text-pink-800 px-3 py-1 rounded-full hover:bg-pink-200 transition-colors"
+                      >
+                        {tag}
+                      </a>
+                    ))}
+                  </>
                 )}
-                
-                {Array.isArray(tags) && tags.map((tag) => (
-                  <a
-                    key={tag}
-                    href={`/${lang}/blog?tag=${encodeURIComponent(tag)}`}
-                    className="text-xs font-semibold bg-pink-100 text-pink-800 px-3 py-1 rounded-full hover:bg-pink-200 transition-colors"
-                  >
-                    {tag}
-                  </a>
-                ))}
               </div>
               
               {image && (
