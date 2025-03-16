@@ -4,7 +4,6 @@ import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 import { getBlogPostBySlug, getRelatedPosts, getContentfulImageUrl } from '@/lib/contentful/client';
 import { Locale } from '@/config/i18n.config';
-import RichTextRenderer from '@/components/blog/RichTextRenderer';
 import MarkdownRenderer from '@/components/blog/MarkdownRenderer';
 import BlogHeader from '@/components/blog/BlogHeader';
 import RelatedPosts from '@/components/blog/RelatedPosts';
@@ -339,7 +338,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     };
   }
   
-  const { title, metadescription, image, category } = post.fields;
+  const { title, metadescription, image, category, tags = [] } = post.fields;
   const imageUrl = getImageUrl(image);
   const { width, height } = getImageDimensions(image);
   const imageTitle = getImageTitle(image);
@@ -353,10 +352,21 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     enhancedDescription = `${category.fields.name}: ${enhancedDescription}`;
   }
   
+  // Combinar keywords do Contentful com tags e categoria para as meta tags
+  const keywordsArr = [
+    // Incluir categoria se existir
+    ...(category?.fields?.name ? [category.fields.name] : []),
+    // Incluir tags
+    ...(Array.isArray(tags) ? tags : []),
+    // Incluir keywords específicas se existirem
+    ...((post.fields as any).keywords && Array.isArray((post.fields as any).keywords) ? 
+      (post.fields as any).keywords : [])
+  ].filter(Boolean);
+  
   return {
     title: `${title} | ${t.blog.title}`,
     description: enhancedDescription,
-    keywords: category?.fields?.name ? [category.fields.name] : undefined,
+    keywords: keywordsArr.length > 0 ? keywordsArr : undefined,
     openGraph: {
       title: `${title} | ${t.blog.title}`,
       description: enhancedDescription,
@@ -503,7 +513,21 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     // Adicionar categoria se existir
     ...(category && category.fields && category.fields.name ? {
       'articleSection': category.fields.name
-    } : {})
+    } : {}),
+    // Adicionar keywords (combinando tags e keywords específicas se existirem)
+    'keywords': [
+      // Incluir tags se existirem
+      ...(Array.isArray(tags) ? tags : []),
+      // Incluir keywords específicas se existirem
+      ...((post.fields as any).keywords && Array.isArray((post.fields as any).keywords) ? 
+        (post.fields as any).keywords : [])
+    ].filter(Boolean).join(', '),
+    // Adicionar URL do artigo
+    'url': `https://perfectwedding.ai/${lang}/blog/${slug}`,
+    // Incluir o slug como identificador
+    'identifier': slug,
+    // Incluir linguagem do conteúdo
+    'inLanguage': lang
   };
   
   return (

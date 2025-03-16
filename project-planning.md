@@ -105,3 +105,39 @@ Próximos passos:
 - Realizar testes para garantir que o cookie está sendo salvo corretamente
 - Verificar se o redirecionamento entre idiomas funciona conforme esperado
 - Testar o comportamento quando um visitante novo acessa o site pela primeira vez
+
+# Project Planning
+
+## Tarefa Atual: Atualização do Schema do Contentful para Blog Posts
+
+### Contexto
+O schema do Blog Post no Contentful foi atualizado com um novo campo chamado `keywords` que é um array de strings. Este campo deve ser utilizado junto com as tags existentes para melhorar o SEO dos artigos do blog.
+
+### Plano de Implementação
+[X] Atualizar o objeto JSON-LD para incluir o novo campo keywords
+[X] Corrigir erros de tipagem usando type assertion
+[X] Atualizar a documentação no README.md
+[X] Adicionar as keywords nas meta tags HTML
+[ ] Revisar a implementação para garantir que não há bugs
+
+### Solução Implementada
+1. Modificamos o JSON-LD para combinar tanto as tags quanto as keywords específicas em uma única propriedade `keywords` para melhor indexação por motores de busca
+2. Utilizamos type assertion (`as any`) para evitar erros de TypeScript, já que o modelo de tipo não foi atualizado para incluir o novo campo
+3. Atualizamos a documentação para refletir o novo schema e seu uso no SEO
+4. Implementamos as keywords nas meta tags HTML combinando:
+   - Categoria do artigo (se existir)
+   - Tags do artigo
+   - Keywords específicas do Contentful
+   - Isso fornece metadados mais ricos para motores de busca
+
+### Lições Aprendidas
+1. **Tipagem em TypeScript**: Ao adicionar novos campos no Contentful, é necessário atualizar os tipos correspondentes no TypeScript para evitar erros. No nosso caso, usamos uma solução temporária com `as any`.
+2. **SEO com JSON-LD**: É importante aproveitar todos os campos disponíveis no CMS para melhorar o SEO. A combinação de tags e keywords permite uma indexação mais rica.
+3. **Documentação de Schema**: Manter o README.md atualizado com o schema atual do Contentful facilita a manutenção e o onboarding de novos desenvolvedores.
+4. **SEO com meta tags**: Além do JSON-LD, é importante também utilizar as meta tags HTML padrão para maximizar a compatibilidade com diferentes motores de busca.
+
+### Próximos Passos
+1. Atualizar os tipos TypeScript para incluir o campo `keywords` na interface do Blog Post
+2. Verificar se o campo `keywords` está sendo corretamente preenchido no Contentful
+3. Validar a indexação dos artigos do blog em motores de busca após as alterações
+4. Considerar a adição de microformatos adicionais para melhorar ainda mais o SEO

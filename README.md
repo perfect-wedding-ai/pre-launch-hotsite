@@ -41,6 +41,138 @@ As URLs são estruturadas com o código do idioma:
 - `/en` - Inglês
 - `/es` - Espanhol
 
+## 📊 Contentful Schema
+
+A integração com o Contentful utiliza os seguintes modelos de conteúdo:
+
+### Blog Post
+
+```json
+{
+  "name": "Blog post",
+  "description": "Blog post, with title, body, image, tags, metadescription, category, recommended posts",
+  "displayField": "slug",
+  "fields": [
+    {
+      "id": "title",
+      "name": "Title",
+      "type": "Symbol",
+      "localized": true,
+      "required": true,
+      "validations": [
+        {
+          "size": {
+            "min": 45,
+            "max": 65
+          }
+        }
+      ]
+    },
+    {
+      "id": "body",
+      "name": "Body",
+      "type": "RichText",
+      "localized": true,
+      "required": true
+    },
+    {
+      "id": "image",
+      "name": "Image",
+      "type": "Link",
+      "localized": true,
+      "required": false,
+      "linkType": "Asset"
+    },
+    {
+      "id": "tags",
+      "name": "Tags",
+      "type": "Array",
+      "localized": true,
+      "required": true,
+      "items": {
+        "type": "Symbol"
+      }
+    },
+    {
+      "id": "metadescription",
+      "name": "Meta description",
+      "type": "Text",
+      "localized": true,
+      "required": false
+    },
+    {
+      "id": "category",
+      "name": "Category",
+      "type": "Link",
+      "localized": true,
+      "required": false,
+      "linkType": "Entry"
+    },
+    {
+      "id": "publishDate",
+      "name": "Publish Date",
+      "type": "Date",
+      "localized": true,
+      "required": true
+    },
+    {
+      "id": "lastUpdateDate",
+      "name": "Last Update Date",
+      "type": "Date",
+      "localized": true,
+      "required": true
+    },
+    {
+      "id": "recommendedPosts",
+      "name": "Recommended posts",
+      "type": "Array",
+      "localized": false,
+      "required": false,
+      "items": {
+        "type": "Link",
+        "linkType": "Entry"
+      }
+    },
+    {
+      "id": "slug",
+      "name": "slug",
+      "type": "Symbol",
+      "localized": true,
+      "required": true,
+      "validations": [
+        {
+          "unique": true
+        }
+      ]
+    },
+    {
+      "id": "keywords",
+      "name": "keywords",
+      "type": "Array",
+      "localized": true,
+      "required": true,
+      "items": {
+        "type": "Symbol"
+      }
+    }
+  ]
+}
+```
+
+#### Uso de metadados no JSON-LD para SEO
+
+Os artigos do blog estão configurados para usar os dados do Contentful em formato JSON-LD para melhorar o SEO:
+
+- **title**: Usado como `headline`
+- **image**: Usado como imagem principal do artigo
+- **tags**: Convertidos para `keywords` para melhor indexação
+- **keywords**: Combinados com tags para criar uma lista completa de `keywords`
+- **category**: Usado como `articleSection`
+- **metadescription**: Usado como `description`
+- **publishDate**: Usado como `datePublished`
+- **lastUpdateDate**: Usado como `dateModified`
+- **slug**: Usado para compor URLs canônicas e como `identifier`
+
 ## 🔧 Configuração
 
 ### Variáveis de Ambiente
@@ -54,6 +186,11 @@ GOOGLE_SITE_VERIFICATION=seu-código-de-verificação
 
 # URLs da API (exemplo)
 NEXT_PUBLIC_API_URL=https://perfectwedding.ai/api
+
+# Contentful
+CONTENTFUL_SPACE_ID=seu-space-id
+CONTENTFUL_ACCESS_TOKEN=seu-access-token
+CONTENTFUL_PREVIEW_ACCESS_TOKEN=seu-preview-token
 ```
 
 ### SEO e Metadados
