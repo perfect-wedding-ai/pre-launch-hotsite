@@ -8,6 +8,7 @@ import Pagination from '@/components/blog/Pagination';
 import Header from '@/components/Header';
 import { getTranslations, getBaseLocale } from '../translations';
 import BackgroundEffect from '@/components/BackgroundEffect';
+import Footer from '@/components/Footer';
 
 interface BlogPageProps {
   params: {
@@ -311,6 +312,8 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
           </div>
         </div>
       </BackgroundEffect>
+      
+      <Footer lang={lang as any} t={t} />
     </>
   );
 } 

@@ -13,6 +13,7 @@ import BackgroundEffect from '@/components/BackgroundEffect';
 import { getTranslations, getBaseLocale } from '../../translations';
 import { Document } from '@contentful/rich-text-types';
 import Link from 'next/link';
+import Footer from '@/components/Footer';
 
 interface BlogPostPageProps {
   params: {
@@ -640,6 +641,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           />
         </div>
       </BackgroundEffect>
+      
+      <Footer lang={lang as any} t={t} />
     </>
   );
 } 
