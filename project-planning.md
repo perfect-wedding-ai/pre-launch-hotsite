@@ -178,6 +178,50 @@ A implementação agora respeita totalmente a escolha do usuário quanto ao uso 
 - Testar a implementação para garantir que funciona como esperado
 - Verificar o funcionamento em diferentes navegadores e cenários de uso (aceitando/recusando cookies)
 
+## Implementação da Página de Política de Privacidade
+
+### Tarefa
+Criar uma página de política de privacidade localizada para os três idiomas (português, inglês e espanhol), que explique claramente como os cookies são utilizados no site e que siga as boas práticas para políticas de privacidade em sites semelhantes.
+
+### Plano de Execução
+[X] Pesquisar boas práticas para política de privacidade em sites semelhantes
+[X] Criar a estrutura de arquivos para a página de política de privacidade
+[X] Adicionar traduções para os textos da política de privacidade nos três idiomas
+[X] Implementar a página com estilo consistente com o resto do site
+[X] Adicionar links para a política de privacidade no aviso de cookies
+[ ] Testar a página em diferentes dispositivos e navegadores
+
+### Progresso
+Implementação concluída! Foi criada uma página de política de privacidade com as seguintes características:
+
+1. Conteúdo adaptado para boas práticas de políticas de privacidade, incluindo:
+   - Introdução explicando o propósito da política
+   - Detalhes sobre os dados coletados
+   - Seção específica sobre cookies e como são utilizados
+   - Informações sobre direitos do usuário
+   - Detalhes sobre alterações na política
+   - Informações de contato
+
+2. Suporte completo para internacionalização (i18n):
+   - Versões em português, inglês e espanhol com traduções apropriadas
+   - Estrutura de rotas baseada no idioma (/[lang]/privacy-policy)
+
+3. Interface de usuário consistente:
+   - Estilo visual alinhado com o restante do site
+   - Layout responsivo para diferentes tamanhos de tela
+   - Navegação clara com link para retornar à página principal
+
+4. Integração com o sistema de cookies:
+   - Link direto a partir do aviso de cookies
+   - Explicação detalhada sobre os tipos de cookies usados
+   - Informações sobre como gerenciar preferências de cookies
+
+A página foi implementada seguindo o modelo de outras páginas do site, com Header e Footer consistentes, e respeitando a estrutura de idiomas do projeto.
+
+### Próximos Passos
+- Testar a página em diferentes navegadores e dispositivos para garantir responsividade
+- Validar a acessibilidade da página para usuários com necessidades especiais
+
 # Project Planning
 
 ## Tarefa Atual: Atualização do Schema do Contentful para Blog Posts
