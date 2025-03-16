@@ -10,6 +10,7 @@ import BlogHeader from '@/components/blog/BlogHeader';
 import RelatedPosts from '@/components/blog/RelatedPosts';
 import BlogImage from '@/components/blog/BlogImage';
 import Header from '@/components/Header';
+import BackgroundEffect from '@/components/BackgroundEffect';
 import { getTranslations, getBaseLocale } from '../../translations';
 import { Document } from '@contentful/rich-text-types';
 
@@ -488,90 +489,92 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     <>
       <Header lang={lang as any} t={t} />
       
-      <div className="container mx-auto px-4 py-16 mt-24">
-        <BlogHeader locale={lang} showBackLink={false} />
-        
-        <article className="max-w-4xl mx-auto">
-          <header className="mb-8 w-full">
-            <h1 className="text-3xl md:text-4xl font-playfair font-bold text-gray-900 mb-4 w-full">
-              {title}
-            </h1>
+      <BackgroundEffect>
+        <div className="container mx-auto px-4 py-16 mt-24">
+          <BlogHeader locale={lang} showBackLink={false} />
+          
+          <article className="max-w-4xl mx-auto">
+            <header className="mb-8 w-full">
+              <h1 className="text-3xl md:text-4xl font-playfair font-bold text-gray-900 mb-4 w-full">
+                {title}
+              </h1>
+              
+              <div className="flex flex-wrap items-center text-gray-600 text-sm mb-4 gap-6 w-full">
+                {publishDate && (
+                  <span>
+                    <time dateTime={publishDate}>
+                      {format(
+                        new Date(publishDate),
+                        'PPP',
+                        { locale: dateLocale }
+                      )}
+                    </time>
+                  </span>
+                )}
+                
+                {lastUpdateDate && (
+                  <span>
+                    {t.blog.updatedOn}{' '}
+                    <time dateTime={lastUpdateDate}>
+                      {format(
+                        new Date(lastUpdateDate),
+                        'PPP',
+                        { locale: dateLocale }
+                      )}
+                    </time>
+                  </span>
+                )}
+                
+                {category && category.fields && category.fields.name && (
+                  <span className="text-purple-700">
+                    {t.blog.category} {category.fields.name}
+                  </span>
+                )}
+              </div>
+              
+              {image && (
+                <BlogImage 
+                  src={imageUrl || ''}
+                  fallbackSrc={fallbackImageUrl}
+                  alt={post.fields.title || 'Blog post image'}
+                  objectFit="contain"
+                  aspectRatio="2048/1152"
+                  maxHeight="600px"
+                  assetId={assetId}
+                  spaceId={spaceId}
+                  className="w-full"
+                />
+              )}
+              
+              <div className="flex flex-wrap gap-2 mb-8 w-full">
+                {Array.isArray(tags) && tags.map((tag) => (
+                  <a
+                    key={tag}
+                    href={`/${lang}/blog?tag=${encodeURIComponent(tag)}`}
+                    className="text-xs font-semibold bg-pink-100 text-pink-800 px-3 py-1 rounded-full hover:bg-pink-200 transition-colors"
+                  >
+                    {tag}
+                  </a>
+                ))}
+              </div>
+            </header>
             
-            <div className="flex flex-wrap items-center text-gray-600 text-sm mb-4 gap-6 w-full">
-              {publishDate && (
-                <span>
-                  <time dateTime={publishDate}>
-                    {format(
-                      new Date(publishDate),
-                      'PPP',
-                      { locale: dateLocale }
-                    )}
-                  </time>
-                </span>
-              )}
-              
-              {lastUpdateDate && (
-                <span>
-                  {t.blog.updatedOn}{' '}
-                  <time dateTime={lastUpdateDate}>
-                    {format(
-                      new Date(lastUpdateDate),
-                      'PPP',
-                      { locale: dateLocale }
-                    )}
-                  </time>
-                </span>
-              )}
-              
-              {category && category.fields && category.fields.name && (
-                <span className="text-purple-700">
-                  {t.blog.category} {category.fields.name}
-                </span>
-              )}
+            <div className="prose prose-lg w-full max-w-none">
+              <MarkdownRenderer content={richTextToString(body)} locale={lang} />
             </div>
             
-            {image && (
-              <BlogImage 
-                src={imageUrl || ''}
-                fallbackSrc={fallbackImageUrl}
-                alt={post.fields.title || 'Blog post image'}
-                objectFit="contain"
-                aspectRatio="2048/1152"
-                maxHeight="600px"
-                assetId={assetId}
-                spaceId={spaceId}
-                className="w-full"
-              />
+            {relatedPosts.length > 0 && (
+              <RelatedPosts posts={relatedPosts} locale={lang} />
             )}
-            
-            <div className="flex flex-wrap gap-2 mb-8 w-full">
-              {Array.isArray(tags) && tags.map((tag) => (
-                <a
-                  key={tag}
-                  href={`/${lang}/blog?tag=${encodeURIComponent(tag)}`}
-                  className="text-xs font-semibold bg-pink-100 text-pink-800 px-3 py-1 rounded-full hover:bg-pink-200 transition-colors"
-                >
-                  {tag}
-                </a>
-              ))}
-            </div>
-          </header>
+          </article>
           
-          <div className="prose prose-lg w-full max-w-none">
-            <MarkdownRenderer content={richTextToString(body)} locale={lang} />
-          </div>
-          
-          {relatedPosts.length > 0 && (
-            <RelatedPosts posts={relatedPosts} locale={lang} />
-          )}
-        </article>
-        
-        {/* JSON-LD para SEO */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      </div>
+          {/* JSON-LD para SEO */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+        </div>
+      </BackgroundEffect>
     </>
   );
 } 

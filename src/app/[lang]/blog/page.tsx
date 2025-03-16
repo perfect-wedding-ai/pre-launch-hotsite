@@ -7,6 +7,7 @@ import BlogFilters from '@/components/blog/BlogFilters';
 import Pagination from '@/components/blog/Pagination';
 import Header from '@/components/Header';
 import { getTranslations, getBaseLocale } from '../translations';
+import BackgroundEffect from '@/components/BackgroundEffect';
 
 interface BlogPageProps {
   params: {
@@ -107,18 +108,8 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
     <>
       <Header lang={lang as any} t={t} />
       
-      <div className="relative overflow-hidden">
-        {/* Gradient circles for background effect */}
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <div className="absolute top-[-20%] left-[-10%] w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(255,192,203,0.2)_0%,rgba(255,192,203,0)_70%)]"></div>
-          <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(255,192,203,0.2)_0%,rgba(255,192,203,0)_70%)]"></div>
-          
-          {/* Blur effects */}
-          <div className="absolute top-[-10%] left-[-5%] w-[600px] h-[600px] rounded-full bg-[#FFC0CB] opacity-[0.15] blur-[90px]"></div>
-          <div className="absolute bottom-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-[#FFC0CB] opacity-[0.15] blur-[90px]"></div>
-        </div>
-        
-        <div className="container mx-auto px-4 py-12 mt-24 relative z-[1]">
+      <BackgroundEffect>
+        <div className="container mx-auto px-4 py-12 mt-24">
           <BlogHeader locale={lang} />
           
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 relative z-10">
@@ -174,7 +165,7 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
             </div>
           </div>
         </div>
-      </div>
+      </BackgroundEffect>
     </>
   );
 } 

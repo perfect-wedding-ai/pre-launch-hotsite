@@ -6,6 +6,7 @@ import { useState } from "react";
 import { imageAlts, translations, getTranslations } from './translations';
 import OptimizedImage from '@/components/OptimizedImage';
 import Header from '@/components/Header';
+import BackgroundEffect from '@/components/BackgroundEffect';
 
 type ValidLang = 'pt' | 'en' | 'es';
 
@@ -23,83 +24,11 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
     <>
       <style jsx global>{`
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
-
-        .hero {
-          overflow: hidden;
-        }
-        
-        .hero::before {
-          content: '';
-          position: absolute;
-          top: -10%;
-          left: -5%;
-          width: 600px;
-          height: 600px;
-          border-radius: 9999px;
-          background-color: #FFC0CB;
-          opacity: 0.15;
-          filter: blur(90px);
-          z-index: 0;
-          pointer-events: none;
-        }
-        
-        .hero::after {
-          content: '';
-          position: absolute;
-          bottom: -10%;
-          right: -5%;
-          width: 500px;
-          height: 500px;
-          border-radius: 9999px;
-          background-color: #FFC0CB;
-          opacity: 0.15;
-          filter: blur(90px);
-          z-index: 0;
-          pointer-events: none;
-        }
-        
-        .benefits {
-          overflow: hidden;
-        }
-        
-        .benefits::before {
-          content: '';
-          position: absolute;
-          top: -10%;
-          right: -5%;
-          width: 400px;
-          height: 400px;
-          border-radius: 9999px;
-          background-color: #FFC0CB;
-          opacity: 0.15;
-          filter: blur(90px);
-          z-index: 0;
-          pointer-events: none;
-        }
-        
-        .benefits::after {
-          content: '';
-          position: absolute;
-          bottom: -10%;
-          left: -5%;
-          width: 500px;
-          height: 500px;
-          border-radius: 9999px;
-          background-color: #FFC0CB;
-          opacity: 0.15;
-          filter: blur(90px);
-          z-index: 0;
-          pointer-events: none;
-        }
       `}</style>
 
       <Header lang={lang} t={t} />
 
-      <section className="hero pt-24 pb-16 bg-light-bg relative overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-[-20%] left-[-10%] w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(255,192,203,0.2)_0%,rgba(255,192,203,0)_70%)]"></div>
-          <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(255,192,203,0.2)_0%,rgba(255,192,203,0)_70%)]"></div>
-        </div>
+      <BackgroundEffect className="pt-24 pb-16 bg-light-bg">
         <div className="container relative z-[1]">
           <div className="flex items-center justify-between relative z-10">
             <div className="hero-content flex-1 pr-12">
@@ -133,7 +62,7 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
             </div>
           </div>
         </div>
-      </section>
+      </BackgroundEffect>
 
       <section id="como-funciona" className="how-it-works py-16">
         <div className="container">
@@ -174,12 +103,8 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
         </div>
       </section>
 
-      <section id="beneficios" className="benefits py-16 bg-gray-50 relative overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(255,192,203,0.2)_0%,rgba(255,192,203,0)_70%)]"></div>
-          <div className="absolute bottom-[-20%] left-[-10%] w-[700px] h-[700px] bg-[radial-gradient(circle,rgba(255,192,203,0.2)_0%,rgba(255,192,203,0)_70%)]"></div>
-        </div>
-        <div className="container relative z-[1]">
+      <BackgroundEffect className="py-16 bg-gray-50">
+        <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-4xl mb-4">{t.benefits.title}</h2>
             <p className="text-center mx-auto text-[rgb(122,122,122)] leading-[25.6px]">{t.benefits.subtitle}</p>
@@ -247,7 +172,7 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
             </div>
           </div>
         </div>
-      </section>
+      </BackgroundEffect>
 
       <section className="showcase py-16">
         <div className="container">
@@ -381,12 +306,8 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
         </div>
       </section>
 
-      <section id="cadastro" className="signup py-16 relative overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(255,192,203,0.2)_0%,rgba(255,192,203,0)_70%)]"></div>
-          <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(255,192,203,0.2)_0%,rgba(255,192,203,0)_70%)]"></div>
-        </div>
-        <div className="container relative z-[1]">
+      <BackgroundEffect className="py-16">
+        <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="signup-content">
               <div className="text-center mb-12">
@@ -440,7 +361,7 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
             </div>
           </div>
         </div>
-      </section>
+      </BackgroundEffect>
 
       <section id="faq" className="faq py-16 bg-gray-50">
         <div className="container">
