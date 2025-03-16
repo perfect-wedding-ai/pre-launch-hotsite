@@ -1,7 +1,5 @@
 import React from 'react';
 import { Locale } from '@/config/i18n.config';
-import Image from 'next/image';
-import Link from 'next/link';
 import { formatMarkdown } from './markdownProcessor';
 
 interface MarkdownRendererProps {

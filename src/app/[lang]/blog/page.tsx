@@ -107,59 +107,71 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
     <>
       <Header lang={lang as any} t={t} />
       
-      <div className="container mx-auto px-4 py-12 mt-24">
-        <BlogHeader locale={lang} />
-        
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          <div className="lg:col-span-1">
-            <BlogFilters
-              categories={categoriesResponse.items}
-              tags={uniqueTags}
-              locale={lang}
-              activeCategory={category}
-              activeTag={tag}
-            />
-          </div>
+      <div className="relative overflow-hidden">
+        {/* Gradient circles for background effect */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <div className="absolute top-[-20%] left-[-10%] w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(255,192,203,0.2)_0%,rgba(255,192,203,0)_70%)]"></div>
+          <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(255,192,203,0.2)_0%,rgba(255,192,203,0)_70%)]"></div>
           
-          <div className="lg:col-span-3">
-            {postsResponse.items.length > 0 ? (
-              <>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {postsResponse.items.map((post) => (
-                    <BlogCard key={post.sys.id} post={post} locale={lang} />
-                  ))}
+          {/* Blur effects */}
+          <div className="absolute top-[-10%] left-[-5%] w-[600px] h-[600px] rounded-full bg-[#FFC0CB] opacity-[0.15] blur-[90px]"></div>
+          <div className="absolute bottom-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-[#FFC0CB] opacity-[0.15] blur-[90px]"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 py-12 mt-24 relative z-[1]">
+          <BlogHeader locale={lang} />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 relative z-10">
+            <div className="lg:col-span-1">
+              <BlogFilters
+                categories={categoriesResponse.items}
+                tags={uniqueTags}
+                locale={lang}
+                activeCategory={category}
+                activeTag={tag}
+              />
+            </div>
+            
+            <div className="lg:col-span-3">
+              {postsResponse.items.length > 0 ? (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {postsResponse.items.map((post) => (
+                      <BlogCard key={post.sys.id} post={post} locale={lang} />
+                    ))}
+                  </div>
+                  
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    locale={lang}
+                    baseUrl={`/${lang}/blog`}
+                  />
+                </>
+              ) : (
+                <div className="text-center py-12">
+                  <h2 className="text-2xl font-playfair font-bold text-gray-900 mb-4">
+                    {t.blog.notFound.title}
+                  </h2>
+                  <p className="text-gray-600 mb-4">
+                    {t.blog.notFound.description}
+                    {category ? t.blog.notFound.withCategory : ''}
+                    {tag ? t.blog.notFound.withTag : ''}
+                  </p>
+                  <p className="text-gray-600">
+                    {t.blog.notFound.checkOtherLanguage}
+                  </p>
+                  <div className="mt-6">
+                    <a 
+                      href={`/${baseLocale === 'pt' ? 'en' : 'pt'}/blog${category ? `?category=${category}` : ''}${tag ? `${category ? '&' : '?'}tag=${tag}` : ''}`} 
+                      className="inline-block bg-primary text-white py-2 px-6 rounded-md hover:bg-primary-dark transition"
+                    >
+                      {t.blog.notFound.viewInOtherLanguage}
+                    </a>
+                  </div>
                 </div>
-                
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  locale={lang}
-                  baseUrl={`/${lang}/blog`}
-                />
-              </>
-            ) : (
-              <div className="text-center py-12">
-                <h2 className="text-2xl font-playfair font-bold text-gray-900 mb-4">
-                  {t.blog.notFound.title}
-                </h2>
-                <p className="text-gray-600 mb-4">
-                  {t.blog.notFound.description}
-                  {category ? t.blog.notFound.withCategory : ''}
-                  {tag ? t.blog.notFound.withTag : ''}
-                </p>
-                <p className="text-gray-600">
-                  {t.blog.notFound.checkOtherLanguage}
-                </p>
-                <div className="mt-6">
-                  <a 
-                    href={`/${baseLocale === 'pt' ? 'en' : 'pt'}/blog${category ? `?category=${category}` : ''}${tag ? `${category ? '&' : '?'}tag=${tag}` : ''}`} 
-                    className="inline-block bg-primary text-white py-2 px-6 rounded-md hover:bg-primary-dark transition"
-                  >
-                    {t.blog.notFound.viewInOtherLanguage}
-                  </a>
-                </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>
