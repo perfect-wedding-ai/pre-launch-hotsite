@@ -30,7 +30,7 @@ interface HeaderProps {
             blog: string;
             tryFree: string;
         };
-        userMenu?: {
+        userMenu: {
             profile: string;
             dashboard: string;
             settings: string;
@@ -53,21 +53,6 @@ export default function Header({ lang, t }: HeaderProps) {
         setMounted(true);
     }, []);
     
-    // Default user menu translations if not provided
-    const userMenuTexts = t.userMenu || {
-        profile: 'Perfil',
-        dashboard: 'Painel',
-        settings: 'Configurações',
-        signOut: 'Sair',
-        account: 'Conta do usuário',
-        language: 'Idioma',
-        languageNames: {
-            pt: 'Português',
-            en: 'Inglês',
-            es: 'Espanhol'
-        }
-    };
-
     // Renderizar o botão de usuário
     const userButton = (
         <div className="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center hover:bg-neutral-200 transition-colors">
@@ -110,35 +95,35 @@ export default function Header({ lang, t }: HeaderProps) {
                                             {userButton}
                                         </DropdownMenuTrigger>
                                         <CustomDropdownMenuContent className="min-w-48 z-[1001]" sideOffset={5} align="end">
-                                            <DropdownMenuLabel>{userMenuTexts.account}</DropdownMenuLabel>
+                                            <DropdownMenuLabel>{t.userMenu.account}</DropdownMenuLabel>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem>
                                                 <Link href={`/${lang}/profile`} className="w-full">
-                                                    {userMenuTexts.profile}
+                                                    {t.userMenu.profile}
                                                 </Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem>
                                                 <Link href={`/${lang}/dashboard`} className="w-full">
-                                                    {userMenuTexts.dashboard}
+                                                    {t.userMenu.dashboard}
                                                 </Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem>
                                                 <Link href={`/${lang}/settings`} className="w-full">
-                                                    {userMenuTexts.settings}
+                                                    {t.userMenu.settings}
                                                 </Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
                                             <LanguageSelector 
                                                 currentLang={lang} 
                                                 t={{
-                                                    language: userMenuTexts.language,
-                                                    languageNames: userMenuTexts.languageNames
+                                                    language: t.userMenu.language,
+                                                    languageNames: t.userMenu.languageNames
                                                 }}
                                             />
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem>
                                                 <button className="w-full text-left text-red-500">
-                                                    {userMenuTexts.signOut}
+                                                    {t.userMenu.signOut}
                                                 </button>
                                             </DropdownMenuItem>
                                         </CustomDropdownMenuContent>

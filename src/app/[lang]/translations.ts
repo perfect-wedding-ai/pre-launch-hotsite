@@ -7,6 +7,19 @@ export const translations = {
       blog: "Blog",
       tryFree: "Quero Testar"
     },
+    userMenu: {
+      profile: "Perfil",
+      dashboard: "Painel",
+      settings: "Configurações",
+      signOut: "Sair",
+      account: "Conta do usuário",
+      language: "Idioma",
+      languageNames: {
+        pt: "Português",
+        en: "Inglês",
+        es: "Espanhol"
+      }
+    },
     hero: {
       title: "Experimente Vestidos de Noiva Virtualmente",
       subtitle: "Descubra o vestido dos seus sonhos sem sair de casa",
@@ -165,6 +178,19 @@ export const translations = {
       blog: "Blog",
       tryFree: "I Want to Try"
     },
+    userMenu: {
+      profile: "Profile",
+      dashboard: "Dashboard",
+      settings: "Settings",
+      signOut: "Sign Out",
+      account: "User Account",
+      language: "Language",
+      languageNames: {
+        pt: "Portuguese",
+        en: "English",
+        es: "Spanish"
+      }
+    },
     hero: {
       title: "Try On Wedding Dresses Virtually",
       subtitle: "Find your dream dress without leaving home",
@@ -322,6 +348,19 @@ export const translations = {
       faq: "Preguntas Frecuentes",
       blog: "Blog",
       tryFree: "Quiero Probar"
+    },
+    userMenu: {
+      profile: "Perfil",
+      dashboard: "Panel",
+      settings: "Configuración",
+      signOut: "Cerrar Sesión",
+      account: "Cuenta de Usuario",
+      language: "Idioma",
+      languageNames: {
+        pt: "Portugués",
+        en: "Inglés",
+        es: "Español"
+      }
     },
     hero: {
       title: "Prueba Vestidos de Novia Virtualmente",

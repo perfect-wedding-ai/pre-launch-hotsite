@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { imageAlts, translations, getTranslations } from './translations';
 import OptimizedImage from '@/components/OptimizedImage';
 import Header from '@/components/Header';
@@ -12,12 +12,76 @@ type ValidLang = 'pt' | 'en' | 'es';
 
 export default function Home({ params }: { params: { lang: ValidLang } }) {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
   const lang = (params?.lang || 'pt') as ValidLang;
   const alts = imageAlts[lang] || imageAlts.pt;
   const t = getTranslations(lang);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const toggleFaq = (index: number) => {
     setOpenFaq(openFaq === index ? null : index);
+  };
+
+  // Renderização condicional do formulário de inscrição
+  const renderSignupForm = () => {
+    // No servidor, renderizamos uma versão simplificada para evitar problemas de hidratação
+    if (!mounted) {
+      return (
+        <div className="space-y-4">
+          <div>
+            <div className="w-full px-4 py-2 rounded-lg border border-gray-300 h-10"></div>
+          </div>
+          <div>
+            <div className="w-full px-4 py-2 rounded-lg border border-gray-300 h-10"></div>
+          </div>
+          <button className="btn-primary w-full">
+            {t.signup.form.button}
+          </button>
+        </div>
+      );
+    }
+
+    // No cliente, renderizamos o formulário completo
+    return (
+      <form 
+        id="signup-form" 
+        className="space-y-4"
+        action="https://gmail.us8.list-manage.com/subscribe/post?u=67483d6202e3116de901adf0e&amp;id=f687178ad2"
+        method="post"
+        target="_blank"
+      >
+        <div>
+          <input 
+            type="text" 
+            id="name" 
+            name="FNAME" 
+            placeholder={t.signup.form.name}
+            required
+            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
+          />
+        </div>
+        <div>
+          <input 
+            type="email" 
+            id="email" 
+            name="EMAIL" 
+            placeholder={t.signup.form.email}
+            required
+            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
+          />
+        </div>
+        <div style={{ position: "absolute", left: "-5000px" }} aria-hidden="true">
+          <input type="text" name="b_873506_f687178ad2" tabIndex={-1} />
+        </div>
+        <input type="hidden" name="REDIRECT" value={`/${lang}/thank-you`} />
+        <button type="submit" className="btn-primary w-full">
+          {t.signup.form.button}
+        </button>
+      </form>
+    );
   };
 
   return (
@@ -314,41 +378,7 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
                 <h2 className="text-4xl mb-4">{t.signup.title}</h2>
                 <p className="text-center mx-auto text-[rgb(122,122,122)]">{t.signup.subtitle}</p>
               </div>
-              <form 
-                id="signup-form" 
-                className="space-y-4"
-                action="https://gmail.us8.list-manage.com/subscribe/post?u=67483d6202e3116de901adf0e&amp;id=f687178ad2"
-                method="post"
-                target="_blank"
-              >
-                <div>
-                  <input 
-                    type="text" 
-                    id="name" 
-                    name="FNAME" 
-                    placeholder={t.signup.form.name}
-                    required
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
-                  />
-                </div>
-                <div>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    name="EMAIL" 
-                    placeholder={t.signup.form.email}
-                    required
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
-                  />
-                </div>
-                <div style={{ position: "absolute", left: "-5000px" }} aria-hidden="true">
-                  <input type="text" name="b_873506_f687178ad2" tabIndex={-1} />
-                </div>
-                <input type="hidden" name="REDIRECT" value={`/${lang}/thank-you`} />
-                <button type="submit" className="btn-primary w-full">
-                  {t.signup.form.button}
-                </button>
-              </form>
+              {renderSignupForm()}
             </div>
             <div className="signup-image overflow-hidden rounded-lg">
               <Image 
