@@ -5,7 +5,8 @@ export const translations = {
       benefits: "Benefícios",
       faq: "Perguntas Frequentes",
       blog: "Blog",
-      tryFree: "Quero Testar"
+      tryFree: "Quero Testar",
+      backToSite: "Voltar para o site"
     },
     userMenu: {
       profile: "Perfil",
@@ -243,7 +244,8 @@ export const translations = {
       benefits: "Benefits",
       faq: "FAQ",
       blog: "Blog",
-      tryFree: "I Want to Try"
+      tryFree: "I Want to Try",
+      backToSite: "Back to site"
     },
     userMenu: {
       profile: "Profile",
@@ -481,7 +483,8 @@ export const translations = {
       benefits: "Beneficios",
       faq: "Preguntas Frecuentes",
       blog: "Blog",
-      tryFree: "Quiero Probar"
+      tryFree: "Quiero Probar",
+      backToSite: "Volver al sitio"
     },
     userMenu: {
       profile: "Perfil",

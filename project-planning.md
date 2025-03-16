@@ -218,6 +218,9 @@ Implementação concluída! Foi criada uma página de política de privacidade c
 
 A página foi implementada seguindo o modelo de outras páginas do site, com Header e Footer consistentes, e respeitando a estrutura de idiomas do projeto.
 
+### Atualizações e Correções
+- Corrigido o texto do link de volta na política de privacidade: texto alterado de "Como Funciona"/"How It Works" para "Voltar para o site"/"Back to site"/"Volver al sitio", e garantido que o link retorne para a página inicial sem qualquer âncora.
+
 ### Próximos Passos
 - Testar a página em diferentes navegadores e dispositivos para garantir responsividade
 - Validar a acessibilidade da página para usuários com necessidades especiais
