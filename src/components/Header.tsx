@@ -43,6 +43,22 @@ interface HeaderProps {
                 es: string;
             };
         };
+        anchors: {
+            howItWorks: string;
+            benefits: string;
+            faq: string;
+            signup: string;
+        };
+        footer: {
+            quickLinks: {
+                items: {
+                    howItWorks: string;
+                    benefits: string;
+                    faq: string;
+                    blog: string;
+                };
+            };
+        };
     };
 }
 
@@ -76,9 +92,9 @@ export default function Header({ lang, t }: HeaderProps) {
                         </div>
                         <nav>
                             <ul className="flex gap-6">
-                                <li><Link href={`/${lang}#como-funciona`} className="nav-link">{t.nav.howItWorks}</Link></li>
-                                <li><Link href={`/${lang}#beneficios`} className="nav-link">{t.nav.benefits}</Link></li>
-                                <li><Link href={`/${lang}#faq`} className="nav-link">{t.nav.faq}</Link></li>
+                                <li><Link href={`/${lang}#${t.anchors.howItWorks}`} className="nav-link">{t.nav.howItWorks}</Link></li>
+                                <li><Link href={`/${lang}#${t.anchors.benefits}`} className="nav-link">{t.nav.benefits}</Link></li>
+                                <li><Link href={`/${lang}#${t.anchors.faq}`} className="nav-link">{t.nav.faq}</Link></li>
                                 {lang !== 'es' && (
                                     <li><Link href={`/${lang}/blog`} className="nav-link">{t.nav.blog}</Link></li>
                                 )}
@@ -86,7 +102,7 @@ export default function Header({ lang, t }: HeaderProps) {
                         </nav>
                         <div className="flex items-center gap-4">
                             <div className="cta-button">
-                                <Link href={`/${lang}#cadastro`} className="btn-primary">{t.nav.tryFree}</Link>
+                                <Link href={`/${lang}#${t.anchors.signup}`} className="btn-primary">{t.nav.tryFree}</Link>
                             </div>
                             <div className="user-menu">
                                 {mounted ? (

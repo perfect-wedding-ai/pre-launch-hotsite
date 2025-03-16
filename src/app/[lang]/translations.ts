@@ -168,6 +168,13 @@ export const translations = {
         next: "Próxima",
         goToPage: "Ir para página"
       }
+    },
+    anchors: {
+      howItWorks: "como-funciona",
+      benefits: "beneficios",
+      testimonials: "depoimentos",
+      signup: "cadastro",
+      faq: "faq"
     }
   },
   en: {
@@ -339,6 +346,13 @@ export const translations = {
         next: "Next",
         goToPage: "Go to page"
       }
+    },
+    anchors: {
+      howItWorks: "how-it-works",
+      benefits: "benefits",
+      testimonials: "testimonials",
+      signup: "signup",
+      faq: "faq"
     }
   },
   es: {
@@ -510,6 +524,13 @@ export const translations = {
         next: "Siguiente",
         goToPage: "Ir a la página"
       }
+    },
+    anchors: {
+      howItWorks: "como-funciona",
+      benefits: "beneficios",
+      testimonials: "testimonios",
+      signup: "registro",
+      faq: "faq"
     }
   }
 }

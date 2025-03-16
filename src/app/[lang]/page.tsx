@@ -106,10 +106,10 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
                 {t.hero.description}
               </p>
               <div className="flex gap-4">
-                <Link href={`/${lang}#cadastro`} className="btn-primary">
+                <Link href={`/${lang}#${t.anchors.signup}`} className="btn-primary">
                   {t.hero.tryNow}
                 </Link>
-                <Link href={`/${lang}#como-funciona`} className="btn-secondary">
+                <Link href={`/${lang}#${t.anchors.howItWorks}`} className="btn-secondary">
                   {t.hero.learnMore}
                 </Link>
               </div>
@@ -128,7 +128,7 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
         </div>
       </BackgroundEffect>
 
-      <section id="como-funciona" className="how-it-works py-16">
+      <section id={t.anchors.howItWorks} className="how-it-works py-16">
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-4xl mb-4">{t.howItWorks.title}</h2>
@@ -167,76 +167,78 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
         </div>
       </section>
 
-      <BackgroundEffect className="py-16 bg-gray-50">
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl mb-4">{t.benefits.title}</h2>
-            <p className="text-center mx-auto text-[rgb(122,122,122)] leading-[25.6px]">{t.benefits.subtitle}</p>
+      <section id={t.anchors.benefits} className="bg-gray-50">
+        <BackgroundEffect className="py-16">
+          <div className="container">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl mb-4">{t.benefits.title}</h2>
+              <p className="text-center mx-auto text-[rgb(122,122,122)] leading-[25.6px]">{t.benefits.subtitle}</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="benefit bg-white rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)] overflow-hidden">
+                <div className="image-wrapper overflow-hidden">
+                  <Image 
+                    src="/assets/images/benefit-time-desktop.webp"
+                    alt={alts.benefitTime}
+                    width={400}
+                    height={300}
+                    className="w-full h-[300px] object-cover transition-transform duration-300 hover:scale-105"
+                  />
+                </div>
+                <div className="benefit-content text-center py-4 px-6">
+                  <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">{t.benefits.items.time.title}</h3>
+                  <p className="text-[rgb(122,122,122)] leading-[25.6px]">{t.benefits.items.time.description}</p>
+                </div>
+              </div>
+              <div className="benefit bg-white rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)] overflow-hidden">
+                <div className="image-wrapper overflow-hidden">
+                  <Image 
+                    src="/assets/images/benefit-stress.webp"
+                    alt={alts.benefitStress}
+                    width={400}
+                    height={300}
+                    className="w-full h-[300px] object-cover transition-transform duration-300 hover:scale-105"
+                  />
+                </div>
+                <div className="benefit-content text-center py-4 px-6">
+                  <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">{t.benefits.items.stress.title}</h3>
+                  <p className="text-[rgb(122,122,122)] leading-[25.6px]">{t.benefits.items.stress.description}</p>
+                </div>
+              </div>
+              <div className="benefit bg-white rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)] overflow-hidden">
+                <div className="image-wrapper overflow-hidden">
+                  <Image 
+                    src="/assets/images/benefit-options.webp"
+                    alt={alts.benefitOptions}
+                    width={400}
+                    height={300}
+                    className="w-full h-[300px] object-cover transition-transform duration-300 hover:scale-105"
+                  />
+                </div>
+                <div className="benefit-content text-center py-4 px-6">
+                  <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">{t.benefits.items.options.title}</h3>
+                  <p className="text-[rgb(122,122,122)] leading-[25.6px]">{t.benefits.items.options.description}</p>
+                </div>
+              </div>
+              <div className="benefit bg-white p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)]">
+                <div className="image-wrapper overflow-hidden rounded-lg">
+                  <Image 
+                    src="/assets/images/benefit-confidence.webp"
+                    alt={alts.benefitConfidence}
+                    width={400}
+                    height={300}
+                    className="w-full h-[300px] object-cover transition-transform duration-300 hover:scale-105"
+                  />
+                </div>
+                <div className="benefit-content text-center py-4 px-6">
+                  <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">{t.benefits.items.confidence.title}</h3>
+                  <p className="text-[rgb(122,122,122)] leading-[25.6px]">{t.benefits.items.confidence.description}</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="benefit bg-white rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)] overflow-hidden">
-              <div className="image-wrapper overflow-hidden">
-                <Image 
-                  src="/assets/images/benefit-time-desktop.webp"
-                  alt={alts.benefitTime}
-                  width={400}
-                  height={300}
-                  className="w-full h-[300px] object-cover transition-transform duration-300 hover:scale-105"
-                />
-              </div>
-              <div className="benefit-content text-center py-4 px-6">
-                <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">{t.benefits.items.time.title}</h3>
-                <p className="text-[rgb(122,122,122)] leading-[25.6px]">{t.benefits.items.time.description}</p>
-              </div>
-            </div>
-            <div className="benefit bg-white rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)] overflow-hidden">
-              <div className="image-wrapper overflow-hidden">
-                <Image 
-                  src="/assets/images/benefit-stress.webp"
-                  alt={alts.benefitStress}
-                  width={400}
-                  height={300}
-                  className="w-full h-[300px] object-cover transition-transform duration-300 hover:scale-105"
-                />
-              </div>
-              <div className="benefit-content text-center py-4 px-6">
-                <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">{t.benefits.items.stress.title}</h3>
-                <p className="text-[rgb(122,122,122)] leading-[25.6px]">{t.benefits.items.stress.description}</p>
-              </div>
-            </div>
-            <div className="benefit bg-white rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)] overflow-hidden">
-              <div className="image-wrapper overflow-hidden">
-                <Image 
-                  src="/assets/images/benefit-options.webp"
-                  alt={alts.benefitOptions}
-                  width={400}
-                  height={300}
-                  className="w-full h-[300px] object-cover transition-transform duration-300 hover:scale-105"
-                />
-              </div>
-              <div className="benefit-content text-center py-4 px-6">
-                <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">{t.benefits.items.options.title}</h3>
-                <p className="text-[rgb(122,122,122)] leading-[25.6px]">{t.benefits.items.options.description}</p>
-              </div>
-            </div>
-            <div className="benefit bg-white p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)]">
-              <div className="image-wrapper overflow-hidden rounded-lg">
-                <Image 
-                  src="/assets/images/benefit-confidence.webp"
-                  alt={alts.benefitConfidence}
-                  width={400}
-                  height={300}
-                  className="w-full h-[300px] object-cover transition-transform duration-300 hover:scale-105"
-                />
-              </div>
-              <div className="benefit-content text-center py-4 px-6">
-                <h3 className="text-[rgb(90,90,90)] text-2xl mb-2">{t.benefits.items.confidence.title}</h3>
-                <p className="text-[rgb(122,122,122)] leading-[25.6px]">{t.benefits.items.confidence.description}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </BackgroundEffect>
+        </BackgroundEffect>
+      </section>
 
       <section className="showcase py-16">
         <div className="container">
@@ -305,7 +307,7 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
         </div>
       </section>
 
-      <section id="depoimentos" className="testimonials py-16 bg-gray-50 hidden">
+      <section id={t.anchors.testimonials} className="testimonials py-16 bg-gray-50 hidden">
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-4xl mb-4">O Que Nossas Noivas Dizem</h2>
@@ -372,7 +374,7 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
 
       <BackgroundEffect className="py-16">
         <div className="container">
-          <div id="cadastro" className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div id={t.anchors.signup} className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="signup-content">
               <div className="text-center mb-12">
                 <h2 className="text-4xl mb-4">{t.signup.title}</h2>
@@ -393,7 +395,7 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
         </div>
       </BackgroundEffect>
 
-      <section id="faq" className="faq py-16 bg-gray-50">
+      <section id={t.anchors.faq} className="faq py-16 bg-gray-50">
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-4xl mb-4">{t.faq.title}</h2>
@@ -433,9 +435,9 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
             <div className="footer-links">
               <h3 className="text-lg text-[rgb(90,90,90)] mb-4 relative after:content-[''] after:absolute after:left-0 after:-bottom-2 after:w-12 after:h-[2px] after:bg-[rgb(255,192,203)]">{t.footer.quickLinks.title}</h3>
               <ul className="space-y-2">
-                <li><Link href={`/${lang}#como-funciona`} className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.howItWorks}</Link></li>
-                <li><Link href={`/${lang}#beneficios`} className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.benefits}</Link></li>
-                <li><Link href={`/${lang}#faq`} className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.faq}</Link></li>
+                <li><Link href={`/${lang}#${t.anchors.howItWorks}`} className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.howItWorks}</Link></li>
+                <li><Link href={`/${lang}#${t.anchors.benefits}`} className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.benefits}</Link></li>
+                <li><Link href={`/${lang}#${t.anchors.faq}`} className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.faq}</Link></li>
                 {lang !== 'es' && (
                   <li><Link href={`/${lang}/blog`} className="hover:text-[rgb(255,192,203)] hover:translate-x-2 transition-all duration-300 inline-block text-[rgb(90,90,90)]">{t.footer.quickLinks.items.blog}</Link></li>
                 )}
