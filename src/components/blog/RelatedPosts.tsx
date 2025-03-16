@@ -49,8 +49,8 @@ export default function RelatedPosts({ posts, locale, title }: RelatedPostsProps
 
   return (
     <section className="mt-12 border-t border-gray-200 pt-8 w-full">
-      <div className="px-4">
-        <h2 className="text-2xl font-playfair font-bold mb-6 text-gray-900 w-full relative after:content-[''] after:absolute after:left-0 after:-bottom-2 after:w-36 after:h-[2px] after:bg-pink-300">
+      <div>
+        <h2 className="text-2xl font-playfair font-bold mb-6 text-gray-900 w-full relative after:content-[''] after:absolute after:left-0 after:-bottom-2 after:w-32 after:h-[2px] after:bg-pink-300">
           {title || t.blog.relatedPosts}
         </h2>
         
