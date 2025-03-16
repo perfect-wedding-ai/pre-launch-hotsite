@@ -5,6 +5,7 @@ import { i18n, Locale } from './config/i18n.config'
 const supportedLocales = i18n.locales
 const defaultLocale = i18n.defaultLocale
 const LANGUAGE_COOKIE_KEY = 'preferred_language'
+const COOKIE_CONSENT_KEY = 'cookie-consent'
 
 // Função para extrair o idioma base (ex: 'pt-BR' -> 'pt')
 function getBaseLocale(locale: string): string {
@@ -39,18 +40,28 @@ export function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Verifica se existe um cookie de preferência de idioma
-  const preferredLanguage = request.cookies.get(LANGUAGE_COOKIE_KEY)?.value as Locale | undefined
-  console.log('Cookie de idioma encontrado:', preferredLanguage);
+  // Verifica se o usuário aceitou cookies
+  const cookieConsent = request.cookies.get(COOKIE_CONSENT_KEY)?.value
+  const canUseCookies = cookieConsent === 'accepted'
+  console.log('Consentimento de cookies:', canUseCookies ? 'Aceito' : 'Não aceito ou não definido');
 
-  // Se encontrar o cookie e o idioma for suportado, usa essa preferência
-  if (preferredLanguage && supportedLocales.includes(preferredLanguage)) {
+  // Verifica se existe um cookie de preferência de idioma e se pode usá-lo
+  let preferredLanguage = undefined;
+  if (canUseCookies) {
+    preferredLanguage = request.cookies.get(LANGUAGE_COOKIE_KEY)?.value as Locale | undefined
+    console.log('Cookie de idioma encontrado:', preferredLanguage);
+  } else {
+    console.log('Cookies não aceitos, ignorando cookie de idioma');
+  }
+
+  // Se encontrar o cookie, o usuário aceitou cookies e o idioma for suportado, usa essa preferência
+  if (preferredLanguage && canUseCookies && supportedLocales.includes(preferredLanguage)) {
     const redirectUrl = new URL(`/${preferredLanguage}${request.nextUrl.pathname}`, request.url);
     console.log('Redirecionando para preferência do cookie:', redirectUrl.href);
     return NextResponse.redirect(redirectUrl);
   }
 
-  // Se não tiver cookie, usa o idioma do navegador como antes
+  // Se não tiver cookie ou não puder usá-lo, usa o idioma do navegador
   const acceptLanguage = request.headers.get('accept-language') || ''
   console.log('Accept-Language do navegador:', acceptLanguage);
   

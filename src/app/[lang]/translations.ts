@@ -175,6 +175,14 @@ export const translations = {
       testimonials: "depoimentos",
       signup: "cadastro",
       faq: "faq"
+    },
+    cookieConsent: {
+      title: "Aviso sobre Cookies",
+      description: "Utilizamos cookies para melhorar sua experiência em nosso site. Eles são essenciais para o funcionamento adequado e também nos ajudam a entender como você interage com o site.",
+      acceptButton: "Aceitar",
+      rejectButton: "Recusar",
+      learnMore: "Saiba mais",
+      privacyPolicy: "Política de Privacidade"
     }
   },
   en: {
@@ -353,6 +361,14 @@ export const translations = {
       testimonials: "testimonials",
       signup: "signup",
       faq: "faq"
+    },
+    cookieConsent: {
+      title: "Cookie Notice",
+      description: "We use cookies to enhance your experience on our website. They are essential for the proper functioning and also help us understand how you interact with the site.",
+      acceptButton: "Accept",
+      rejectButton: "Decline",
+      learnMore: "Learn more",
+      privacyPolicy: "Privacy Policy"
     }
   },
   es: {
@@ -531,6 +547,14 @@ export const translations = {
       testimonials: "testimonios",
       signup: "registro",
       faq: "faq"
+    },
+    cookieConsent: {
+      title: "Aviso de Cookies",
+      description: "Utilizamos cookies para mejorar su experiencia en nuestro sitio web. Son esenciales para el funcionamiento adecuado y también nos ayudan a entender cómo interactúa con el sitio.",
+      acceptButton: "Aceptar",
+      rejectButton: "Rechazar",
+      learnMore: "Más información",
+      privacyPolicy: "Política de Privacidad"
     }
   }
 }

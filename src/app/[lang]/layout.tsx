@@ -7,6 +7,7 @@ import '../globals.css'
 import { metadataTranslations, getMetadataTranslations } from './metadata'
 import { Locale, i18n } from '@/config/i18n.config'
 import Providers from '../providers'
+import CookieConsent from '@/components/CookieConsent'
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -114,6 +115,7 @@ export default function RootLayout({
   params: { lang: ValidLang }
 }) {
   const { lang } = params;
+  const t = getTranslations(lang);
   
   return (
     <html lang={lang} className={`${montserrat.variable} ${playfair.variable}`}>
@@ -129,6 +131,7 @@ export default function RootLayout({
       <body className={`${montserrat.className} antialiased`}>
         <Providers>
           {children}
+          <CookieConsent translations={t.cookieConsent} locale={lang} />
         </Providers>
 
         {/* Google Analytics */}

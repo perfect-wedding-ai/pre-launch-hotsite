@@ -106,6 +106,78 @@ Próximos passos:
 - Verificar se o redirecionamento entre idiomas funciona conforme esperado
 - Testar o comportamento quando um visitante novo acessa o site pela primeira vez
 
+## Implementação de Aviso de Cookies (Cookie Consent)
+
+### Tarefa
+Adicionar um aviso de cookies que atenda aos requisitos das leis da UE, com opções para aceitar ou recusar, totalmente funcional.
+
+### Plano de Execução
+[X] Criar componente CookieConsent para exibir o banner de aviso
+[X] Implementar funções para manipulação de cookies (salvar, obter e limpar as preferências)
+[X] Adicionar traduções para os textos do aviso em português, inglês e espanhol
+[X] Integrar o componente no layout principal da aplicação
+[X] Implementar a lógica para mostrar/esconder o aviso com base na escolha do usuário
+[X] Adicionar estilos consistentes com o design do site
+[ ] Testar o funcionamento em diferentes navegadores e dispositivos
+
+### Progresso
+Implementação concluída! Foi criado um componente de aviso de cookies que:
+
+1. Aparece na parte inferior da tela após um breve delay para melhorar a experiência do usuário
+2. Mostra informações sobre o uso de cookies no site
+3. Oferece opções para o usuário aceitar ou recusar os cookies
+4. Inclui um link para a política de privacidade
+5. Salva a escolha do usuário em um cookie com validade de 6 meses
+6. Suporta internacionalização (i18n) em português, inglês e espanhol
+7. Tem um design responsivo que se adapta a diferentes tamanhos de tela
+8. Inclui animação de entrada para melhorar a experiência do usuário
+
+O componente foi integrado no layout principal da aplicação (RootLayout) para que apareça em todas as páginas do site, mas apenas uma vez até que o usuário faça sua escolha.
+
+As funções utilitárias para manipulação de cookies foram implementadas em um arquivo separado (cookie-consent.ts) para facilitar a manutenção e reutilização. Essas funções permitem salvar, obter e limpar as preferências do usuário.
+
+Próximos passos:
+- Testar o funcionamento em diferentes navegadores e dispositivos
+- Verificar se o componente está funcionando corretamente em todas as páginas do site
+- Analisar se há necessidade de melhorias adicionais no design ou na funcionalidade
+
+## Integração de Cookie Consent com Seleção de Idioma
+
+### Tarefa
+Integrar o sistema de consentimento de cookies com a seleção de idioma, para que a preferência de idioma só seja salva e utilizada se o usuário aceitou o uso de cookies.
+
+### Plano de Execução
+[X] Atualizar o language-cookie.ts para verificar o consentimento antes de salvar a preferência
+[X] Modificar a função redirectToLanguage para salvar a preferência em cookie
+[X] Atualizar o middleware.ts para verificar o consentimento antes de usar o cookie de idioma
+[X] Garantir que o componente LanguageSelector esteja usando a função atualizada corretamente
+
+### Progresso
+Implementação concluída! As seguintes modificações foram feitas:
+
+1. No arquivo `language-cookie.ts`:
+   - Adicionada função `canUseCookies()` para verificar se o usuário aceitou cookies
+   - Implementada função `saveLanguagePreference()` para salvar a preferência de idioma em cookie, mas apenas se o usuário aceitou cookies
+   - Atualizada a função `redirectToLanguage()` para salvar a preferência de idioma antes de redirecionar
+
+2. No arquivo `middleware.ts`:
+   - Adicionada verificação do cookie de consentimento antes de usar o cookie de idioma
+   - Implementada lógica condicional para usar o cookie de preferência de idioma apenas se o usuário aceitou cookies
+   - Mantida a lógica de fallback para o idioma do navegador se não puder usar cookies ou não houver preferência salva
+
+3. Verificado o componente `LanguageSelector.tsx`:
+   - Confirmado que já está utilizando a função `redirectToLanguage` corretamente
+   - Não foi necessário alterá-lo pois já usará automaticamente a lógica atualizada
+
+A implementação agora respeita totalmente a escolha do usuário quanto ao uso de cookies:
+- Se o usuário aceitou cookies, sua preferência de idioma será salva e utilizada em futuros acessos
+- Se o usuário recusou cookies, sua preferência de idioma não será salva, e o idioma será detectado pelo navegador a cada acesso
+- O redirecionamento para o idioma escolhido funciona em ambos os casos, mas a persistência só ocorre quando permitido
+
+### Próximos Passos
+- Testar a implementação para garantir que funciona como esperado
+- Verificar o funcionamento em diferentes navegadores e cenários de uso (aceitando/recusando cookies)
+
 # Project Planning
 
 ## Tarefa Atual: Atualização do Schema do Contentful para Blog Posts
