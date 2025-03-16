@@ -13,6 +13,7 @@ import Header from '@/components/Header';
 import BackgroundEffect from '@/components/BackgroundEffect';
 import { getTranslations, getBaseLocale } from '../../translations';
 import { Document } from '@contentful/rich-text-types';
+import Link from 'next/link';
 
 interface BlogPostPageProps {
   params: {
@@ -397,6 +398,15 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { title, body, image, tags = [], publishDate, lastUpdateDate, category } = post.fields;
   console.log("Post data:", { title, hasImage: !!image, imageType: image ? typeof image : 'undefined' });
   
+  // Log detalhado da categoria para diagnóstico
+  console.log("Category details:", {
+    hasCategory: !!category,
+    categoryType: category ? typeof category : 'undefined',
+    categoryId: category?.sys?.id,
+    categoryName: category?.fields?.name,
+    categorySlug: category?.fields?.slug
+  });
+  
   // Se disponível no console, imprimir apenas os campos mais importantes para não poluir
   if (image) {
     const hasSys = typeof image === 'object' && 'sys' in image && typeof image.sys === 'object';
@@ -526,8 +536,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 )}
                 
                 {category && category.fields && category.fields.name && (
-                  <span className="text-purple-700">
-                    {t.blog.category} {category.fields.name}
+                  <span className="text-gray-600">
+                    {t.blog.category}{' '}
+                    <Link 
+                      href={`/${lang}/blog?category_name=${encodeURIComponent(category.fields.slug || category.fields.name)}`} 
+                      className="hover:text-purple-700 hover:underline transition-colors"
+                      prefetch={false}
+                      data-category-id={category.sys.id}
+                    >
+                      {category.fields.name}
+                    </Link>
                   </span>
                 )}
               </div>

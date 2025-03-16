@@ -17,6 +17,7 @@ interface BlogPageProps {
     page?: string;
     tag?: string;
     category?: string;
+    category_name?: string;
   };
 }
 
@@ -70,33 +71,168 @@ const extractUniqueTags = (posts: any[], locale: Locale): string[] => {
   return Array.from(tagsSet).sort();
 };
 
+// Helper para timeout em chamadas de API
+const fetchWithTimeout = async (fetchPromise: Promise<any>, timeoutMs = 8000) => {
+  let timeoutId: NodeJS.Timeout | undefined;
+
+  // Criando uma promise que rejeita após o timeout
+  const timeoutPromise = new Promise((_, reject) => {
+    timeoutId = setTimeout(() => {
+      reject(new Error(`Request timed out after ${timeoutMs}ms`));
+    }, timeoutMs);
+  });
+
+  try {
+    // Corrida entre a promise original e o timeout
+    const result = await Promise.race([fetchPromise, timeoutPromise]);
+    if (timeoutId) clearTimeout(timeoutId);
+    return result;
+  } catch (error) {
+    if (timeoutId) clearTimeout(timeoutId);
+    throw error;
+  }
+};
+
 export default async function BlogPage({ params, searchParams }: BlogPageProps) {
   const { lang } = params;
-  const { page = '1', tag, category } = searchParams;
+  const { page = '1', tag, category, category_name } = searchParams;
+  
+  // Adicionar logs para diagnóstico
+  console.log("Search params:", { page, tag, category, category_name });
   
   // Verificar locales configurados no Contentful
   await getContentfulLocales();
+  
+  // Buscar todas as categorias
+  const categoriesResponse = await getCategories(lang);
+  console.log("Categories fetched:", categoriesResponse.items.length);
+  
+  // Listar todas as categorias para diagnóstico
+  console.log("All available categories:", categoriesResponse.items.map(cat => ({
+    id: cat.sys.id,
+    name: cat.fields.name,
+    slug: cat.fields.slug
+  })));
+  
+  // Se temos um nome de categoria, tentar encontrar o ID correspondente
+  let categoryId = category;
+  
+  if (category_name && !category) {
+    console.log("Looking for category by name:", category_name);
+    
+    // Cache local para ID de categoria
+    const categoryNameLowerCase = category_name.toLowerCase().trim();
+    
+    // Verificar se há algum caractere especial ou formato inválido no nome da categoria
+    const hasSpecialChars = /[^\w\s-]/.test(categoryNameLowerCase);
+    if (hasSpecialChars) {
+      console.warn("Category name contains special characters, which may cause issues:", category_name);
+    }
+    
+    // Busca mais flexível (case insensitive e ignorando espaços extras)
+    const searchName = categoryNameLowerCase;
+    console.log("Normalized search name:", searchName);
+    
+    const foundCategory = categoriesResponse.items.find(
+      cat => {
+        const catName = cat.fields.name?.toLowerCase()?.trim();
+        const catSlug = cat.fields.slug?.toLowerCase()?.trim();
+        
+        const nameMatch = catName === searchName;
+        const slugMatch = catSlug === searchName;
+        
+        console.log(`Comparing category: "${catName}" (${cat.sys.id}) with search: "${searchName}" - Match: ${nameMatch || slugMatch}`);
+        
+        return nameMatch || slugMatch;
+      }
+    );
+    
+    if (foundCategory) {
+      console.log("Found category by name:", {
+        name: foundCategory.fields.name,
+        id: foundCategory.sys.id
+      });
+      categoryId = foundCategory.sys.id;
+    } else {
+      console.log("Category not found by name:", category_name);
+      // Se não encontrou pelo nome exato, tentar uma busca parcial
+      const similarCategory = categoriesResponse.items.find(
+        cat => {
+          // Proteger contra valores nulos ou undefined
+          const catNameLower = cat.fields.name?.toLowerCase() || '';
+          return catNameLower.includes(searchName) || searchName.includes(catNameLower);
+        }
+      );
+      
+      if (similarCategory) {
+        console.log("Found similar category:", {
+          name: similarCategory.fields.name,
+          id: similarCategory.sys.id
+        });
+        categoryId = similarCategory.sys.id;
+      }
+    }
+  }
   
   const currentPage = parseInt(page, 10) || 1;
   const postsPerPage = 9;
   const skip = (currentPage - 1) * postsPerPage;
   
   // Buscar posts com paginação e filtros
-  const postsResponse = await getBlogPosts(lang, {
-    limit: postsPerPage,
-    skip,
-    tag,
-    category,
-  });
+  let postsResponse;
+  try {
+    const postsPromise = getBlogPosts(lang, {
+      limit: postsPerPage,
+      skip,
+      tag,
+      category: categoryId,
+    });
+    
+    // Aplicar timeout para evitar espera infinita
+    postsResponse = await fetchWithTimeout(postsPromise, 10000);
+    
+    console.log("Posts fetched:", {
+      count: postsResponse?.items?.length || 0,
+      total: postsResponse?.total || 0,
+      filter: { tag, categoryId }
+    });
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    // Fallback: buscar posts sem filtro
+    console.log("Fallback: fetching posts without filter");
+    try {
+      const fallbackPromise = getBlogPosts(lang, {
+        limit: postsPerPage,
+        skip
+      });
+      
+      // Aplicar timeout para o fallback também
+      postsResponse = await fetchWithTimeout(fallbackPromise, 8000);
+    } catch (fallbackError) {
+      console.error("Error fetching fallback posts:", fallbackError);
+      // Fornecer uma resposta vazia para evitar erros
+      postsResponse = { items: [], total: 0 };
+    }
+  }
   
-  // Buscar todas as categorias
-  const categoriesResponse = await getCategories(lang);
+  // Garantir que postsResponse sempre tenha uma estrutura válida
+  if (!postsResponse || !postsResponse.items) {
+    postsResponse = { items: [], total: 0 };
+  }
   
   // Buscar todos os posts para extrair tags (limitado a 100 para performance)
-  const allPostsResponse = await getBlogPosts(lang, { limit: 100 });
-  const uniqueTags = extractUniqueTags(allPostsResponse.items, lang);
+  let allPostsResponse;
+  let uniqueTags: string[] = [];
+  try {
+    // Aplicar timeout para evitar espera infinita
+    allPostsResponse = await fetchWithTimeout(getBlogPosts(lang, { limit: 100 }), 5000);
+    uniqueTags = extractUniqueTags(allPostsResponse.items || [], lang);
+  } catch (error) {
+    console.error("Error fetching tags:", error);
+    // Deixar tags vazias em caso de erro
+  }
   
-  const totalPages = Math.ceil(postsResponse.total / postsPerPage);
+  const totalPages = Math.ceil((postsResponse.total || 0) / postsPerPage) || 1;
   
   // Obter as traduções para o idioma atual
   const t = getTranslations(lang);
@@ -118,7 +254,7 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
                 categories={categoriesResponse.items}
                 tags={uniqueTags}
                 locale={lang}
-                activeCategory={category}
+                activeCategory={categoryId}
                 activeTag={tag}
               />
             </div>
@@ -127,7 +263,7 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
               {postsResponse.items.length > 0 ? (
                 <>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-                    {postsResponse.items.map((post) => (
+                    {postsResponse.items.map((post: any) => (
                       <BlogCard key={post.sys.id} post={post} locale={lang} />
                     ))}
                   </div>
@@ -142,11 +278,14 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
               ) : (
                 <div className="text-center py-12">
                   <h2 className="text-2xl font-playfair font-bold text-gray-900 mb-4">
-                    {t.blog.notFound.title}
+                    {category_name ? 
+                      `${t.blog.notFound.title} "${category_name}"` : 
+                      t.blog.notFound.title}
                   </h2>
                   <p className="text-gray-600 mb-4">
                     {t.blog.notFound.description}
                     {category ? t.blog.notFound.withCategory : ''}
+                    {category_name ? t.blog.notFound.withCategory : ''}
                     {tag ? t.blog.notFound.withTag : ''}
                   </p>
                   <p className="text-gray-600">
@@ -154,8 +293,14 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
                   </p>
                   <div className="mt-6">
                     <a 
-                      href={`/${baseLocale === 'pt' ? 'en' : 'pt'}/blog${category ? `?category=${category}` : ''}${tag ? `${category ? '&' : '?'}tag=${tag}` : ''}`} 
-                      className="inline-block bg-primary text-white py-2 px-6 rounded-md hover:bg-primary-dark transition"
+                      href={`/${lang}/blog`} 
+                      className="inline-block bg-primary text-white py-2 px-6 mr-4 rounded-md hover:bg-primary-dark transition"
+                    >
+                      {"Ver todos os posts"}
+                    </a>
+                    <a 
+                      href={`/${baseLocale === 'pt' ? 'en' : 'pt'}/blog`} 
+                      className="inline-block bg-gray-200 text-gray-800 py-2 px-6 rounded-md hover:bg-gray-300 transition"
                     >
                       {t.blog.notFound.viewInOtherLanguage}
                     </a>
