@@ -59,3 +59,56 @@ Implementação concluída com sucesso! O menu suspenso do usuário foi adiciona
 - Menu suspenso com opções de perfil, painel, configurações e sair
 - Estilização consistente com as cores do site
 - Suporte para traduções
+
+## Implementação de Seletor de Idiomas no Menu Suspenso
+
+### Tarefa
+Adicionar um item "Idioma" no menu suspenso do usuário com opções para selecionar inglês, português e espanhol. A escolha do idioma deve ser salva em um cookie e utilizada para determinar o idioma da interface através da rota /[lang]. Se o cookie não existir, o comportamento padrão de detectar o idioma do navegador deve ser mantido.
+
+### Plano de Execução
+[X] Criar um componente LanguageSelector para o menu suspenso
+[X] Adicionar funções para manipulação de cookies para salvar a preferência de idioma
+[X] Modificar o Header.tsx para incluir o item de seleção de idioma no menu
+[X] Atualizar o middleware.ts para verificar o cookie de idioma e priorizar sobre o idioma do navegador
+[X] Adicionar lógica de redirecionamento quando o usuário muda o idioma
+[X] Implementar traduções necessárias para as opções de idioma
+[X] Testar o funcionamento da seleção de idioma e persistência da escolha
+
+### Progresso
+Iniciando a implementação...
+
+Implementação em andamento:
+[X] Criar um componente LanguageSelector para o menu suspenso
+- Criado o componente LanguageSelector.tsx com suporte para seleção entre português, inglês e espanhol
+- Adicionado ícone de globo para o menu de idiomas e marcador para o idioma atualmente selecionado
+
+[X] Adicionar funções para manipulação de cookies para salvar a preferência de idioma
+- Criado o arquivo language-cookie.ts com funções para salvar, obter e limpar a preferência de idioma
+- Implementada função redirectToLanguage para redirecionar o usuário para a versão do site no idioma escolhido
+
+[X] Modificar o Header.tsx para incluir o item de seleção de idioma no menu
+- Adicionado o componente LanguageSelector ao menu suspenso do usuário
+- Atualizadas as interfaces para incluir as novas traduções necessárias
+
+[X] Atualizar o middleware.ts para verificar o cookie de idioma e priorizar sobre o idioma do navegador
+- Modificado o middleware para verificar primeiro se existe um cookie de preferência de idioma
+- Mantido o comportamento padrão de detectar o idioma do navegador se o cookie não existir
+
+[X] Implementar traduções necessárias para as opções de idioma
+- Adicionadas as traduções para português, inglês e espanhol nos arquivos de dicionário
+- Criado o arquivo de dicionário em espanhol (es.json) que não existia anteriormente
+- Atualizado o arquivo dictionary.ts para incluir o suporte ao espanhol
+
+[X] Testar o funcionamento da seleção de idioma e persistência da escolha
+- Testada a funcionalidade de mudança de idioma e redirecionamento
+- Verificado que o cookie está sendo salvo corretamente
+- Confirmado que o middleware verifica o cookie antes de usar o idioma do navegador
+
+Implementação concluída com sucesso!
+
+A funcionalidade de seleção de idiomas foi implementada com as seguintes características:
+- Menu suspenso de seleção de idiomas integrado ao menu do usuário
+- Suporte para português, inglês e espanhol
+- Salvamento da preferência de idioma em cookie persistente
+- Priorização do idioma escolhido pelo usuário sobre o idioma do navegador
+- Manutenção do comportamento padrão para novos visitantes (detectar idioma do navegador)

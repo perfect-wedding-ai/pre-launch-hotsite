@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/custom-dropdown-menu";
 import { useEffect, useState } from "react";
 import ScrollbarPreserver from "./ScrollbarPreserver";
+import LanguageSelector from "./LanguageSelector";
 
 type ValidLang = 'pt' | 'en' | 'es';
 
@@ -34,35 +35,40 @@ interface HeaderProps {
             dashboard: string;
             settings: string;
             signOut: string;
+            account: string;
+            language: string;
+            languageNames: {
+                pt: string;
+                en: string;
+                es: string;
+            };
         };
     };
 }
 
-// Componente que só renderiza no cliente
-function ClientOnly({ children }: { children: React.ReactNode }) {
+export default function Header({ lang, t }: HeaderProps) {
     const [mounted, setMounted] = useState(false);
     
     useEffect(() => {
         setMounted(true);
     }, []);
     
-    if (!mounted) {
-        return null;
-    }
-    
-    return <>{children}</>;
-}
-
-export default function Header({ lang, t }: HeaderProps) {
     // Default user menu translations if not provided
     const userMenuTexts = t.userMenu || {
         profile: 'Perfil',
         dashboard: 'Painel',
         settings: 'Configurações',
-        signOut: 'Sair'
+        signOut: 'Sair',
+        account: 'Conta do usuário',
+        language: 'Idioma',
+        languageNames: {
+            pt: 'Português',
+            en: 'Inglês',
+            es: 'Espanhol'
+        }
     };
 
-    // Renderizar o botão de usuário independentemente de estar montado ou não
+    // Renderizar o botão de usuário
     const userButton = (
         <div className="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center hover:bg-neutral-200 transition-colors">
             <FontAwesomeIcon 
@@ -74,7 +80,7 @@ export default function Header({ lang, t }: HeaderProps) {
     
     return (
         <>
-            <ScrollbarPreserver />
+            {mounted && <ScrollbarPreserver />}
             <header className="fixed w-full top-0 left-0 z-[1000] bg-white py-5 shadow-[0_2px_10px_rgba(0,0,0,0.05)]">
                 <div className="container">
                     <div className="flex justify-between items-center">
@@ -98,13 +104,13 @@ export default function Header({ lang, t }: HeaderProps) {
                                 <Link href={`/${lang}#cadastro`} className="btn-primary">{t.nav.tryFree}</Link>
                             </div>
                             <div className="user-menu">
-                                <ClientOnly>
+                                {mounted ? (
                                     <NoScrollLockDropdownMenu>
                                         <DropdownMenuTrigger className="focus:outline-none">
                                             {userButton}
                                         </DropdownMenuTrigger>
                                         <CustomDropdownMenuContent className="min-w-48 z-[1001]" sideOffset={5} align="end">
-                                            <DropdownMenuLabel>Conta do usuário</DropdownMenuLabel>
+                                            <DropdownMenuLabel>{userMenuTexts.account}</DropdownMenuLabel>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem>
                                                 <Link href={`/${lang}/profile`} className="w-full">
@@ -122,6 +128,14 @@ export default function Header({ lang, t }: HeaderProps) {
                                                 </Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
+                                            <LanguageSelector 
+                                                currentLang={lang} 
+                                                t={{
+                                                    language: userMenuTexts.language,
+                                                    languageNames: userMenuTexts.languageNames
+                                                }}
+                                            />
+                                            <DropdownMenuSeparator />
                                             <DropdownMenuItem>
                                                 <button className="w-full text-left text-red-500">
                                                     {userMenuTexts.signOut}
@@ -129,9 +143,9 @@ export default function Header({ lang, t }: HeaderProps) {
                                             </DropdownMenuItem>
                                         </CustomDropdownMenuContent>
                                     </NoScrollLockDropdownMenu>
-                                </ClientOnly>
-                                {/* Renderiza este botão no servidor para evitar problemas de hidratação */}
-                                <noscript>{userButton}</noscript>
+                                ) : (
+                                    userButton
+                                )}
                             </div>
                         </div>
                     </div>

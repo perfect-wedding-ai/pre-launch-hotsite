@@ -36,21 +36,6 @@ export {
   DropdownMenuRadioGroup,
 }
 
-// Componente que só renderiza no cliente, para evitar problemas de hidratação
-function ClientOnly({ children }: { children: React.ReactNode }) {
-  const [mounted, setMounted] = React.useState(false);
-  
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
-  
-  if (!mounted) {
-    return null;
-  }
-  
-  return <>{children}</>;
-}
-
 // Versão personalizada do DropdownMenu sem bloqueio de scroll
 export const NoScrollLockDropdownMenu = (props: React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Root>) => (
   <DropdownMenuPrimitive.Root {...props} modal={false} />
@@ -63,8 +48,14 @@ const CustomDropdownMenuContent = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content>
 >(({ className, sideOffset = 4, ...props }, ref) => {
+  const [mounted, setMounted] = React.useState(false);
+  
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+  
   return (
-    <ClientOnly>
+    mounted ? (
       <DropdownMenuPrimitive.Portal>
         <DropdownMenuPrimitive.Content
           ref={ref}
@@ -79,7 +70,7 @@ const CustomDropdownMenuContent = React.forwardRef<
           {...props}
         />
       </DropdownMenuPrimitive.Portal>
-    </ClientOnly>
+    ) : null
   )
 })
 

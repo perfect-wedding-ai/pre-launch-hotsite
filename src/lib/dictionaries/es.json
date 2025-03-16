@@ -1,0 +1,28 @@
+{
+    "navigation": {
+        "howItWorks": "Cómo Funciona",
+        "benefits": "Beneficios",
+        "faq": "Preguntas Frecuentes",
+        "tryForFree": "Prueba Gratis"
+    },
+    "hero": {
+        "title": "Prueba Vestidos de Novia Virtualmente",
+        "subtitle": "Descubre el vestido de tus sueños sin salir de casa",
+        "description": "Ahorra tiempo y encuentra el vestido perfecto antes de visitar el taller. Nuestra tecnología de inteligencia artificial te permite probar docenas de modelos exclusivos en segundos con nuestra prueba virtual de vestidos.",
+        "tryNow": "Prueba Ahora",
+        "learnMore": "Saber Más"
+    },
+    "userMenu": {
+        "profile": "Perfil",
+        "dashboard": "Panel",
+        "settings": "Configuración",
+        "signOut": "Cerrar Sesión",
+        "account": "Cuenta de Usuario",
+        "language": "Idioma",
+        "languageNames": {
+            "pt": "Portugués",
+            "en": "Inglés",
+            "es": "Español"
+        }
+    }
+} 
