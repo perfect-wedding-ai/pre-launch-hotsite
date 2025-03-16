@@ -255,34 +255,6 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
                   <span className="absolute top-4 left-4 z-10 bg-white px-3 py-1 rounded-full text-sm">{t.showcase.labels.before}</span>
                   <div className="image-wrapper overflow-hidden rounded-lg">
                     <Image 
-                      src="/assets/images/before-1.webp"
-                      alt={alts.before1}
-                      width={450}
-                      height={450}
-                      className="w-full h-auto transition-transform duration-300 hover:scale-105"
-                    />
-                  </div>
-                </div>
-                <div className="after relative overflow-hidden rounded-lg">
-                  <span className="absolute top-4 left-4 z-10 bg-white px-3 py-1 rounded-full text-sm">{t.showcase.labels.after}</span>
-                  <div className="image-wrapper overflow-hidden rounded-lg">
-                    <Image 
-                      src="/assets/images/after-1.webp"
-                      alt={alts.after1}
-                      width={450}
-                      height={450}
-                      className="w-full h-auto transition-transform duration-300 hover:scale-105"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="showcase-item bg-white p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)]">
-              <div className="before-after grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="before relative overflow-hidden rounded-lg">
-                  <span className="absolute top-4 left-4 z-10 bg-white px-3 py-1 rounded-full text-sm">{t.showcase.labels.before}</span>
-                  <div className="image-wrapper overflow-hidden rounded-lg">
-                    <Image 
                       src="/assets/images/before-2.webp"
                       alt={alts.before2}
                       width={450}
@@ -297,6 +269,34 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
                     <Image 
                       src="/assets/images/after-2.webp"
                       alt={alts.after2}
+                      width={450}
+                      height={450}
+                      className="w-full h-auto transition-transform duration-300 hover:scale-105"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="showcase-item bg-white p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)]">
+              <div className="before-after grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="before relative overflow-hidden rounded-lg">
+                  <span className="absolute top-4 left-4 z-10 bg-white px-3 py-1 rounded-full text-sm">{t.showcase.labels.before}</span>
+                  <div className="image-wrapper overflow-hidden rounded-lg">
+                    <Image 
+                      src="/assets/images/before-1.webp"
+                      alt={alts.before1}
+                      width={450}
+                      height={450}
+                      className="w-full h-auto transition-transform duration-300 hover:scale-105"
+                    />
+                  </div>
+                </div>
+                <div className="after relative overflow-hidden rounded-lg">
+                  <span className="absolute top-4 left-4 z-10 bg-white px-3 py-1 rounded-full text-sm">{t.showcase.labels.after}</span>
+                  <div className="image-wrapper overflow-hidden rounded-lg">
+                    <Image 
+                      src="/assets/images/after-1.webp"
+                      alt={alts.after1}
                       width={450}
                       height={450}
                       className="w-full h-auto transition-transform duration-300 hover:scale-105"
