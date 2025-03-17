@@ -10,6 +10,11 @@ Site de lançamento do Perfect Wedding, uma plataforma que permite noivas experi
 - [React](https://reactjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
+- [Shadcn UI](https://ui.shadcn.com/)
+- [Font Awesome](https://fontawesome.com/)
+- [Contentful CMS](https://www.contentful.com/)
+- [React Query](https://tanstack.com/query/latest)
+- [js-cookie](https://github.com/js-cookie/js-cookie)
 
 ## 📦 Estrutura do Projeto
 
@@ -21,13 +26,29 @@ perfect-wedding-next/
 │   │   │   ├── page.tsx      # Página principal
 │   │   │   ├── layout.tsx    # Layout com configurações globais
 │   │   │   ├── metadata.ts   # Metadados traduzidos
-│   │   │   └── translations.ts # Traduções do site
-│   │   └── globals.css       # Estilos globais
-│   └── components/           # Componentes React
-├── public/
-│   ├── assets/
-│   │   ├── images/          # Imagens otimizadas
-│   │   └── icons/          # Ícones e favicon
+│   │   │   ├── translations.ts # Traduções do site
+│   │   │   ├── blog/         # Rotas para o blog
+│   │   │   ├── privacy-policy/ # Página de política de privacidade
+│   │   │   └── thank-you/    # Página de agradecimento
+│   │   ├── api/              # Rotas da API
+│   │   ├── globals.css       # Estilos globais
+│   │   └── providers.tsx     # Provedores de contexto
+│   ├── components/           # Componentes React
+│   │   ├── ui/               # Componentes UI reutilizáveis (Shadcn)
+│   │   ├── blog/             # Componentes específicos do blog
+│   │   ├── Header.tsx        # Componente de cabeçalho
+│   │   ├── Footer.tsx        # Componente de rodapé
+│   │   ├── Hero.tsx          # Componente hero da página inicial
+│   │   ├── CookieConsent.tsx # Componente de consentimento de cookies
+│   │   ├── LanguageSelector.tsx # Seletor de idiomas
+│   │   └── ...               # Outros componentes
+│   ├── utils/                # Funções utilitárias
+│   ├── lib/                  # Bibliotecas e configurações
+│   └── config/               # Configurações da aplicação
+├── public/                   # Arquivos estáticos
+│   ├── assets/               # Outros ativos
+├── tools/                    # Ferramentas para desenvolvimento
+├── .venv/                    # Ambiente virtual Python para ferramentas
 └── ...
 ```
 
@@ -42,6 +63,21 @@ As URLs são estruturadas com o código do idioma:
 - `/pt` - Português
 - `/en` - Inglês
 - `/es` - Espanhol
+
+### Seleção de Idioma
+- Um seletor de idioma está disponível no menu suspenso do usuário no cabeçalho
+- A preferência de idioma do usuário é salva em um cookie (se o consentimento for dado)
+- Caso não haja preferência salva, o idioma é detectado automaticamente pelo navegador
+
+## 🍪 Sistema de Consentimento de Cookies
+
+O site implementa um sistema de consentimento de cookies completo em conformidade com as regulamentações da UE:
+
+- Banner de aviso que aparece na primeira visita
+- Opções para aceitar ou recusar cookies
+- Link para a política de privacidade
+- Persistência da escolha do usuário por 6 meses
+- Integração com o sistema de seleção de idioma (preferência só é salva com consentimento)
 
 ## 📊 Contentful Schema
 
@@ -188,11 +224,27 @@ GOOGLE_SITE_VERIFICATION=seu-código-de-verificação
 
 # URLs da API (exemplo)
 NEXT_PUBLIC_API_URL=https://perfectwedding.ai/api
+NEXT_PUBLIC_BASE_URL=https://perfectwedding.ai
 
 # Contentful
 CONTENTFUL_SPACE_ID=seu-space-id
 CONTENTFUL_ACCESS_TOKEN=seu-access-token
 CONTENTFUL_PREVIEW_ACCESS_TOKEN=seu-preview-token
+CONTENTFUL_REVALIDATE_SECRET=seu-segredo-de-revalidação
+CONTENTFUL_ENVIRONMENT_ID=seu-environment-id
+CONTENTFUL_MANAGEMENT_TOKEN=seu-token-de-gerenciamento
+
+# Netlify (apenas para deploy)
+NETLIFY_AUTH_TOKEN=seu-netlify-auth-token
+NETLIFY_SITE_ID=seu-netlify-site-id
+
+# Configurações de idioma
+NEXT_PUBLIC_DEFAULT_LOCALE=pt
+
+# Outras configurações
+NEXT_PUBLIC_SITE_URL=https://perfectwedding.ai
+COOKIE_CONSENT_VERSION=1
+NODE_ENV=development
 ```
 
 ### SEO e Metadados
@@ -210,13 +262,14 @@ O projeto inclui:
 - Carregamento assíncrono de scripts
 - Imagens otimizadas com next/image
 - Estratégia "afterInteractive" para scripts não-críticos
+- Otimização para SSR com compressão e SWC minify
 
 ## 🚀 Como Rodar
 
 1. Clone o repositório
 ```bash
 git clone https://github.com/seu-usuario/perfect-wedding.git
-cd perfect-wedding/perfect-wedding-next
+cd perfect-wedding/pre-launch-hotsite
 ```
 
 2. Instale as dependências
@@ -252,7 +305,7 @@ yarn build
 - `build`: Gera build de produção
 - `start`: Inicia o servidor de produção
 - `lint`: Executa verificação de lint
-- `type-check`: Verifica tipos TypeScript
+- `tests`: Executa os testes com Jest
 
 ## 🤝 Contribuindo
 
@@ -275,3 +328,6 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 - [Next.js Team](https://nextjs.org/)
 - [Vercel](https://vercel.com)
 - [Tailwind CSS](https://tailwindcss.com/)
+- [Netlify](https://netlify.com)
+- [Contentful](https://www.contentful.com/)
+- [Shadcn UI](https://ui.shadcn.com/)

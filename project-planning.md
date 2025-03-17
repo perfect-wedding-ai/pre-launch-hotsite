@@ -225,6 +225,43 @@ A página foi implementada seguindo o modelo de outras páginas do site, com Hea
 - Testar a página em diferentes navegadores e dispositivos para garantir responsividade
 - Validar a acessibilidade da página para usuários com necessidades especiais
 
+## Revisão e Atualização do README
+
+### Tarefa
+Revisar a estrutura do projeto e atualizar o README com as informações relevantes, garantindo que esteja em sintonia com o estado atual do projeto.
+
+### Plano de Execução
+[X] Analisar a estrutura atual do projeto (diretórios, arquivos principais)
+[X] Verificar as dependências atuais no package.json
+[X] Comparar com a documentação existente no README
+[X] Atualizar a estrutura do projeto no README
+[X] Incluir informações sobre novos componentes e funcionalidades
+[X] Atualizar informações sobre as tecnologias utilizadas
+[X] Revisar e atualizar as instruções de configuração e execução
+
+### Progresso
+Análise inicial da estrutura do projeto:
+- A estrutura real do projeto difere da documentada no README
+- Novos componentes foram adicionados (CookieConsent, LanguageSelector, etc.)
+- Existem novas dependências (Shadcn UI, Font Awesome, js-cookie, etc.)
+- As pastas estão organizadas de forma diferente da descrita no README
+
+Principais diferenças identificadas:
+- A pasta src/app contém a estrutura de roteamento do Next.js 14 com diretório [lang] para internacionalização
+- Existem novos componentes para gerenciamento de cookies e seleção de idiomas
+- A pasta src/components contém os componentes reutilizáveis da aplicação
+- O projeto utiliza o Shadcn UI para componentes de interface
+- Há integração com o Contentful para blog posts
+
+README atualizado com:
+- Estrutura atualizada do projeto
+- Novas tecnologias e dependências
+- Informações sobre o sistema de consentimento de cookies
+- Detalhes sobre o sistema de internacionalização
+- Configurações atualizadas para ambiente de desenvolvimento
+
+O README agora reflete com precisão o estado atual do projeto, facilitando a compreensão e a contribuição de novos desenvolvedores.
+
 # Project Planning
 
 ## Tarefa Atual: Atualização do Schema do Contentful para Blog Posts
