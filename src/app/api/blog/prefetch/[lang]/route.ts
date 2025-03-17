@@ -20,7 +20,7 @@ export async function GET(
 ) {
   try {
     // Garantir que o lang é um Locale válido
-    const lang = ['pt', 'en'].includes(params.lang) ? params.lang as Locale : 'pt' as Locale;
+    const lang = ['pt', 'en'].includes(params.lang) ? params.lang as Locale : 'en' as Locale;
     
     // Buscar apenas dados essenciais para o precarregamento (primeira página)
     const postsResponse = await getBlogPosts(lang, {

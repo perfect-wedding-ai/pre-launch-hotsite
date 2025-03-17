@@ -101,7 +101,7 @@ export const getClient = (preview: boolean = false) => {
         try {
           const environment = await getManagementEnvironment();
           const entries = await environment.getEntries(query);
-          const locale = query.locale || 'pt'; // Usar português como fallback
+          const locale = query.locale || 'en'; // Usar português como fallback
           
           // Transforma os itens para o formato esperado
           return {
