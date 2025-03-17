@@ -19,8 +19,8 @@ export default function PrivacyPolicy({ params }: { params: { lang: 'pt' | 'en' 
   const t = getTranslations(lang)
   const pp = t.privacyPolicy
   
-  const today = new Date()
-  const formattedDate = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`
+  // Usando a data fixa da nova política
+  const formattedDate = "2025-03-17"
   
   return (
     <>

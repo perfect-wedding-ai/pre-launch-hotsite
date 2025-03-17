@@ -186,55 +186,55 @@ export const translations = {
       privacyPolicy: "Política de Privacidade"
     },
     privacyPolicy: {
-      title: "Política de Privacidade",
+      title: "Política de Privacidade e Cookies",
       lastUpdated: "Última atualização:",
       introduction: {
         title: "Introdução",
-        content: "Bem-vindo à Política de Privacidade do Perfect Wedding. Respeitamos sua privacidade e estamos comprometidos em proteger seus dados pessoais. Esta política de privacidade informará como cuidamos dos seus dados pessoais quando você visita nosso site (independentemente de onde você o acesse) e informa sobre seus direitos de privacidade e como a lei protege você."
+        content: "Bem-vindo à Política de Privacidade e Cookies do Perfect Wedding AI. Valorizamos a sua privacidade e estamos comprometidos em proteger suas informações pessoais, garantindo transparência total em como usamos os dados coletados no nosso site."
       },
       dataWeCollect: {
-        title: "Dados que coletamos sobre você",
-        content: "Podemos coletar, usar, armazenar e transferir diferentes tipos de dados pessoais sobre você, incluindo:",
+        title: "Dados que coletamos",
+        content: "Podemos coletar os seguintes tipos de dados pessoais:",
         items: [
-          "Dados de identidade: inclui nome, sobrenome, nome de usuário ou identificador similar.",
-          "Dados de contato: inclui endereço de e-mail.",
-          "Dados técnicos: inclui endereço IP, dados de login, tipo e versão do navegador, fuso horário e localização, tipos e versões de plugins do navegador, sistema operacional e plataforma, e outras tecnologias nos dispositivos que você usa para acessar este site.",
-          "Dados de uso: inclui informações sobre como você usa nosso site e serviços."
+          "Dados de Identidade: nome completo, nome de usuário ou identificador similar.",
+          "Dados de Contato: endereço de e-mail.",
+          "Dados Técnicos: endereço IP, tipo de navegador, versão do navegador, fuso horário, localização geográfica aproximada, sistemas operacionais e dispositivos utilizados.",
+          "Dados de Uso: informações sobre como você interage com nosso site."
         ]
       },
       cookies: {
-        title: "Cookies",
-        content: "Utilizamos cookies para melhorar sua experiência em nosso site. Cookies são pequenos arquivos de texto que são armazenados no seu dispositivo quando você visita um site. Eles são amplamente utilizados para fazer com que os sites funcionem, funcionem de forma mais eficiente, e forneçam informações aos proprietários do site.",
-        purposes: "Utilizamos cookies para os seguintes propósitos:",
+        title: "O que são Cookies?",
+        content: "Cookies são pequenos arquivos armazenados no seu dispositivo que ajudam os sites a funcionar corretamente e melhorar a sua experiência online.",
+        purposes: "Como utilizamos Cookies?",
         items: [
-          "Cookies essenciais: necessários para o funcionamento básico do site, como permitir o acesso a áreas seguras.",
-          "Cookies analíticos/de desempenho: permitem-nos reconhecer e contar o número de visitantes e ver como os visitantes se movem pelo nosso site. Isso nos ajuda a melhorar o funcionamento do nosso site.",
-          "Cookies de funcionalidade: usados para reconhecê-lo quando você retorna ao nosso site. Isso nos permite personalizar nosso conteúdo para você, cumprimentá-lo pelo nome e lembrar suas preferências.",
-          "Cookies de direcionamento: registram sua visita ao nosso site, as páginas que você visitou e os links que seguiu."
+          "Cookies Necessários: essenciais para o funcionamento básico do site, como login ou segurança.",
+          "Cookies de Funcionalidade: lembram suas preferências (como idioma ou configurações) para uma experiência personalizada.",
+          "Cookies Analíticos: permitem medir e analisar o desempenho do nosso site, ajudando-nos a entender como você usa nossos serviços.",
+          "Cookies de Marketing: ajudam a personalizar os anúncios e conteúdos que você vê."
         ],
-        management: "Você pode gerenciar suas preferências de cookies através do banner de consentimento de cookies que aparece quando você visita nosso site pela primeira vez. Você pode aceitar todos os cookies, rejeitar cookies não essenciais ou rejeitar todos os cookies. Observe que a rejeição de cookies essenciais pode afetar o funcionamento adequado do site.",
-        moreInfo: "Para mais informações sobre cookies e como gerenciá-los, visite aboutcookies.org."
+        management: "Ao acessar nosso site pela primeira vez, você verá um banner de consentimento onde poderá aceitar, rejeitar ou personalizar o uso dos cookies não essenciais. Você pode alterar suas preferências de cookies a qualquer momento clicando no botão \"Preferências de Cookies\" disponível em todas as páginas do nosso site.",
+        moreInfo: "Nós não vendemos suas informações pessoais. Contudo, alguns dados coletados por cookies podem ser compartilhados com terceiros confiáveis para fins específicos, como análises de desempenho e marketing direcionado."
       },
       yourRights: {
-        title: "Seus direitos",
-        content: "Sob certas circunstâncias, você tem direitos sob as leis de proteção de dados em relação aos seus dados pessoais, incluindo o direito de:",
+        title: "Seus Direitos",
+        content: "De acordo com GDPR, LGPD e CCPA, você possui os seguintes direitos:",
         items: [
-          "Acessar e receber uma cópia dos seus dados pessoais",
-          "Corrigir seus dados pessoais",
-          "Solicitar a exclusão de seus dados pessoais",
-          "Objetar ao processamento de seus dados pessoais",
-          "Solicitar a restrição do processamento de seus dados pessoais",
-          "Transferir seus dados pessoais",
-          "Retirar o consentimento"
+          "Solicitar acesso aos seus dados pessoais.",
+          "Solicitar a correção dos seus dados pessoais.",
+          "Solicitar a exclusão dos seus dados pessoais.",
+          "Opor-se ao processamento dos seus dados pessoais.",
+          "Solicitar a limitação do processamento dos seus dados pessoais.",
+          "Solicitar a portabilidade dos seus dados pessoais.",
+          "Retirar o consentimento previamente dado."
         ]
       },
       changes: {
-        title: "Alterações a esta política de privacidade",
-        content: "Podemos atualizar nossa política de privacidade de tempos em tempos. Quaisquer alterações estarão disponíveis nesta página. É recomendável verificar periodicamente para estar ciente de quaisquer alterações, pois elas são vinculativas a você."
+        title: "Alterações à Política",
+        content: "Esta política pode ser atualizada periodicamente. Quaisquer alterações serão publicadas nesta página e recomendamos verificá-la regularmente para se manter informado sobre nossas práticas de privacidade."
       },
       contact: {
         title: "Contato",
-        content: "Se você tiver alguma dúvida sobre esta política de privacidade ou nossas práticas de privacidade, entre em contato conosco por e-mail em: privacy@perfectwedding.ai."
+        content: "Se tiver dúvidas ou preocupações sobre esta política ou sobre o tratamento dos seus dados, entre em contato pelo e-mail: privacy@perfectwedding.ai."
       }
     }
   },
@@ -425,55 +425,55 @@ export const translations = {
       privacyPolicy: "Privacy Policy"
     },
     privacyPolicy: {
-      title: "Privacy Policy",
+      title: "Privacy and Cookie Policy",
       lastUpdated: "Last updated:",
       introduction: {
         title: "Introduction",
-        content: "Welcome to Perfect Wedding's Privacy Policy. We respect your privacy and are committed to protecting your personal data. This privacy policy will inform you how we look after your personal data when you visit our website (regardless of where you visit it from) and tells you about your privacy rights and how the law protects you."
+        content: "Welcome to Perfect Wedding AI's Privacy and Cookie Policy. We value your privacy and are committed to protecting your personal information, ensuring full transparency in how we use the data collected on our website."
       },
       dataWeCollect: {
-        title: "Data we collect about you",
-        content: "We may collect, use, store and transfer different kinds of personal data about you, including:",
+        title: "Data we collect",
+        content: "We may collect the following types of personal data:",
         items: [
-          "Identity Data: includes first name, last name, username or similar identifier.",
-          "Contact Data: includes email address.",
-          "Technical Data: includes internet protocol (IP) address, your login data, browser type and version, time zone setting and location, browser plug-in types and versions, operating system and platform, and other technology on the devices you use to access this website.",
-          "Usage Data: includes information about how you use our website and services."
+          "Identity Data: full name, username or similar identifier.",
+          "Contact Data: email address.",
+          "Technical Data: IP address, browser type, browser version, time zone, approximate geographic location, operating systems and devices used.",
+          "Usage Data: information about how you interact with our website."
         ]
       },
       cookies: {
-        title: "Cookies",
-        content: "We use cookies to enhance your experience on our website. Cookies are small text files that are stored on your device when you visit a website. They are widely used in order to make websites work, work more efficiently, and provide information to the website owners.",
-        purposes: "We use cookies for the following purposes:",
+        title: "What are Cookies?",
+        content: "Cookies are small files stored on your device that help websites function correctly and improve your online experience.",
+        purposes: "How we use Cookies?",
         items: [
-          "Essential cookies: necessary for the basic function of the website, such as enabling access to secure areas.",
-          "Analytical/performance cookies: allow us to recognize and count the number of visitors and to see how visitors move around our website. This helps us to improve the way our website works.",
-          "Functionality cookies: used to recognize you when you return to our website. This enables us to personalize our content for you, greet you by name and remember your preferences.",
-          "Targeting cookies: record your visit to our website, the pages you have visited and the links you have followed."
+          "Necessary Cookies: essential for the basic functioning of the website, such as login or security.",
+          "Functionality Cookies: remember your preferences (such as language or settings) for a personalized experience.",
+          "Analytical Cookies: allow us to measure and analyze the performance of our website, helping us understand how you use our services.",
+          "Marketing Cookies: help personalize the ads and content you see."
         ],
-        management: "You can manage your cookie preferences through the cookie consent banner that appears when you first visit our website. You can choose to accept all cookies, reject non-essential cookies, or reject all cookies. Please note that rejecting essential cookies may affect the proper functioning of the website.",
-        moreInfo: "For more information about cookies and how to manage them, visit aboutcookies.org."
+        management: "When you first access our website, you will see a consent banner where you can accept, reject, or customize the use of non-essential cookies. You can change your cookie preferences at any time by clicking the \"Cookie Preferences\" button available on all pages of our website.",
+        moreInfo: "We do not sell your personal information. However, some data collected by cookies may be shared with trusted third parties for specific purposes, such as performance analytics and targeted marketing."
       },
       yourRights: {
-        title: "Your rights",
-        content: "Under certain circumstances, you have rights under data protection laws in relation to your personal data, including the right to:",
+        title: "Your Rights",
+        content: "According to GDPR, LGPD, and CCPA, you have the following rights:",
         items: [
-          "Access and receive a copy of your personal data",
-          "Correct your personal data",
-          "Request erasure of your personal data",
-          "Object to processing of your personal data",
-          "Request restriction of processing your personal data",
-          "Transfer your personal data",
-          "Withdraw consent"
+          "Request access to your personal data.",
+          "Request correction of your personal data.",
+          "Request erasure of your personal data.",
+          "Object to processing of your personal data.",
+          "Request restriction of processing your personal data.",
+          "Request the transfer of your personal data.",
+          "Withdraw consent previously given."
         ]
       },
       changes: {
-        title: "Changes to this privacy policy",
-        content: "We may update our privacy policy from time to time. Any changes will be made available on this page. You are advised to check periodically to be aware of any changes, as they are binding on you."
+        title: "Changes to this Policy",
+        content: "This policy may be updated periodically. Any changes will be posted on this page, and we recommend checking it regularly to stay informed about our privacy practices."
       },
       contact: {
-        title: "Contact us",
-        content: "If you have any questions about this privacy policy or our privacy practices, please contact us by email at: privacy@perfectwedding.ai."
+        title: "Contact",
+        content: "If you have questions or concerns about this policy or about the processing of your data, please contact us by email: privacy@perfectwedding.ai."
       }
     }
   },
@@ -664,55 +664,55 @@ export const translations = {
       privacyPolicy: "Política de Privacidad"
     },
     privacyPolicy: {
-      title: "Política de Privacidad",
+      title: "Política de Privacidad y Cookies",
       lastUpdated: "Última actualización:",
       introduction: {
         title: "Introducción",
-        content: "Bienvenido a la Política de Privacidad de Perfect Wedding. Respetamos su privacidad y estamos comprometidos a proteger sus datos personales. Esta política de privacidad le informará cómo cuidamos sus datos personales cuando visita nuestro sitio web (independientemente de dónde lo acceda) e informa sobre sus derechos de privacidad y cómo la ley lo protege."
+        content: "Bienvenido a la Política de Privacidad y Cookies de Perfect Wedding AI. Valoramos su privacidad y estamos comprometidos a proteger su información personal, garantizando total transparencia en cómo utilizamos los datos recopilados en nuestro sitio web."
       },
       dataWeCollect: {
-        title: "Datos que recopilamos sobre usted",
-        content: "Podemos recopilar, usar, almacenar y transferir diferentes tipos de datos personales sobre usted, incluyendo:",
+        title: "Datos que recopilamos",
+        content: "Podemos recopilar los siguientes tipos de datos personales:",
         items: [
-          "Datos de identidad: incluye nombre, apellido, nombre de usuario o identificador similar.",
-          "Datos de contacto: incluye dirección de correo electrónico.",
-          "Datos técnicos: incluye dirección IP, datos de inicio de sesión, tipo y versión del navegador, configuración de zona horaria y ubicación, tipos y versiones de complementos del navegador, sistema operativo y plataforma, y otras tecnologías en los dispositivos que utiliza para acceder a este sitio web.",
-          "Datos de uso: incluye información sobre cómo utiliza nuestro sitio web y servicios."
+          "Datos de Identidad: nombre completo, nombre de usuario o identificador similar.",
+          "Datos de Contacto: dirección de correo electrónico.",
+          "Datos Técnicos: dirección IP, tipo de navegador, versión del navegador, zona horaria, ubicación geográfica aproximada, sistemas operativos y dispositivos utilizados.",
+          "Datos de Uso: información sobre cómo interactúa con nuestro sitio web."
         ]
       },
       cookies: {
-        title: "Cookies",
-        content: "Utilizamos cookies para mejorar su experiencia en nuestro sitio web. Las cookies son pequeños archivos de texto que se almacenan en su dispositivo cuando visita un sitio web. Se utilizan ampliamente para hacer que los sitios web funcionen, funcionen de manera más eficiente y proporcionen información a los propietarios del sitio.",
-        purposes: "Utilizamos cookies para los siguientes propósitos:",
+        title: "¿Qué son las Cookies?",
+        content: "Las cookies son pequeños archivos almacenados en su dispositivo que ayudan a los sitios web a funcionar correctamente y mejorar su experiencia en línea.",
+        purposes: "¿Cómo utilizamos las Cookies?",
         items: [
-          "Cookies esenciales: necesarias para la función básica del sitio web, como permitir el acceso a áreas seguras.",
-          "Cookies analíticas/de rendimiento: nos permiten reconocer y contar el número de visitantes y ver cómo los visitantes se mueven por nuestro sitio web. Esto nos ayuda a mejorar el funcionamiento de nuestro sitio web.",
-          "Cookies de funcionalidad: utilizadas para reconocerlo cuando regresa a nuestro sitio web. Esto nos permite personalizar nuestro contenido para usted, saludarlo por su nombre y recordar sus preferencias.",
-          "Cookies de segmentación: registran su visita a nuestro sitio web, las páginas que ha visitado y los enlaces que ha seguido."
+          "Cookies Necesarias: esenciales para el funcionamiento básico del sitio web, como inicio de sesión o seguridad.",
+          "Cookies de Funcionalidad: recuerdan sus preferencias (como idioma o configuraciones) para una experiencia personalizada.",
+          "Cookies Analíticas: permiten medir y analizar el rendimiento de nuestro sitio web, ayudándonos a entender cómo utiliza nuestros servicios.",
+          "Cookies de Marketing: ayudan a personalizar los anuncios y contenidos que ve."
         ],
-        management: "Puede gestionar sus preferencias de cookies a través del banner de consentimiento de cookies que aparece cuando visita nuestro sitio web por primera vez. Puede optar por aceptar todas las cookies, rechazar las cookies no esenciales o rechazar todas las cookies. Tenga en cuenta que rechazar las cookies esenciales puede afectar el funcionamiento adecuado del sitio web.",
-        moreInfo: "Para más información sobre cookies y cómo gestionarlas, visite aboutcookies.org."
+        management: "Al acceder a nuestro sitio web por primera vez, verá un banner de consentimiento donde podrá aceptar, rechazar o personalizar el uso de cookies no esenciales. Puede cambiar sus preferencias de cookies en cualquier momento haciendo clic en el botón \"Preferencias de Cookies\" disponible en todas las páginas de nuestro sitio web.",
+        moreInfo: "No vendemos su información personal. Sin embargo, algunos datos recopilados por cookies pueden compartirse con terceros de confianza para fines específicos, como análisis de rendimiento y marketing dirigido."
       },
       yourRights: {
-        title: "Sus derechos",
-        content: "Bajo ciertas circunstancias, tiene derechos según las leyes de protección de datos en relación con sus datos personales, incluido el derecho a:",
+        title: "Sus Derechos",
+        content: "De acuerdo con GDPR, LGPD y CCPA, usted tiene los siguientes derechos:",
         items: [
-          "Acceder y recibir una copia de sus datos personales",
-          "Corregir sus datos personales",
-          "Solicitar la eliminación de sus datos personales",
-          "Oponerse al procesamiento de sus datos personales",
-          "Solicitar la restricción del procesamiento de sus datos personales",
-          "Transferir sus datos personales",
-          "Retirar el consentimiento"
+          "Solicitar acceso a sus datos personales.",
+          "Solicitar la corrección de sus datos personales.",
+          "Solicitar la eliminación de sus datos personales.",
+          "Oponerse al procesamiento de sus datos personales.",
+          "Solicitar la limitación del procesamiento de sus datos personales.",
+          "Solicitar la portabilidad de sus datos personales.",
+          "Retirar el consentimiento previamente otorgado."
         ]
       },
       changes: {
-        title: "Cambios a esta política de privacidad",
-        content: "Podemos actualizar nuestra política de privacidad de vez en cuando. Cualquier cambio estará disponible en esta página. Se recomienda verificar periódicamente para estar al tanto de cualquier cambio, ya que son vinculantes para usted."
+        title: "Cambios a esta Política",
+        content: "Esta política puede actualizarse periódicamente. Cualquier cambio se publicará en esta página y recomendamos verificarla regularmente para mantenerse informado sobre nuestras prácticas de privacidad."
       },
       contact: {
-        title: "Contáctenos",
-        content: "Si tiene alguna pregunta sobre esta política de privacidad o nuestras prácticas de privacidad, contáctenos por correo electrónico a: privacy@perfectwedding.ai."
+        title: "Contacto",
+        content: "Si tiene preguntas o inquietudes sobre esta política o sobre el tratamiento de sus datos, contáctenos por correo electrónico: privacy@perfectwedding.ai."
       }
     }
   }
