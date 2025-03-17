@@ -72,13 +72,15 @@ jobs:
           netlify env:set GOOGLE_ANALYTICS_ID "${{ vars.GOOGLE_ANALYTICS_ID }}"
           netlify env:set GOOGLE_SITE_VERIFICATION "${{ vars.GOOGLE_SITE_VERIFICATION }}"
           
-          # Contentful
+          # Contentful - variáveis não secretas
           netlify env:set CONTENTFUL_SPACE_ID "${{ vars.CONTENTFUL_SPACE_ID }}"
           netlify env:set CONTENTFUL_ENVIRONMENT_ID "${{ vars.CONTENTFUL_ENVIRONMENT_ID }}"
-          netlify env:set CONTENTFUL_ACCESS_TOKEN "${{ secrets.CONTENTFUL_ACCESS_TOKEN }}" --secret
-          netlify env:set CONTENTFUL_MANAGEMENT_TOKEN "${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}" --secret
-          netlify env:set CONTENTFUL_PREVIEW_ACCESS_TOKEN "${{ secrets.CONTENTFUL_PREVIEW_ACCESS_TOKEN }}" --secret
-          netlify env:set CONTENTFUL_REVALIDATE_SECRET "${{ secrets.CONTENTFUL_REVALIDATE_SECRET }}" --secret
+          
+          # Contentful - variáveis secretas (com contexto production obrigatório)
+          netlify env:set CONTENTFUL_ACCESS_TOKEN "${{ secrets.CONTENTFUL_ACCESS_TOKEN }}" --secret --context production
+          netlify env:set CONTENTFUL_MANAGEMENT_TOKEN "${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}" --secret --context production
+          netlify env:set CONTENTFUL_PREVIEW_ACCESS_TOKEN "${{ secrets.CONTENTFUL_PREVIEW_ACCESS_TOKEN }}" --secret --context production
+          netlify env:set CONTENTFUL_REVALIDATE_SECRET "${{ secrets.CONTENTFUL_REVALIDATE_SECRET }}" --secret --context production
           
           echo "Variáveis de ambiente configuradas com sucesso no Netlify"
         env:
