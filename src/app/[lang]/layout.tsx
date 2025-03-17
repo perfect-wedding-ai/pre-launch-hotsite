@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: { params: { lang: ValidLang }
       url: 'https://perfectwedding.ai',
       images: [
         {
-          url: 'https://perfectwedding.ai/images/og-image.jpg',
+          url: '/assets/images/og-image.jpg',
           width: 1200,
           height: 630,
           alt: 'Perfect Wedding | AI Virtual Dress Try-On',
@@ -98,7 +98,7 @@ export async function generateMetadata({ params }: { params: { lang: ValidLang }
       card: 'summary_large_image',
       title: metadata.ogTitle || title,
       description: metadata.ogDescription || description,
-      images: ['https://perfectwedding.ai/images/og-image.jpg'],
+      images: ['/images/og-image.jpg'],
     },
   }
 }
