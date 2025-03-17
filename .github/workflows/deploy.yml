@@ -57,18 +57,23 @@ jobs:
       - name: Install Netlify CLI
         run: npm install -g netlify-cli
 
-      - name: Configurar variáveis de ambiente
+      - name: Configurar variáveis de ambiente em todos os locais necessários
         run: |
-          echo "Criando arquivo .env.production..."
+          echo "Criando arquivo .env.production e copiando para outros locais..."
+          
+          # Criar o arquivo principal
           cat > .env.production << EOF
+          # Variáveis públicas
           NEXT_PUBLIC_BASE_URL=${{ vars.NEXT_PUBLIC_BASE_URL }}
           NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL }}
           NEXT_PUBLIC_DEFAULT_LOCALE=${{ vars.NEXT_PUBLIC_DEFAULT_LOCALE }}
           NEXT_TELEMETRY_DISABLED=${{ vars.NEXT_TELEMETRY_DISABLED }}
           
+          # Google Analytics
           GOOGLE_ANALYTICS_ID=${{ vars.GOOGLE_ANALYTICS_ID }}
           GOOGLE_SITE_VERIFICATION=${{ vars.GOOGLE_SITE_VERIFICATION }}
           
+          # Contentful
           CONTENTFUL_SPACE_ID=${{ vars.CONTENTFUL_SPACE_ID }}
           CONTENTFUL_ENVIRONMENT_ID=${{ vars.CONTENTFUL_ENVIRONMENT_ID }}
           CONTENTFUL_ACCESS_TOKEN=${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
@@ -77,17 +82,23 @@ jobs:
           CONTENTFUL_REVALIDATE_SECRET=${{ secrets.CONTENTFUL_REVALIDATE_SECRET }}
           EOF
           
-          # Copiando para outros locais
+          # Copiar para os diretórios padrão
           cp .env.production .env
           cp .env.production .env.local
           
-          # Criando cópias na pasta public
+          # Copiar para o diretório public
           mkdir -p public
           cp .env.production public/.env
           cp .env.production public/.env.production
           cp .env.production public/.env.local
           
-          echo "Arquivos de ambiente criados em todos os locais necessários"
+          # Copiar para o diretório interno do Netlify
+          mkdir -p .netlify/functions-internal/___netlify-server-handler/
+          cp .env.production .netlify/functions-internal/___netlify-server-handler/.env
+          cp .env.production .netlify/functions-internal/___netlify-server-handler/.env.production
+          cp .env.production .netlify/functions-internal/___netlify-server-handler/.env.local
+          
+          echo "Arquivos de ambiente copiados para todos os locais necessários"
 
       - name: Create netlify.toml for env files
         run: |
@@ -102,7 +113,6 @@ jobs:
           [[plugins]]
             package = "@netlify/plugin-nextjs"
           
-          
           [build.environment]
             NODE_VERSION = "20"
             NPM_VERSION = "10"
@@ -116,7 +126,6 @@ jobs:
               X-XSS-Protection = "1; mode=block"
               X-Content-Type-Options = "nosniff"
               Referrer-Policy = "strict-origin-when-cross-origin"
-
           EOF
           echo "netlify.toml created with environment file inclusions"
 
