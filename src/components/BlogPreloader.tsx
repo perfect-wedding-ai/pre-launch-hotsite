@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 // Função para buscar os posts do blog
 const fetchBlogPosts = async (lang: string) => {
   try {
-    const response = await fetch(`/api/blog/prefetch?lang=${lang}`, {
+    const response = await fetch(`/api/blog/prefetch/${lang}`, {
       next: { revalidate: 60 } // Revalidar a cada minuto
     });
     

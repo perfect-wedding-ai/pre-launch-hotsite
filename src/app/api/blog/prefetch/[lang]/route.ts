@@ -2,13 +2,25 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getBlogPosts } from '@/lib/contentful/client';
 import { Locale } from '@/config/i18n.config';
 
-export async function GET(request: NextRequest) {
+// Definir os parâmetros estáticos para pré-renderização
+export function generateStaticParams() {
+  return [
+    { lang: 'pt' },
+    { lang: 'en' }
+    // Removido 'es' pois não é suportado pelo Contentful
+  ];
+}
+
+// Definir configuração para revalidação
+export const revalidate = 3600; // Revalidar a cada hora
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { lang: string } }
+) {
   try {
-    const searchParams = request.nextUrl.searchParams;
-    const langParam = searchParams.get('lang') || 'pt';
-    
     // Garantir que o lang é um Locale válido
-    const lang = ['pt', 'en', 'es'].includes(langParam) ? langParam as Locale : 'pt' as Locale;
+    const lang = ['pt', 'en'].includes(params.lang) ? params.lang as Locale : 'pt' as Locale;
     
     // Buscar apenas dados essenciais para o precarregamento (primeira página)
     const postsResponse = await getBlogPosts(lang, {
