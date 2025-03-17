@@ -51,10 +51,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
-      - name: Generate .env.production file
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
+      - name: Generate .env.production file in public directory
         run: |
           echo "Generating .env.production file..."
-          cat > .env.production << EOF
+          mkdir -p public
+          cat > public/.env.production << EOF
           NEXT_PUBLIC_BASE_URL=${{ vars.NEXT_PUBLIC_BASE_URL }}
           NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL }}
           NEXT_PUBLIC_DEFAULT_LOCALE=${{ vars.NEXT_PUBLIC_DEFAULT_LOCALE }}
@@ -70,13 +77,7 @@ jobs:
           CONTENTFUL_PREVIEW_ACCESS_TOKEN=${{ secrets.CONTENTFUL_PREVIEW_ACCESS_TOKEN }}
           CONTENTFUL_REVALIDATE_SECRET=${{ secrets.CONTENTFUL_REVALIDATE_SECRET }}
           EOF
-          echo ".env.production file created successfully"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Netlify CLI
-        run: npm install -g netlify-cli
+          echo ".env.production file created successfully in public directory"
 
       - name: Deploy to Netlify
         run: |
