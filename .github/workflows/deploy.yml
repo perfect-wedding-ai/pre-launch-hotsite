@@ -57,58 +57,39 @@ jobs:
       - name: Install Netlify CLI
         run: npm install -g netlify-cli
 
-      - name: Configurar variáveis de ambiente em todos os locais necessários
+      - name: Configure Netlify env vars
         run: |
-          echo "Criando arquivo .env.production e copiando para outros locais..."
+          echo "Configurando variáveis de ambiente no Netlify..."
+          netlify link --id ${{ secrets.NETLIFY_SITE_ID }}
           
-          # Criar o arquivo principal
-          cat > .env.production << EOF
           # Variáveis públicas
-          NEXT_PUBLIC_BASE_URL=${{ vars.NEXT_PUBLIC_BASE_URL }}
-          NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL }}
-          NEXT_PUBLIC_DEFAULT_LOCALE=${{ vars.NEXT_PUBLIC_DEFAULT_LOCALE }}
-          NEXT_TELEMETRY_DISABLED=${{ vars.NEXT_TELEMETRY_DISABLED }}
+          netlify env:set NEXT_PUBLIC_BASE_URL "${{ vars.NEXT_PUBLIC_BASE_URL }}"
+          netlify env:set NEXT_PUBLIC_API_URL "${{ vars.NEXT_PUBLIC_API_URL }}"
+          netlify env:set NEXT_PUBLIC_DEFAULT_LOCALE "${{ vars.NEXT_PUBLIC_DEFAULT_LOCALE }}"
+          netlify env:set NEXT_TELEMETRY_DISABLED "${{ vars.NEXT_TELEMETRY_DISABLED }}"
           
           # Google Analytics
-          GOOGLE_ANALYTICS_ID=${{ vars.GOOGLE_ANALYTICS_ID }}
-          GOOGLE_SITE_VERIFICATION=${{ vars.GOOGLE_SITE_VERIFICATION }}
+          netlify env:set GOOGLE_ANALYTICS_ID "${{ vars.GOOGLE_ANALYTICS_ID }}"
+          netlify env:set GOOGLE_SITE_VERIFICATION "${{ vars.GOOGLE_SITE_VERIFICATION }}"
           
           # Contentful
-          CONTENTFUL_SPACE_ID=${{ vars.CONTENTFUL_SPACE_ID }}
-          CONTENTFUL_ENVIRONMENT_ID=${{ vars.CONTENTFUL_ENVIRONMENT_ID }}
-          CONTENTFUL_ACCESS_TOKEN=${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
-          CONTENTFUL_MANAGEMENT_TOKEN=${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
-          CONTENTFUL_PREVIEW_ACCESS_TOKEN=${{ secrets.CONTENTFUL_PREVIEW_ACCESS_TOKEN }}
-          CONTENTFUL_REVALIDATE_SECRET=${{ secrets.CONTENTFUL_REVALIDATE_SECRET }}
-          EOF
+          netlify env:set CONTENTFUL_SPACE_ID "${{ vars.CONTENTFUL_SPACE_ID }}"
+          netlify env:set CONTENTFUL_ENVIRONMENT_ID "${{ vars.CONTENTFUL_ENVIRONMENT_ID }}"
+          netlify env:set CONTENTFUL_ACCESS_TOKEN "${{ secrets.CONTENTFUL_ACCESS_TOKEN }}" --secret
+          netlify env:set CONTENTFUL_MANAGEMENT_TOKEN "${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}" --secret
+          netlify env:set CONTENTFUL_PREVIEW_ACCESS_TOKEN "${{ secrets.CONTENTFUL_PREVIEW_ACCESS_TOKEN }}" --secret
+          netlify env:set CONTENTFUL_REVALIDATE_SECRET "${{ secrets.CONTENTFUL_REVALIDATE_SECRET }}" --secret
           
-          # Copiar para os diretórios padrão
-          cp .env.production .env
-          cp .env.production .env.local
-          
-          # Copiar para o diretório public
-          mkdir -p public
-          cp .env.production public/.env
-          cp .env.production public/.env.production
-          cp .env.production public/.env.local
-          
-          # Copiar para o diretório interno do Netlify
-          mkdir -p .netlify/functions-internal/___netlify-server-handler/
-          cp .env.production .netlify/functions-internal/___netlify-server-handler/.env
-          cp .env.production .netlify/functions-internal/___netlify-server-handler/.env.production
-          cp .env.production .netlify/functions-internal/___netlify-server-handler/.env.local
-          
-          echo "Arquivos de ambiente copiados para todos os locais necessários"
+          echo "Variáveis de ambiente configuradas com sucesso no Netlify"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
 
-      - name: Create netlify.toml for env files
+      - name: Create simple netlify.toml
         run: |
           cat > netlify.toml << EOF
           [build]
             command = "npm run build"
             publish = ".next"
-          
-          [functions]
-            included_files = [".env", ".env.production", ".env.local", "public/.env", "public/.env.production", "public/.env.local"]
           
           [[plugins]]
             package = "@netlify/plugin-nextjs"
@@ -127,27 +108,12 @@ jobs:
               X-Content-Type-Options = "nosniff"
               Referrer-Policy = "strict-origin-when-cross-origin"
           EOF
-          echo "netlify.toml created with environment file inclusions"
+          echo "netlify.toml criado"
 
       - name: Deploy to Netlify
         run: |
           echo "Starting Netlify deployment..."
           netlify deploy --build --prod --message "Deploy from GitHub Actions"
         env:
-          NEXT_PUBLIC_BASE_URL: ${{ vars.NEXT_PUBLIC_BASE_URL }}
-          NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL }}
-          NEXT_PUBLIC_DEFAULT_LOCALE: ${{ vars.NEXT_PUBLIC_DEFAULT_LOCALE }}
-          NEXT_TELEMETRY_DISABLED: ${{ vars.NEXT_TELEMETRY_DISABLED }}
-
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-
-          GOOGLE_ANALYTICS_ID: ${{ vars.GOOGLE_ANALYTICS_ID }}
-          GOOGLE_SITE_VERIFICATION: ${{ vars.GOOGLE_SITE_VERIFICATION }}
-
-          CONTENTFUL_SPACE_ID: ${{ vars.CONTENTFUL_SPACE_ID }}
-          CONTENTFUL_ENVIRONMENT_ID: ${{ vars.CONTENTFUL_ENVIRONMENT_ID }}
-          CONTENTFUL_ACCESS_TOKEN: ${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
-          CONTENTFUL_MANAGEMENT_TOKEN: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
-          CONTENTFUL_PREVIEW_ACCESS_TOKEN: ${{ secrets.CONTENTFUL_PREVIEW_ACCESS_TOKEN }}
-          CONTENTFUL_REVALIDATE_SECRET: ${{ secrets.CONTENTFUL_REVALIDATE_SECRET }}
