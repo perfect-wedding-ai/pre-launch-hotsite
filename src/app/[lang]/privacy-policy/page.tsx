@@ -28,7 +28,7 @@ export default function PrivacyPolicy({ params }: { params: { lang: 'pt' | 'en' 
       
       <main className="pt-24 pb-16">
         <div className="container mx-auto max-w-4xl px-4">
-          <div className="bg-white rounded-lg shadow-sm p-6 md:p-8">
+          <div className="bg-white rounded-lg shadow-sm p-6 md:p-8 privacy-policy">
             <h1 className="text-3xl md:text-4xl font-playfair font-medium text-gray-800 mb-4">{pp.title}</h1>
             <p className="text-sm text-gray-500 mb-8">{pp.lastUpdated} {formattedDate}</p>
 
