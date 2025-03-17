@@ -57,11 +57,10 @@ jobs:
       - name: Install Netlify CLI
         run: npm install -g netlify-cli
 
-      - name: Generate .env.production file in public directory
+      - name: Configurar variáveis de ambiente
         run: |
-          echo "Generating .env.production file..."
-          mkdir -p public
-          cat > public/.env.production << EOF
+          echo "Criando arquivo .env.production..."
+          cat > .env.production << EOF
           NEXT_PUBLIC_BASE_URL=${{ vars.NEXT_PUBLIC_BASE_URL }}
           NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL }}
           NEXT_PUBLIC_DEFAULT_LOCALE=${{ vars.NEXT_PUBLIC_DEFAULT_LOCALE }}
@@ -77,7 +76,49 @@ jobs:
           CONTENTFUL_PREVIEW_ACCESS_TOKEN=${{ secrets.CONTENTFUL_PREVIEW_ACCESS_TOKEN }}
           CONTENTFUL_REVALIDATE_SECRET=${{ secrets.CONTENTFUL_REVALIDATE_SECRET }}
           EOF
-          echo ".env.production file created successfully in public directory"
+          
+          # Copiando para outros locais
+          cp .env.production .env
+          cp .env.production .env.local
+          
+          # Criando cópias na pasta public
+          mkdir -p public
+          cp .env.production public/.env
+          cp .env.production public/.env.production
+          cp .env.production public/.env.local
+          
+          echo "Arquivos de ambiente criados em todos os locais necessários"
+
+      - name: Create netlify.toml for env files
+        run: |
+          cat > netlify.toml << EOF
+          [build]
+            command = "npm run build"
+            publish = ".next"
+          
+          [functions]
+            included_files = [".env", ".env.production", ".env.local", "public/.env", "public/.env.production", "public/.env.local"]
+          
+          [[plugins]]
+            package = "@netlify/plugin-nextjs"
+          
+          
+          [build.environment]
+            NODE_VERSION = "20"
+            NPM_VERSION = "10"
+            NEXT_TELEMETRY_DISABLED = "1"
+            NODE_ENV = "production"
+          
+          [[headers]]
+            for = "/*"
+            [headers.values]
+              X-Frame-Options = "DENY"
+              X-XSS-Protection = "1; mode=block"
+              X-Content-Type-Options = "nosniff"
+              Referrer-Policy = "strict-origin-when-cross-origin"
+
+          EOF
+          echo "netlify.toml created with environment file inclusions"
 
       - name: Deploy to Netlify
         run: |
