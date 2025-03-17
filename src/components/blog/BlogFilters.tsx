@@ -59,11 +59,6 @@ export default function BlogFilters({ categories, tags, locale, activeCategory, 
   const clearFiltersUrl = `/${baseLocale}/blog`;
   const hasActiveFilters = activeCategory || activeTag;
   
-  // Log para debug apenas no cliente
-  if (isClient) {
-    console.log("BlogFilters rendering with:", { activeCategory, activeTag });
-  }
-  
   // Handler para navegação client-side com feedback
   const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (isClient && router) {
@@ -82,10 +77,9 @@ export default function BlogFilters({ categories, tags, locale, activeCategory, 
         router.push(href);
         clearTimeout(navigationTimeout);
       } catch (error) {
-        console.error("Navigation error:", error);
+        // Fallback para navegação tradicional se houver erro
         clearTimeout(navigationTimeout);
         setIsLoading(false);
-        // Fallback para navegação tradicional se houver erro
         window.location.href = href;
       }
     }

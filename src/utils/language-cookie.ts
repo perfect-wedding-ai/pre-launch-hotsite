@@ -22,9 +22,8 @@ export function saveLanguagePreference(locale: Locale): void {
     expirationDate.setFullYear(expirationDate.getFullYear() + 1)
     
     document.cookie = `${LANGUAGE_COOKIE_KEY}=${locale};expires=${expirationDate.toUTCString()};path=/;SameSite=Lax`
-    console.log(`Preferência de idioma salva em cookie: ${locale}`)
   } else {
-    console.log('Cookies não aceitos, preferência de idioma não foi salva')
+    // Cookies não aceitos, preferência não será salva
   }
 }
 

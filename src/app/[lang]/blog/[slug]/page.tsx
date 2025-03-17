@@ -414,29 +414,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const baseLocale = getBaseLocale(lang);
   
   const { title, body, image, tags = [], publishDate, lastUpdateDate, category } = post.fields;
-  console.log("Post data:", { title, hasImage: !!image, imageType: image ? typeof image : 'undefined' });
-  
-  // Log detalhado da categoria para diagnóstico
-  console.log("Category details:", {
-    hasCategory: !!category,
-    categoryType: category ? typeof category : 'undefined',
-    categoryId: category?.sys?.id,
-    categoryName: category?.fields?.name,
-    categorySlug: category?.fields?.slug
-  });
-  
-  // Se disponível no console, imprimir apenas os campos mais importantes para não poluir
-  if (image) {
-    const hasSys = typeof image === 'object' && 'sys' in image && typeof image.sys === 'object';
-    const hasFields = typeof image === 'object' && 'fields' in image;
-    
-    console.log("Image estrutura:", {
-      hasFields,
-      hasSys,
-      fieldsKeys: hasFields ? Object.keys(image.fields) : [],
-      sysKeys: hasSys ? Object.keys((image as any).sys) : []
-    });
-  }
   
   // Adicionar configurações do Contentful para acesso a imagens
   const spaceId = process.env.CONTENTFUL_SPACE_ID || '';
@@ -449,13 +426,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const imageAny = image as any;
   const assetId = imageAny?.sys?.id;
   
-  // Log para debug
-  console.log("Image object:", JSON.stringify(image, null, 2));
-  console.log("Asset ID:", assetId);
-  console.log("Space ID:", spaceId);
-  
   const imageUrl = getImageUrl(image);
-  console.log("Image URL extracted:", imageUrl);
   
   // Formatar datas
   const dateLocale = baseLocale === 'pt' ? ptBR : enUS;

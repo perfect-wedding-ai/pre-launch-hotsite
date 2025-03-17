@@ -43,10 +43,6 @@ async function getManagementEnvironment() {
 export const getContentfulLocales = async () => {
   try {
     const locales = await contentfulClient.getLocales();
-    console.log('Locales configurados no Contentful:');
-    locales.items.forEach(locale => {
-      console.log(`- ${locale.name} (${locale.code}): Padrão: ${locale.default}, Fallback: ${locale.fallbackCode || 'Nenhum'}`);
-    });
     return locales;
   } catch (error) {
     console.error('Erro ao buscar locales:', error);
@@ -128,8 +124,6 @@ export const getBlogPosts = async (locale: Locale, options: { limit?: number; sk
   const { limit = 10, skip = 0, tag, category } = options;
 
   try {
-    console.log(`Buscando posts no Contentful. Locale: ${locale}, Tipo: ${typeof locale}, Include: 2`);
-    
     // Configurar parâmetros da consulta
     const queryParams = {
       content_type: 'blogPost',
@@ -142,38 +136,12 @@ export const getBlogPosts = async (locale: Locale, options: { limit?: number; sk
       ...(category && { 'fields.category.sys.id': category }),
     };
     
-    console.log(`Opções de consulta:`, JSON.stringify(queryParams, null, 2));
-    
     const response = await getClient().getEntries(queryParams);
     
-    console.log(`Resposta do Contentful: encontrados ${response.items.length} posts para o locale '${locale}'`);
-    console.log(`Total de posts disponíveis: ${response.total}`);
-    
-    // Verificar dados básicos de cada post retornado
-    if (response.items.length > 0) {
-      console.log('Informações básicas dos posts:');
-      response.items.slice(0, 3).forEach((item: any, index: number) => {
-        console.log(`Post ${index + 1} - Título: ${item.fields.title || 'Sem título'}`);
-      });
-    } else {
-      console.log('Nenhum post retornado do Contentful');
-    }
-
     // Apenas garantir que os posts tenham pelo menos um título
     let filteredItems = response.items.filter((item: any) => {
       return item.fields.title && typeof item.fields.title === 'string';
     });
-    
-    console.log(`Posts filtrados (com título): ${filteredItems.length}`);
-    
-    // Verificar se as imagens estão presentes
-    if (filteredItems.length > 0) {
-      filteredItems.forEach((item: any, index: number) => {
-        if (item.fields.image) {
-          console.log(`Post ${index + 1} - ${item.fields.title} - Tem imagem`);
-        }
-      });
-    }
 
     return {
       ...response,
@@ -196,19 +164,11 @@ export const getBlogPostBySlug = async (slug: string, locale: Locale, preview: b
     };
     
     const response = await getClient(preview).getEntries(queryParams);
-    console.log(`Buscando post com slug '${slug}' para locale '${locale}'`);
 
     if (response.items.length === 0) {
-      console.log(`Post com slug '${slug}' não encontrado`);
       return null;
     }
     
-    // Verificar se o post tem pelo menos um título
-    const post = response.items[0];
-    if (!post.fields.title) {
-      console.log(`Post com slug '${slug}' não tem título, mas será exibido mesmo assim`);
-    }
-
     return response.items[0] as unknown as BlogPost;
   } catch (error) {
     console.error(`Error fetching blog post with slug ${slug}:`, error);
@@ -229,14 +189,11 @@ export const getRelatedPosts = async (postId: string, tags: string[], locale: Lo
     };
     
     const response = await getClient().getEntries(queryParams);
-    console.log(`Encontrados ${response.items.length} posts relacionados para o locale '${locale}'`);
 
     // Filtrar apenas para garantir que os posts tenham título
     const filteredItems = response.items.filter((item: any) => {
       return item.fields.title && typeof item.fields.title === 'string';
     });
-    
-    console.log(`Retornando ${filteredItems.length} posts relacionados após filtragem`);
 
     return filteredItems as unknown as BlogPost[];
   } catch (error) {
@@ -247,8 +204,6 @@ export const getRelatedPosts = async (postId: string, tags: string[], locale: Lo
 
 export const getCategories = async (locale: Locale): Promise<CategoryCollection> => {
   try {
-    console.log(`Buscando categorias no Contentful. Locale: ${locale}`);
-    
     const queryParams = {
       content_type: 'category',
       locale,
@@ -257,19 +212,10 @@ export const getCategories = async (locale: Locale): Promise<CategoryCollection>
     };
     
     const response = await getClient().getEntries(queryParams);
-    console.log(`Resposta do Contentful: encontradas ${response.items.length} categorias para o locale '${locale}'`);
 
     // Quando solicitado em português, não filtramos - simplesmente usamos o que o Contentful retornar
     // O Contentful já faz o fallback automaticamente para inglês se não houver tradução
     let filteredItems = response.items;
-    
-    console.log(`Retornando ${filteredItems.length} categorias para exibição`);
-    if (filteredItems.length > 0) {
-      console.log('Primeiras 3 categorias:');
-      filteredItems.slice(0, 3).forEach((item: any, index: number) => {
-        console.log(`Categoria ${index + 1}: ${item.fields.name}`);
-      });
-    }
 
     return {
       ...response,

@@ -13,9 +13,6 @@ export default function MarkdownRenderer({ content, locale }: MarkdownRendererPr
     return <div className="text-gray-500">Conteúdo indisponível</div>;
   }
 
-  // Para depuração
-  console.log('MarkdownRenderer recebeu:', content);
-  
   // Função para processar formatação de texto usando nosso novo processador
   const processTextFormatting = (text: string): (string | JSX.Element)[] => {
     const processedHTML = formatMarkdown(text);
@@ -24,8 +21,6 @@ export default function MarkdownRenderer({ content, locale }: MarkdownRendererPr
 
   // Função para converter markdown para elementos HTML
   const renderMarkdown = (markdown: string) => {
-    console.log('Processando markdown:', markdown);
-    
     // Função auxiliar para verificar se uma linha é um item de lista não ordenada
     const isUnorderedListItem = (line: string) => {
       const trimmedLine = line.trim();
@@ -55,13 +50,11 @@ export default function MarkdownRenderer({ content, locale }: MarkdownRendererPr
       if (line === '') {
         // Finaliza listas abertas
         if (inUnorderedList) {
-          console.log('Fechando lista não ordenada:', listItems);
           elements.push(<ul key={`ul-${i}`} className="list-disc pl-10 mb-6 space-y-2">{listItems}</ul>);
           listItems = [];
           inUnorderedList = false;
         }
         if (inOrderedList) {
-          console.log('Fechando lista ordenada:', listItems);
           elements.push(<ol key={`ol-${i}`} className="list-decimal pl-10 mb-6 space-y-2">{listItems}</ol>);
           listItems = [];
           inOrderedList = false;
@@ -182,8 +175,6 @@ export default function MarkdownRenderer({ content, locale }: MarkdownRendererPr
       } 
       // Listas não ordenadas (- item ou * item)
       else if (isUnorderedListItem(line)) {
-        console.log('Detectado item de lista não ordenada:', line);
-        
         // Se não estávamos em lista não ordenada, finaliza lista ordenada se estava aberta
         if (!inUnorderedList) {
           if (inOrderedList) {
@@ -205,8 +196,6 @@ export default function MarkdownRenderer({ content, locale }: MarkdownRendererPr
       }
       // Listas ordenadas (1. item)
       else if (isOrderedListItem(line)) {
-        console.log('Detectado item de lista ordenada:', line);
-        
         // Se não estávamos em lista ordenada, finaliza lista não ordenada se estava aberta
         if (!inOrderedList) {
           if (inUnorderedList) {

@@ -32,38 +32,29 @@ const localeMap: { [key: string]: Locale } = {
 }
 
 export function middleware(request: NextRequest) {
-  console.log('Middleware executando para:', request.nextUrl.pathname);
-  
   // Se já estiver em uma rota com idioma, não faz nada
   if (supportedLocales.some(locale => request.nextUrl.pathname.startsWith(`/${locale}`))) {
-    console.log('Já está em uma rota com idioma, continuando...');
     return NextResponse.next()
   }
 
   // Verifica se o usuário aceitou cookies
   const cookieConsent = request.cookies.get(COOKIE_CONSENT_KEY)?.value
   const canUseCookies = cookieConsent === 'accepted'
-  console.log('Consentimento de cookies:', canUseCookies ? 'Aceito' : 'Não aceito ou não definido');
 
   // Verifica se existe um cookie de preferência de idioma e se pode usá-lo
   let preferredLanguage = undefined;
   if (canUseCookies) {
     preferredLanguage = request.cookies.get(LANGUAGE_COOKIE_KEY)?.value as Locale | undefined
-    console.log('Cookie de idioma encontrado:', preferredLanguage);
-  } else {
-    console.log('Cookies não aceitos, ignorando cookie de idioma');
   }
 
   // Se encontrar o cookie, o usuário aceitou cookies e o idioma for suportado, usa essa preferência
   if (preferredLanguage && canUseCookies && supportedLocales.includes(preferredLanguage)) {
     const redirectUrl = new URL(`/${preferredLanguage}${request.nextUrl.pathname}`, request.url);
-    console.log('Redirecionando para preferência do cookie:', redirectUrl.href);
     return NextResponse.redirect(redirectUrl);
   }
 
   // Se não tiver cookie ou não puder usá-lo, usa o idioma do navegador
   const acceptLanguage = request.headers.get('accept-language') || ''
-  console.log('Accept-Language do navegador:', acceptLanguage);
   
   // Processa cada idioma do accept-language
   const browserLocales = acceptLanguage
@@ -73,8 +64,6 @@ export function middleware(request: NextRequest) {
       const [languageCode] = lang.split(';')
       return languageCode.trim().toLowerCase()
     })
-  
-  console.log('Idiomas do navegador processados:', browserLocales);
 
   // Tenta encontrar uma correspondência para cada variação de idioma
   let targetLocale: Locale = defaultLocale
@@ -82,7 +71,6 @@ export function middleware(request: NextRequest) {
     // Tenta o código completo (ex: en-us)
     if (locale in localeMap) {
       targetLocale = localeMap[locale]
-      console.log('Correspondência encontrada para código completo:', locale, '->', targetLocale);
       break
     }
     
@@ -90,7 +78,6 @@ export function middleware(request: NextRequest) {
     const mainLang = getBaseLocale(locale)
     if (mainLang in localeMap) {
       targetLocale = localeMap[mainLang as keyof typeof localeMap]
-      console.log('Correspondência encontrada para idioma principal:', mainLang, '->', targetLocale);
       break
     }
   }
@@ -100,7 +87,6 @@ export function middleware(request: NextRequest) {
   
   // Redireciona para o idioma encontrado ou para o padrão
   const redirectUrl = new URL(`/${targetLocale}${pathname}`, request.url);
-  console.log('Redirecionando para:', redirectUrl.href);
   return NextResponse.redirect(redirectUrl);
 }
 

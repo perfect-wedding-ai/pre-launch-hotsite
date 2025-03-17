@@ -98,41 +98,24 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
   const { lang } = params;
   const { page = '1', tag, category, category_name } = searchParams;
   
-  // Adicionar logs para diagnóstico
-  console.log("Search params:", { page, tag, category, category_name });
-  
   // Verificar locales configurados no Contentful
   await getContentfulLocales();
   
   // Buscar todas as categorias
   const categoriesResponse = await getCategories(lang);
-  console.log("Categories fetched:", categoriesResponse.items.length);
-  
-  // Listar todas as categorias para diagnóstico
-  console.log("All available categories:", categoriesResponse.items.map(cat => ({
-    id: cat.sys.id,
-    name: cat.fields.name,
-    slug: cat.fields.slug
-  })));
   
   // Se temos um nome de categoria, tentar encontrar o ID correspondente
   let categoryId = category;
   
   if (category_name && !category) {
-    console.log("Looking for category by name:", category_name);
-    
     // Cache local para ID de categoria
     const categoryNameLowerCase = category_name.toLowerCase().trim();
     
     // Verificar se há algum caractere especial ou formato inválido no nome da categoria
     const hasSpecialChars = /[^\w\s-]/.test(categoryNameLowerCase);
-    if (hasSpecialChars) {
-      console.warn("Category name contains special characters, which may cause issues:", category_name);
-    }
     
     // Busca mais flexível (case insensitive e ignorando espaços extras)
     const searchName = categoryNameLowerCase;
-    console.log("Normalized search name:", searchName);
     
     const foundCategory = categoriesResponse.items.find(
       cat => {
@@ -142,20 +125,13 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
         const nameMatch = catName === searchName;
         const slugMatch = catSlug === searchName;
         
-        console.log(`Comparing category: "${catName}" (${cat.sys.id}) with search: "${searchName}" - Match: ${nameMatch || slugMatch}`);
-        
         return nameMatch || slugMatch;
       }
     );
     
     if (foundCategory) {
-      console.log("Found category by name:", {
-        name: foundCategory.fields.name,
-        id: foundCategory.sys.id
-      });
       categoryId = foundCategory.sys.id;
     } else {
-      console.log("Category not found by name:", category_name);
       // Se não encontrou pelo nome exato, tentar uma busca parcial
       const similarCategory = categoriesResponse.items.find(
         cat => {
@@ -166,10 +142,6 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
       );
       
       if (similarCategory) {
-        console.log("Found similar category:", {
-          name: similarCategory.fields.name,
-          id: similarCategory.sys.id
-        });
         categoryId = similarCategory.sys.id;
       }
     }
@@ -191,16 +163,9 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
     
     // Aplicar timeout para evitar espera infinita
     postsResponse = await fetchWithTimeout(postsPromise, 10000);
-    
-    console.log("Posts fetched:", {
-      count: postsResponse?.items?.length || 0,
-      total: postsResponse?.total || 0,
-      filter: { tag, categoryId }
-    });
   } catch (error) {
     console.error("Error fetching posts:", error);
     // Fallback: buscar posts sem filtro
-    console.log("Fallback: fetching posts without filter");
     try {
       const fallbackPromise = getBlogPosts(lang, {
         limit: postsPerPage,
