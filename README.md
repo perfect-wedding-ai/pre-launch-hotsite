@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/37be8ce8-f4d0-471a-a1b7-9c62eb22239b/deploy-status?branch=main)](https://app.netlify.com/sites/perfectwedding/deploys)
+
 # Perfect Wedding - Site de Lançamento
 
 Site de lançamento do Perfect Wedding, uma plataforma que permite noivas experimentarem vestidos de noiva virtualmente usando inteligência artificial.
