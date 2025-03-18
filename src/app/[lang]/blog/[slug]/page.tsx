@@ -557,23 +557,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 )}
               </div>
               
-              <div className="flex flex-wrap gap-2 mb-8 w-full">
-                {Array.isArray(tags) && tags.length > 0 && (
-                  <>
-                    <span className="text-gray-600 text-sm">{t.blog.tags}:</span>
-                    {tags.map((tag) => (
-                      <a
-                        key={tag}
-                        href={`/${lang}/blog?tag=${encodeURIComponent(tag)}`}
-                        className="text-xs font-semibold bg-pink-100 text-pink-800 px-3 py-1 rounded-full hover:bg-pink-200 transition-colors"
-                      >
-                        {tag}
-                      </a>
-                    ))}
-                  </>
-                )}
-              </div>
-              
               {image && (
                 <BlogImage 
                   src={imageUrl || ''}
@@ -592,6 +575,22 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <div className="prose prose-lg w-full max-w-none">
               <MarkdownRenderer content={richTextToString(body)} locale={lang} />
             </div>
+
+            {/* Tags movidas para o final do artigo */}
+            {Array.isArray(tags) && tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-8 mb-6 w-full">
+                <span className="text-gray-600 text-sm">{t.blog.tags}:</span>
+                {tags.map((tag) => (
+                  <a
+                    key={tag}
+                    href={`/${lang}/blog?tag=${encodeURIComponent(tag)}`}
+                    className="text-xs font-semibold bg-pink-100 text-pink-800 px-3 py-1 rounded-full hover:bg-pink-200 transition-colors"
+                  >
+                    {tag}
+                  </a>
+                ))}
+              </div>
+            )}
 
             <div className="text-right text-xs text-gray-400 italic mt-8 mb-12 flex items-center justify-end">
               {t.blog.aiDisclaimer}
