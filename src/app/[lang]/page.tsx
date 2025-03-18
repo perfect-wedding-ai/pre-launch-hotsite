@@ -53,7 +53,6 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
         className="space-y-4"
         action="https://gmail.us8.list-manage.com/subscribe/post?u=67483d6202e3116de901adf0e&amp;id=f687178ad2"
         method="post"
-        target="_blank"
       >
         <div>
           <input 
