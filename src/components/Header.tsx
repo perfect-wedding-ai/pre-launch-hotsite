@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 import {
     DropdownMenuItem,
     DropdownMenuLabel,
@@ -65,6 +65,7 @@ interface HeaderProps {
 
 export default function Header({ lang, t }: HeaderProps) {
     const [mounted, setMounted] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const router = useRouter();
     
     useEffect(() => {
@@ -86,6 +87,31 @@ export default function Header({ lang, t }: HeaderProps) {
             />
         </div>
     );
+
+    // Toggle do menu mobile
+    const toggleMobileMenu = () => {
+        setMobileMenuOpen(!mobileMenuOpen);
+    };
+
+    // Links de navegação
+    const navLinks = (
+        <>
+            <li><Link href={`/${lang}#${t.anchors.howItWorks}`} className="nav-link">{t.nav.howItWorks}</Link></li>
+            <li><Link href={`/${lang}#${t.anchors.benefits}`} className="nav-link">{t.nav.benefits}</Link></li>
+            <li><Link href={`/${lang}#${t.anchors.faq}`} className="nav-link">{t.nav.faq}</Link></li>
+            {lang !== 'es' && (
+                <li>
+                    <Link 
+                        href={`/${lang}/blog`} 
+                        className="nav-link"
+                        onMouseEnter={handleBlogLinkHover}
+                    >
+                        {t.nav.blog}
+                    </Link>
+                </li>
+            )}
+        </>
+    );
     
     return (
         <>
@@ -95,31 +121,24 @@ export default function Header({ lang, t }: HeaderProps) {
                     <div className="flex justify-between items-center">
                         <div className="logo">
                             <Link href={`/${lang}`}>
-                                <h1 className="text-[28.8px] m-0 text-[rgb(90,90,90)]">Perfect Wedding</h1>
+                                <h1 className="text-[28.8px] md:text-[28.8px] text-xl m-0 text-[rgb(90,90,90)]">Perfect Wedding</h1>
                             </Link>
                         </div>
-                        <nav>
+                        
+                        {/* Desktop Navigation */}
+                        <nav className="hidden md:block">
                             <ul className="flex gap-6">
-                                <li><Link href={`/${lang}#${t.anchors.howItWorks}`} className="nav-link">{t.nav.howItWorks}</Link></li>
-                                <li><Link href={`/${lang}#${t.anchors.benefits}`} className="nav-link">{t.nav.benefits}</Link></li>
-                                <li><Link href={`/${lang}#${t.anchors.faq}`} className="nav-link">{t.nav.faq}</Link></li>
-                                {lang !== 'es' && (
-                                    <li>
-                                        <Link 
-                                            href={`/${lang}/blog`} 
-                                            className="nav-link"
-                                            onMouseEnter={handleBlogLinkHover}
-                                        >
-                                            {t.nav.blog}
-                                        </Link>
-                                    </li>
-                                )}
+                                {navLinks}
                             </ul>
                         </nav>
+                        
                         <div className="flex items-center gap-4">
-                            <div className="cta-button">
+                            {/* CTA Button - Hide on smallest screens */}
+                            <div className="cta-button hidden sm:block">
                                 <Link href={`/${lang}#${t.anchors.signup}`} className="btn-primary">{t.nav.tryFree}</Link>
                             </div>
+                            
+                            {/* User Menu */}
                             <div className="user-menu">
                                 {mounted ? (
                                     <NoScrollLockDropdownMenu>
@@ -142,10 +161,50 @@ export default function Header({ lang, t }: HeaderProps) {
                                     userButton
                                 )}
                             </div>
+                            
+                            {/* Mobile Menu Button */}
+                            <button 
+                                className="md:hidden flex items-center justify-center w-10 h-10" 
+                                onClick={toggleMobileMenu}
+                                aria-label="Menu"
+                            >
+                                <FontAwesomeIcon 
+                                    icon={mobileMenuOpen ? faXmark : faBars} 
+                                    className="text-neutral-600 h-5 w-5" 
+                                />
+                            </button>
                         </div>
                     </div>
+                    
+                    {/* Mobile Menu */}
+                    {mobileMenuOpen && (
+                        <div className="md:hidden mt-4 pb-2 animate-fadeIn">
+                            <nav>
+                                <ul className="flex flex-col gap-3">
+                                    {navLinks}
+                                    <li className="sm:hidden mt-2">
+                                        <Link 
+                                            href={`/${lang}#${t.anchors.signup}`} 
+                                            className="btn-primary inline-block"
+                                            onClick={() => setMobileMenuOpen(false)}
+                                        >
+                                            {t.nav.tryFree}
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    )}
                 </div>
             </header>
+            {/* Overlay for mobile menu */}
+            {mobileMenuOpen && (
+                <div 
+                    className="md:hidden fixed inset-0 bg-black/20 z-[999]" 
+                    onClick={toggleMobileMenu}
+                    aria-hidden="true"
+                />
+            )}
         </>
     );
 } 
