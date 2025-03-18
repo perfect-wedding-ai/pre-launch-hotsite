@@ -215,7 +215,8 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
           <BlogHeader locale={lang} />
           
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 relative z-10">
-            <div className="lg:col-span-1">
+            {/* Filtros - visíveis apenas em telas grandes (lg:) na coluna 1 */}
+            <div className="hidden lg:block lg:col-span-1 order-1">
               <BlogFilters
                 categories={categoriesResponse.items}
                 tags={uniqueTags}
@@ -225,7 +226,8 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
               />
             </div>
             
-            <div className="lg:col-span-3">
+            {/* Posts do blog - em telas grandes ocupam 3 colunas */}
+            <div className="lg:col-span-3 order-2 lg:order-2">
               {postsResponse.items.length > 0 ? (
                 <>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8">
@@ -273,6 +275,17 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
                   </div>
                 </div>
               )}
+            </div>
+            
+            {/* Filtros - visíveis apenas em telas pequenas (abaixo de lg) após os posts */}
+            <div className="lg:hidden col-span-1 order-3 mt-8">
+              <BlogFilters
+                categories={categoriesResponse.items}
+                tags={uniqueTags}
+                locale={lang}
+                activeCategory={categoryId}
+                activeTag={tag}
+              />
             </div>
           </div>
         </div>
