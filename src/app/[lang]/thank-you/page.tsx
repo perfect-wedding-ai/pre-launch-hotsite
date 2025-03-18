@@ -1,21 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
-import { translations, getTranslations } from '../translations';
+import { getTranslations } from '../translations';
 
 export default function ThankYou({ params }: { params: { lang: 'pt' | 'en' | 'es' } }) {
   const lang = params?.lang || 'pt';
   const t = getTranslations(lang);
-
-  useEffect(() => {
-    // Redirecionar para a página inicial após 5 segundos
-    const timer = setTimeout(() => {
-      window.location.href = `/${lang}?mailchimp=success`;
-    }, 5000);
-
-    return () => clearTimeout(timer);
-  }, [lang]);
 
   return (
     <>
