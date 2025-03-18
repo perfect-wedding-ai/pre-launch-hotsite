@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { getTranslations } from '../translations';
+import Header from "@/components/Header";
 
 export default function ThankYou({ params }: { params: { lang: 'pt' | 'en' | 'es' } }) {
   const lang = params?.lang || 'pt';
@@ -9,22 +10,7 @@ export default function ThankYou({ params }: { params: { lang: 'pt' | 'en' | 'es
 
   return (
     <>
-      <header className="fixed w-full top-0 left-0 z-[1000] bg-white py-5 shadow-[0_2px_10px_rgba(0,0,0,0.05)]">
-        <div className="container">
-          <div className="flex justify-between items-center">
-            <div className="logo">
-              <h1 className="text-[28.8px] m-0 text-[rgb(90,90,90)]">Perfect Wedding</h1>
-            </div>
-            <nav>
-              <ul className="flex gap-6">
-                <li><Link href={`/${lang}#como-funciona`} className="nav-link">{t.nav.howItWorks}</Link></li>
-                <li><Link href={`/${lang}#beneficios`} className="nav-link">{t.nav.benefits}</Link></li>
-                <li><Link href={`/${lang}#faq`} className="nav-link">{t.nav.faq}</Link></li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <Header lang={lang} t={t} />
 
       <section className="thank-you min-h-screen flex items-center justify-center bg-gray-50 pt-24">
         <div className="container">
