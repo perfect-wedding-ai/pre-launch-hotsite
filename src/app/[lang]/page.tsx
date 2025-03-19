@@ -95,12 +95,12 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
 
       <BackgroundEffect className="pt-24 pb-16 bg-light-bg">
         <div className="container relative z-[1]">
-          <div className="flex items-center justify-between relative z-10">
-            <div className="hero-content flex-1 pr-12">
-              <h1 className="text-5xl mb-4 leading-tight">
+          <div className="flex flex-col md:flex-row items-center justify-between relative z-10">
+            <div className="hero-content w-full md:flex-1 md:pr-12 mb-8 md:mb-0">
+              <h1 className="text-4xl md:text-5xl mb-4 leading-tight">
                 {t.hero.title}
               </h1>
-              <h2 className="text-2xl mb-6 text-gray-600 font-normal">
+              <h2 className="text-xl md:text-2xl mb-6 text-gray-600 font-normal">
                 {t.hero.subtitle}
               </h2>
               <p className="text-lg text-gray-600 max-w-2xl mb-8">
@@ -115,14 +115,14 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
                 </Link>
               </div>
             </div>
-            <div className="hero-image flex-1">
+            <div className="hero-image w-full md:flex-1">
               <OptimizedImage 
                 src="/assets/images/hero-bride-desktop.webp"
                 alt={alts.heroBride}
                 width={600}
                 height={338}
                 priority
-                className="rounded-lg shadow-lg"
+                className="rounded-lg shadow-lg w-full"
               />
             </div>
           </div>

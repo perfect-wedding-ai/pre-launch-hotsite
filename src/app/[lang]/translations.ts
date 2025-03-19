@@ -128,7 +128,7 @@ export const translations = {
       },
       contact: {
         title: "Contato",
-        email: "contato@perfectwedding.ai"
+        email: "contact@perfectwedding.ai"
       },
       copyright: {
         text: "© 2025 Perfect Wedding AI - Tecnologia para Noivas. Todos os direitos reservados.",
@@ -234,7 +234,7 @@ export const translations = {
       },
       contact: {
         title: "Contato",
-        content: "Se tiver dúvidas ou preocupações sobre esta política ou sobre o tratamento dos seus dados, entre em contato pelo e-mail: privacy@perfectwedding.ai."
+        content: "Se tiver dúvidas ou preocupações sobre esta política ou sobre o tratamento dos seus dados, entre em contato pelo e-mail: private@perfectwedding.ai."
       }
     }
   },
@@ -473,7 +473,7 @@ export const translations = {
       },
       contact: {
         title: "Contact",
-        content: "If you have questions or concerns about this policy or about the processing of your data, please contact us by email: privacy@perfectwedding.ai."
+        content: "If you have questions or concerns about this policy or about the processing of your data, please contact us by email: private@perfectwedding.ai."
       }
     }
   },
@@ -606,7 +606,7 @@ export const translations = {
       },
       contact: {
         title: "Contacto",
-        email: "contacto@perfectwedding.ai"
+        email: "contact@perfectwedding.ai"
       },
       copyright: {
         text: "© 2025 Perfect Wedding AI - Tecnología para Novias. Todos los derechos reservados.",
@@ -712,7 +712,7 @@ export const translations = {
       },
       contact: {
         title: "Contacto",
-        content: "Si tiene preguntas o inquietudes sobre esta política o sobre el tratamiento de sus datos, contáctenos por correo electrónico: privacy@perfectwedding.ai."
+        content: "Si tiene preguntas o inquietudes sobre esta política o sobre el tratamiento de sus datos, contáctenos por correo electrónico: private@perfectwedding.ai."
       }
     }
   }
