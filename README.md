@@ -97,21 +97,49 @@ A integração com o Contentful utiliza os seguintes modelos de conteúdo:
       "type": "Symbol",
       "localized": true,
       "required": true,
-      "validations": [
-        {
-          "size": {
-            "min": 45,
-            "max": 65
-          }
-        }
-      ]
+      "validations": []
     },
     {
       "id": "body",
       "name": "Body",
       "type": "RichText",
       "localized": true,
-      "required": true
+      "required": true,
+      "validations": [
+        {
+          "enabledMarks": [
+            "bold",
+            "italic",
+            "underline",
+            "code"
+          ],
+          "message": "Only bold, italic, underline, and code marks are allowed"
+        },
+        {
+          "enabledNodeTypes": [
+            "heading-1",
+            "heading-2",
+            "heading-3",
+            "heading-4",
+            "heading-5",
+            "heading-6",
+            "ordered-list",
+            "unordered-list",
+            "hr",
+            "blockquote",
+            "embedded-entry-block",
+            "embedded-asset-block",
+            "hyperlink",
+            "entry-hyperlink",
+            "asset-hyperlink",
+            "embedded-entry-inline"
+          ],
+          "message": "Only heading 1, heading 2, heading 3, heading 4, heading 5, heading 6, ordered list, unordered list, horizontal rule, quote, block entry, asset, link to Url, link to entry, link to asset, and inline entry nodes are allowed"
+        },
+        {
+          "nodes": {}
+        }
+      ]
     },
     {
       "id": "image",
@@ -192,6 +220,18 @@ A integração com o Contentful utiliza os seguintes modelos de conteúdo:
       "items": {
         "type": "Symbol"
       }
+    },
+    {
+      "id": "canonicalSlug",
+      "name": "canonicalSlug",
+      "type": "Symbol",
+      "localized": false,
+      "required": true,
+      "validations": [
+        {
+          "unique": true
+        }
+      ]
     }
   ]
 }
