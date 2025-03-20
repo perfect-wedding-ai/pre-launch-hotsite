@@ -340,8 +340,10 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   }
   
   const { title, metadescription, image, category, tags = [] } = post.fields;
-  // Acessar canonicalSlug usando type assertion
+  // Acessar canonicalSlug e canonicalLocale usando type assertion
   const canonicalSlug = (post.fields as any).canonicalSlug;
+  const canonicalLocale = (post.fields as any).canonicalLocale || lang;
+  
   const imageUrl = getImageUrl(image);
   const { width, height } = getImageDimensions(image);
   const imageTitle = getImageTitle(image);
@@ -368,7 +370,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   
   // Determinar a URL canônica
   const canonicalUrl = canonicalSlug 
-    ? `https://perfectwedding.ai/blog/${canonicalSlug}`
+    ? `https://perfectwedding.ai/${canonicalLocale}/blog/${canonicalSlug}`
     : `https://perfectwedding.ai/${lang}/blog/${slug}`;
   
   return {
@@ -425,8 +427,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const baseLocale = getBaseLocale(lang);
   
   const { title, body, image, tags = [], publishDate, lastUpdateDate, category } = post.fields;
-  // Acessar canonicalSlug usando type assertion
+  // Acessar canonicalSlug e canonicalLocale usando type assertion
   const canonicalSlug = (post.fields as any).canonicalSlug;
+  const canonicalLocale = (post.fields as any).canonicalLocale || lang;
   
   // Adicionar configurações do Contentful para acesso a imagens
   const spaceId = process.env.CONTENTFUL_SPACE_ID || '';
@@ -471,7 +474,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   
   // Determinar a URL canônica
   const canonicalUrl = canonicalSlug 
-    ? `https://perfectwedding.ai/blog/${canonicalSlug}`
+    ? `https://perfectwedding.ai/${canonicalLocale}/blog/${canonicalSlug}`
     : `https://perfectwedding.ai/${lang}/blog/${slug}`;
   
   // Estruturar dados para JSON-LD
@@ -532,6 +535,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             showBackLink
             canonicalSlug={canonicalSlug}
             currentSlug={slug}
+            canonicalLocale={canonicalLocale}
           />
           
           <article className="max-w-4xl mx-auto">
