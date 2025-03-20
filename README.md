@@ -212,16 +212,6 @@ A integração com o Contentful utiliza os seguintes modelos de conteúdo:
       ]
     },
     {
-      "id": "keywords",
-      "name": "keywords",
-      "type": "Array",
-      "localized": true,
-      "required": true,
-      "items": {
-        "type": "Symbol"
-      }
-    },
-    {
       "id": "canonicalSlug",
       "name": "canonicalSlug",
       "type": "Symbol",
@@ -232,6 +222,24 @@ A integração com o Contentful utiliza os seguintes modelos de conteúdo:
           "unique": true
         }
       ]
+    },
+    {
+      "id": "canonicalLocale",
+      "name": "canonicalLocale",
+      "type": "Symbol",
+      "localized": false,
+      "required": true,
+      "validations": []
+    },
+    {
+      "id": "keywords",
+      "name": "keywords",
+      "type": "Array",
+      "localized": true,
+      "required": true,
+      "items": {
+        "type": "Symbol"
+      }
     }
   ]
 }
@@ -249,7 +257,9 @@ Os artigos do blog estão configurados para usar os dados do Contentful em forma
 - **metadescription**: Usado como `description`
 - **publishDate**: Usado como `datePublished`
 - **lastUpdateDate**: Usado como `dateModified`
-- **slug**: Usado para compor URLs canônicas e como `identifier`
+- **slug**: Usado para compor URLs e como `identifier`
+- **canonicalSlug**: Usado para compor URLs canônicas
+- **canonicalLocale**: Define o locale original/canônico do conteúdo para SEO
 
 ## 🔧 Configuração
 
