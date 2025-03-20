@@ -7,11 +7,23 @@ interface BlogHeaderProps {
   title?: string;
   description?: string;
   showBackLink?: boolean;
+  canonicalSlug?: string;
+  currentSlug?: string;
 }
 
-export default function BlogHeader({ locale, title, description, showBackLink = false }: BlogHeaderProps) {
+export default function BlogHeader({ 
+  locale, 
+  title, 
+  description, 
+  showBackLink = false,
+  canonicalSlug,
+  currentSlug
+}: BlogHeaderProps) {
   // Obter as traduções para o idioma atual
   const t = getTranslations(locale);
+  
+  // Verificar se tem um slug canônico diferente do atual
+  const showCanonicalNotice = canonicalSlug && currentSlug && canonicalSlug !== currentSlug;
   
   return (
     <div className="mb-10 text-center">
@@ -36,6 +48,18 @@ export default function BlogHeader({ locale, title, description, showBackLink = 
               />
             </svg>
             {t.blog.backToHome}
+          </Link>
+        </div>
+      )}
+      
+      {showCanonicalNotice && (
+        <div className="mb-4 p-2 bg-amber-50 border border-amber-200 rounded-md text-amber-700 text-sm">
+          {t.blog.canonicalNotice || 'Este conteúdo está disponível em sua versão original:'}
+          <Link 
+            href={`/blog/${canonicalSlug}`}
+            className="ml-1 underline text-pink-700 hover:text-pink-900"
+          >
+            {`perfectwedding.ai/blog/${canonicalSlug}`}
           </Link>
         </div>
       )}

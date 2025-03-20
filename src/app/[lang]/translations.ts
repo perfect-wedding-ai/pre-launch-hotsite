@@ -156,6 +156,7 @@ export const translations = {
       postNotFound: "Post não encontrado | Perfect Wedding",
       relatedPosts: "Posts Relacionados",
       aiDisclaimer: "Este conteúdo foi criado com carinho pelo time Perfect Wedding com auxílio de inteligência artificial.",
+      canonicalNotice: "Este conteúdo está disponível em sua versão original:",
       notFound: {
         title: "Nenhum post encontrado",
         description: "Não encontramos posts em português",
@@ -395,6 +396,7 @@ export const translations = {
       postNotFound: "Post not found | Perfect Wedding",
       relatedPosts: "Related Posts",
       aiDisclaimer: "This content was created with care by the Perfect Wedding team with the assistance of artificial intelligence.",
+      canonicalNotice: "This content is available in its original version:",
       notFound: {
         title: "No posts found",
         description: "We couldn't find any posts in English",
@@ -621,7 +623,7 @@ export const translations = {
     },
     blog: {
       title: "Blog Perfect Wedding",
-      subtitle: "Consejos, inspiraciones y tendencias para tu boda perfecta",
+      subtitle: "Consejos, inspiración y tendencias para tu boda perfecta",
       backToHome: "Volver al blog",
       categories: "Categorías",
       tags: "Etiquetas",
@@ -631,9 +633,10 @@ export const translations = {
       readMore: "Leer más",
       category: "Categoría",
       updatedOn: "Actualizado el",
-      postNotFound: "Publicación no encontrada | Perfect Wedding",
-      relatedPosts: "Publicaciones Relacionadas",
-      aiDisclaimer: "Este contenido fue creado con cariño por el equipo Perfect Wedding con la ayuda de inteligencia artificial.",
+      postNotFound: "Entrada no encontrada | Perfect Wedding",
+      relatedPosts: "Entradas Relacionadas",
+      aiDisclaimer: "Este contenido fue creado con cariño por el equipo de Perfect Wedding con la ayuda de inteligencia artificial.",
+      canonicalNotice: "Este contenido está disponible en su versión original:",
       notFound: {
         title: "No se encontraron publicaciones",
         description: "No encontramos publicaciones en español",

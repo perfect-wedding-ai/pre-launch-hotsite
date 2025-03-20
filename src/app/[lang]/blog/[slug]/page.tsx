@@ -340,6 +340,8 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   }
   
   const { title, metadescription, image, category, tags = [] } = post.fields;
+  // Acessar canonicalSlug usando type assertion
+  const canonicalSlug = (post.fields as any).canonicalSlug;
   const imageUrl = getImageUrl(image);
   const { width, height } = getImageDimensions(image);
   const imageTitle = getImageTitle(image);
@@ -364,15 +366,24 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       (post.fields as any).keywords : [])
   ].filter(Boolean);
   
+  // Determinar a URL canônica
+  const canonicalUrl = canonicalSlug 
+    ? `https://perfectwedding.ai/blog/${canonicalSlug}`
+    : `https://perfectwedding.ai/${lang}/blog/${slug}`;
+  
   return {
     title: `${title} | ${t.blog.title}`,
     description: enhancedDescription,
     keywords: keywordsArr.length > 0 ? keywordsArr : undefined,
+    // Adicionar URL canônica nos metadados
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: `${title} | ${t.blog.title}`,
       description: enhancedDescription,
       type: 'article',
-      url: `https://perfectwedding.ai/${lang}/blog/${slug}`,
+      url: canonicalUrl,
       images: imageUrl ? [
         {
           url: imageUrl,
@@ -414,6 +425,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const baseLocale = getBaseLocale(lang);
   
   const { title, body, image, tags = [], publishDate, lastUpdateDate, category } = post.fields;
+  // Acessar canonicalSlug usando type assertion
+  const canonicalSlug = (post.fields as any).canonicalSlug;
   
   // Adicionar configurações do Contentful para acesso a imagens
   const spaceId = process.env.CONTENTFUL_SPACE_ID || '';
@@ -456,6 +469,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   // Buscar posts relacionados
   const relatedPosts = await getRelatedPosts(post.sys.id, Array.isArray(tags) ? tags : [], lang);
   
+  // Determinar a URL canônica
+  const canonicalUrl = canonicalSlug 
+    ? `https://perfectwedding.ai/blog/${canonicalSlug}`
+    : `https://perfectwedding.ai/${lang}/blog/${slug}`;
+  
   // Estruturar dados para JSON-LD
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -480,7 +498,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     'description': post.fields.metadescription || '',
     'mainEntityOfPage': {
       '@type': 'WebPage',
-      '@id': `https://perfectwedding.ai/${lang}/blog/${slug}`,
+      '@id': canonicalUrl,
     },
     // Adicionar categoria se existir
     ...(category && category.fields && category.fields.name ? {
@@ -495,9 +513,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         (post.fields as any).keywords : [])
     ].filter(Boolean).join(', '),
     // Adicionar URL do artigo
-    'url': `https://perfectwedding.ai/${lang}/blog/${slug}`,
+    'url': canonicalUrl,
     // Incluir o slug como identificador
-    'identifier': slug,
+    'identifier': canonicalSlug || slug,
     // Incluir linguagem do conteúdo
     'inLanguage': lang
   };
@@ -508,14 +526,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       
       <BackgroundEffect>
         <div className="container mx-auto px-4 py-16 mt-24">
-          <BlogHeader locale={lang} showBackLink={false} />
+          <BlogHeader 
+            locale={lang} 
+            title={title}
+            showBackLink
+            canonicalSlug={canonicalSlug}
+            currentSlug={slug}
+          />
           
           <article className="max-w-4xl mx-auto">
             <header className="mb-8 w-full">
-              <h1 className="text-3xl md:text-4xl font-playfair font-bold text-gray-900 mb-4 w-full">
-                {title}
-              </h1>
-              
               <div className="flex flex-wrap items-center text-gray-600 text-sm mb-4 gap-6 w-full">
                 {publishDate && (
                   <span>
@@ -575,7 +595,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <div className="prose prose-lg w-full max-w-none">
               <MarkdownRenderer content={richTextToString(body)} locale={lang} />
             </div>
-
+            
             {/* Tags movidas para o final do artigo */}
             {Array.isArray(tags) && tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-8 mb-6 w-full">
@@ -591,18 +611,18 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 ))}
               </div>
             )}
-
+            
             <div className="text-right text-xs text-gray-400 italic mt-8 mb-12 flex items-center justify-end">
               {t.blog.aiDisclaimer}
               <i className="fas fa-heart text-pink-400 ml-2"></i>
             </div>
-
-            {relatedPosts.length > 0 && (
-              <div className="bg-white rounded-lg overflow-hidden mb-8 shadow-sm">
-                <RelatedPosts posts={relatedPosts} locale={lang} />
-              </div>
-            )}
           </article>
+          
+          {relatedPosts.length > 0 && (
+            <div className="bg-white rounded-lg overflow-hidden mb-8 shadow-sm">
+              <RelatedPosts posts={relatedPosts} locale={lang} />
+            </div>
+          )}
           
           {/* JSON-LD para SEO */}
           <script
