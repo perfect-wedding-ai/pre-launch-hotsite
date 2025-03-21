@@ -1,4 +1,4 @@
-import { formatMarkdown } from '../MarkdownProcessor';
+import { formatMarkdown } from '../MarkdownProcessor2';
 
 describe('Formatação Markdown', () => {
   // Testes para formatações simples

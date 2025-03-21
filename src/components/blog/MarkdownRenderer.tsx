@@ -1,6 +1,6 @@
 import React from 'react';
 import { Locale } from '@/config/i18n.config';
-import { formatMarkdown } from './MarkdownProcessor';
+import { formatMarkdown } from './MarkdownProcessor2';
 
 interface MarkdownRendererProps {
   content: string;
