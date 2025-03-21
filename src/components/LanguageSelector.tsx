@@ -77,7 +77,7 @@ export default function LanguageSelector({ currentLang, t }: LanguageSelectorPro
               >
                 <span>{lang.name}</span>
                 {currentLang === lang.code && (
-                  <FontAwesomeIcon icon={faCheck} className="h-4 w-4 text-green-500" />
+                  <FontAwesomeIcon icon={faCheck} className="h-4 w-4 text-pink-400" />
                 )}
               </DropdownMenuItem>
             ))}
