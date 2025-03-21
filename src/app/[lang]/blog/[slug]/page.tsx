@@ -444,7 +444,9 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     alternates: {
       canonical: canonicalUrl,
       languages,
-      ...(alternatesObject['x-default'] ? { 'x-default': alternatesObject['x-default'] } : {})
+      types: {
+        'x-default': alternatesObject['x-default']
+      }
     },
     openGraph: {
       title: `${title} | ${t.blog.title}`,
