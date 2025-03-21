@@ -93,7 +93,7 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
 
       <Header lang={lang} t={t} />
 
-      <BackgroundEffect className="pt-24 pb-16 bg-light-bg">
+      <BackgroundEffect className="pt-24 pb-16 bg-light-bg" highOpacity={false}>
         <div className="container relative z-[1]">
           <div className="flex flex-col md:flex-row items-center justify-between relative z-10">
             <div className="hero-content w-full md:flex-1 md:pr-12 mb-8 md:mb-0">
@@ -221,8 +221,8 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
                   <p className="text-[rgb(122,122,122)] leading-[25.6px]">{t.benefits.items.options.description}</p>
                 </div>
               </div>
-              <div className="benefit bg-white p-6 rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)]">
-                <div className="image-wrapper overflow-hidden rounded-lg">
+              <div className="benefit bg-white rounded-lg shadow-[0px_5px_15px_0px_rgba(0,0,0,0.08)] overflow-hidden">
+                <div className="image-wrapper overflow-hidden">
                   <Image 
                     src="/assets/images/benefit-confidence.webp"
                     alt={alts.benefitConfidence}
