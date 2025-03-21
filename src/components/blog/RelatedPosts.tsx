@@ -77,7 +77,7 @@ export default function RelatedPosts({ posts, locale, title }: RelatedPostsProps
                         alt={title || 'Related post image'}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
-                        className="object-cover"
+                        className="object-cover object-top"
                       />
                     </div>
                   ) : hasImageReference ? (
@@ -90,6 +90,7 @@ export default function RelatedPosts({ posts, locale, title }: RelatedPostsProps
                         assetId={assetId}
                         spaceId={spaceId}
                         className="h-40"
+                        objectFit="cover"
                       />
                     </div>
                   ) : (
