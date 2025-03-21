@@ -15,11 +15,18 @@ Site de lançamento do Perfect Wedding, uma plataforma que permite noivas experi
 - [Contentful CMS](https://www.contentful.com/)
 - [React Query](https://tanstack.com/query/latest)
 - [js-cookie](https://github.com/js-cookie/js-cookie)
+- [date-fns](https://date-fns.org/)
+- [Sharp](https://sharp.pixelplumbing.com/)
 
 ## 📦 Estrutura do Projeto
 
 ```
 perfect-wedding-next/
+├── .github/              # Configurações e workflows do GitHub
+├── .next/                # Build compilado do Next.js
+├── .venv/                # Ambiente virtual Python para ferramentas
+├── docs/                 # Documentação do projeto
+├── public/               # Arquivos estáticos
 ├── src/
 │   ├── app/
 │   │   ├── [lang]/           # Rotas dinâmicas por idioma
@@ -32,6 +39,7 @@ perfect-wedding-next/
 │   │   │   └── thank-you/    # Página de agradecimento
 │   │   ├── api/              # Rotas da API
 │   │   ├── globals.css       # Estilos globais
+│   │   ├── head.tsx          # Componente de cabeçalho HTML
 │   │   └── providers.tsx     # Provedores de contexto
 │   ├── components/           # Componentes React
 │   │   ├── ui/               # Componentes UI reutilizáveis (Shadcn)
@@ -41,15 +49,25 @@ perfect-wedding-next/
 │   │   ├── Hero.tsx          # Componente hero da página inicial
 │   │   ├── CookieConsent.tsx # Componente de consentimento de cookies
 │   │   ├── LanguageSelector.tsx # Seletor de idiomas
-│   │   └── ...               # Outros componentes
+│   │   ├── OptimizedImage.tsx # Componente de otimização de imagens
+│   │   ├── BackgroundEffect.tsx # Efeito de fundo animado
+│   │   ├── BlogPreloader.tsx # Preloader para o blog
+│   │   └── ScrollbarPreserver.tsx # Preserva a posição da scrollbar
 │   ├── utils/                # Funções utilitárias
 │   ├── lib/                  # Bibliotecas e configurações
+│   ├── middleware.ts         # Middleware do Next.js
 │   └── config/               # Configurações da aplicação
-├── public/                   # Arquivos estáticos
-│   ├── assets/               # Outros ativos
 ├── tools/                    # Ferramentas para desenvolvimento
-├── .venv/                    # Ambiente virtual Python para ferramentas
-└── ...
+├── .env.example              # Exemplo de variáveis de ambiente
+├── .env.local                # Variáveis de ambiente locais
+├── eslint.config.mjs         # Configuração do ESLint
+├── jest.config.js            # Configuração de testes com Jest
+├── next.config.js            # Configuração do Next.js
+├── netlify.toml              # Configuração de deploy no Netlify
+├── postcss.config.mjs        # Configuração do PostCSS
+├── project-planning.md       # Documento de planejamento do projeto
+├── tailwind.config.ts        # Configuração do Tailwind CSS
+└── tsconfig.json             # Configuração do TypeScript
 ```
 
 ## 🌍 Internacionalização
@@ -404,9 +422,10 @@ O projeto inclui:
 
 - Fontes otimizadas com next/font
 - Carregamento assíncrono de scripts
-- Imagens otimizadas com next/image
+- Imagens otimizadas com next/image e Sharp
 - Estratégia "afterInteractive" para scripts não-críticos
 - Otimização para SSR com compressão e SWC minify
+- Uso do Critters para CSS crítico
 
 ## 🚀 Como Rodar
 
