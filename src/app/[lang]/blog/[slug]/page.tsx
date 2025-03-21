@@ -17,6 +17,7 @@ import Footer from '@/components/Footer';
 import { generateAlternateLinks, generateCanonicalUrl } from '@/components/blog/AlternateLinksGenerator';
 import { i18n } from '@/config/i18n.config';
 import { getBaseUrl, siteConfig } from '@/lib/utils/siteConfig';
+import LanguageSwitcher from '@/components/blog/LanguageSwitcher';
 
 interface BlogPostPageProps {
   params: {
@@ -578,6 +579,18 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     'inLanguage': lang
   };
   
+  // Buscar post em todos os locales disponíveis para o dropdown de idiomas
+  const postData = await getBlogPostBySlugAllLocales(slug, lang);
+  const availableLocales = postData?.allLocales || {};
+  
+  // Obter nomes dos idiomas para o dropdown
+  const localeNames: {[key: string]: string} = {
+    'pt': 'Português',
+    'en': 'English',
+    'es': 'Español',
+    // Adicione outros idiomas conforme necessário
+  };
+  
   return (
     <>
       <Header lang={lang as any} t={t} />
@@ -634,6 +647,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     </Link>
                   </span>
                 )}
+                
+                {/* Componente de seleção de idioma do lado do cliente */}
+                <LanguageSwitcher 
+                  currentLocale={lang} 
+                  availableLocales={availableLocales}
+                  canonicalLocale={canonicalLocale}
+                  localeNames={localeNames}
+                />
               </div>
               
               {image && (

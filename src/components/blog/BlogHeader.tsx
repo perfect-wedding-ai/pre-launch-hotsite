@@ -58,18 +58,6 @@ export default function BlogHeader({
         </div>
       )}
       
-      {showCanonicalNotice && (
-        <div className="mb-4 p-2 bg-amber-50 border border-amber-200 rounded-md text-amber-700 text-sm">
-          {t.blog.canonicalNotice || 'Este conteúdo está disponível em sua versão original:'}
-          <Link 
-            href={`/${linkLocale}/blog/${canonicalSlug}`}
-            className="ml-1 underline text-pink-700 hover:text-pink-900"
-          >
-            {`perfectwedding.ai/${linkLocale}/blog/${canonicalSlug}`}
-          </Link>
-        </div>
-      )}
-      
       <h1 className="text-4xl md:text-5xl font-playfair font-bold text-gray-900 mb-4">
         {title || t.blog.title}
       </h1>
