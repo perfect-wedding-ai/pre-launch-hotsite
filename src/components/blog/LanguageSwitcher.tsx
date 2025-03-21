@@ -1,7 +1,15 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
 import { Locale } from '@/config/i18n.config';
+import { Globe } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { cn } from '@/lib/utils';
 
 interface LocalePost {
   fields: {
@@ -24,10 +32,12 @@ export default function LanguageSwitcher({
   canonicalLocale,
   localeNames
 }: LanguageSwitcherProps) {
-  const router = useRouter();
+  // Não renderizar nada se tiver apenas um idioma disponível
+  if (Object.keys(availableLocales).length <= 1) {
+    return null;
+  }
 
-  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const locale = e.target.value;
+  const handleLanguageChange = (locale: string) => {
     const localePost = availableLocales[locale];
     if (localePost?.fields?.slug) {
       // Usar window.location para navegação completa, pois precisamos mudar o idioma
@@ -35,35 +45,44 @@ export default function LanguageSwitcher({
     }
   };
 
-  // Não renderizar nada se tiver apenas um idioma disponível
-  if (Object.keys(availableLocales).length <= 1) {
-    return null;
-  }
+  // Obter o nome do idioma atual para mostrar no botão
+  const currentLocaleName = localeNames[currentLocale] || currentLocale.toUpperCase();
 
   return (
-    <div className="relative inline-block text-xs">
-      <select
-        className="appearance-none bg-gray-100 border border-gray-200 text-gray-700 py-1 px-2 pr-6 rounded-md leading-tight focus:outline-none focus:border-gray-400"
-        defaultValue={currentLocale}
-        onChange={handleLanguageChange}
-      >
+    <DropdownMenu>
+      <DropdownMenuTrigger className="inline-flex items-center gap-1 text-xs px-2 py-1 bg-pink-50 border border-pink-100 rounded-md text-gray-700 hover:bg-pink-100 transition-colors">
+        <Globe className="h-3 w-3 text-pink-500" />
+        <span>{currentLocaleName}</span>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="bg-white min-w-[120px] rounded-md shadow-md border border-pink-50 text-xs">
         {Object.entries(availableLocales).map(([locale, localePost]) => {
           if (localePost?.fields?.slug) {
+            const isOriginal = locale === canonicalLocale;
+            const isCurrent = locale === currentLocale;
+            
             return (
-              <option key={locale} value={locale}>
-                {localeNames[locale] || locale.toUpperCase()}
-                {locale === canonicalLocale && locale !== currentLocale ? ' (original)' : ''}
-              </option>
+              <DropdownMenuItem
+                key={locale}
+                className={cn(
+                  "py-1.5 px-3 cursor-pointer text-gray-700 hover:bg-pink-50 hover:text-gray-900 transition-colors",
+                  isCurrent && "bg-pink-100 font-medium"
+                )}
+                onClick={() => handleLanguageChange(locale)}
+              >
+                <span className="flex items-center justify-between w-full">
+                  {localeNames[locale] || locale.toUpperCase()}
+                  {isOriginal && locale !== currentLocale && (
+                    <span className="text-[10px] bg-pink-100 text-pink-800 px-1.5 py-0.5 rounded-full ml-1">
+                      original
+                    </span>
+                  )}
+                </span>
+              </DropdownMenuItem>
             );
           }
           return null;
         })}
-      </select>
-      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-        <svg className="fill-current h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-        </svg>
-      </div>
-    </div>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 } 
