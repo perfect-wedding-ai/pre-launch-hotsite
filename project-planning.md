@@ -297,3 +297,47 @@ O schema do Blog Post no Contentful foi atualizado com um novo campo chamado `ke
 2. Verificar se o campo `keywords` está sendo corretamente preenchido no Contentful
 3. Validar a indexação dos artigos do blog em motores de busca após as alterações
 4. Considerar a adição de microformatos adicionais para melhorar ainda mais o SEO
+
+## Tarefa: Implementação de Popup de Inscrição para Blog
+
+### Contexto
+Para aumentar a conversão de inscrições na lista de espera, foi solicitada a implementação de um popup que aparece quando o leitor rola até o final do artigo do blog, convidando-o a conhecer mais da ferramenta ou se inscrever para testes logo que estiver disponível.
+
+### Plano de Implementação
+[X] Criar um componente `BlogSignupPopup` para o popup
+[X] Implementar lógica para detectar quando o usuário rolou até 75% da página
+[X] Adicionar funcionalidade para lembrar que o usuário já viu o popup na sessão atual
+[X] Estilizar o popup com as cores do site e o efeito rosinha de fundo característico
+[X] Adicionar animações para melhorar a experiência do usuário
+[X] Integrar o componente na página do blog
+[X] Adicionar traduções para todos os idiomas suportados
+
+### Solução Implementada
+1. Criamos um componente client-side `BlogSignupPopup.tsx` que:
+   - Monitora o scroll da página e aparece quando o usuário alcança 75% do conteúdo
+   - Armazena em sessionStorage para não mostrar novamente na mesma sessão
+   - Usa o componente `BackgroundEffect` para manter a consistência visual
+   - Contém um formulário simples para inscrição com email apenas
+   - Inclui um botão extra para saber mais sobre o produto
+   - Tem animações suaves para entrada e interação
+
+2. Adicionamos estilos específicos:
+   - Criamos animações personalizadas para o popup (fadeInUp, pulse)
+   - Utilizamos as cores e a estética existente do site
+   - Adicionamos efeitos de hover para melhorar o feedback visual
+
+3. Integração de idiomas:
+   - Adicionamos traduções para português, inglês e espanhol no arquivo de traduções
+   - Implementamos fallbacks para garantir que o componente funciona mesmo sem traduções
+
+### Lições Aprendidas
+1. **Experiência do Usuário**: Para não irritar o usuário, o popup só aparece uma vez por sessão e tem um botão de fechar facilmente acessível.
+2. **Componentes Client-side**: Foi necessário garantir que o componente só funciona no cliente, para evitar erros de hidratação.
+3. **Sessão do Usuário**: Utilizamos sessionStorage para persistência temporária de estado entre navegações.
+4. **Animações**: Animações sutis podem melhorar significativamente a percepção do usuário sobre a interface.
+
+### Próximos Passos
+1. Monitorar a eficácia do popup através de análise de conversão
+2. Considerar testes A/B com diferentes formulários ou mensagens
+3. Avaliar a possibilidade de adicionar pixels de acompanhamento para remarketing
+4. Criar versões personalizadas do popup para diferentes categorias de blog

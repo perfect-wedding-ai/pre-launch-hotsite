@@ -341,5 +341,51 @@ body[data-radix-scroll-lock-scrollbar-width] {
 }
 
 .animate-slide-up {
-  animation: slideUp 0.3s ease-out forwards;
+  animation: slideUp 0.5s ease forwards;
+}
+
+/* Estilos para o popup de inscrição do blog */
+.blog-popup-appear {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Efeito de pulsação para o ícone de estrela no popup */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s infinite ease-in-out;
+}
+
+/* Aumento de opacidade para o background do popup */
+.enhanced-opacity .absolute.inset-0 > div {
+  opacity: 0.35 !important;
+}
+
+.enhanced-opacity .absolute.top-\[-10\%\],
+.enhanced-opacity .absolute.bottom-\[-10\%\] {
+  opacity: 0.4 !important;
 } 

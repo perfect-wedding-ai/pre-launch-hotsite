@@ -18,6 +18,7 @@ import { generateAlternateLinks, generateCanonicalUrl } from '@/components/blog/
 import { i18n } from '@/config/i18n.config';
 import { getBaseUrl, siteConfig } from '@/lib/utils/siteConfig';
 import LanguageSwitcher from '@/components/blog/LanguageSwitcher';
+import BlogSignupPopup from '@/components/blog/BlogSignupPopup';
 
 interface BlogPostPageProps {
   params: {
@@ -735,6 +736,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       </BackgroundEffect>
       
       <Footer lang={lang as any} t={t} />
+      
+      {/* Popup de inscrição */}
+      <BlogSignupPopup lang={lang} t={t} />
     </>
   );
 } 

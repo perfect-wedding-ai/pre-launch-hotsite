@@ -171,7 +171,13 @@ export const translations = {
         previous: "Anterior",
         next: "Próxima",
         goToPage: "Ir para página"
-      }
+      },
+      popupTitle: "Gostou do Artigo? Experimente Nossa Ferramenta",
+      popupDescription: "Encontre o vestido dos seus sonhos sem sair de casa com nossa tecnologia de IA.",
+      popupButton: "Quero Testar",
+      popupLearnMore: "Saiba Mais",
+      popupImageAlt: "Noiva usando o Perfect Wedding",
+      popupCloseButton: "Fechar"
     },
     anchors: {
       howItWorks: "como-funciona",
@@ -391,15 +397,15 @@ export const translations = {
       tags: "Tags",
       filters: "Filters",
       clearFilters: "Clear filters",
-      noCategory: "Unnamed",
+      noCategory: "No name",
       readMore: "Read more",
       category: "Category",
       updatedOn: "Updated on",
       postNotFound: "Post not found",
       postNotFoundDescription: "The post you are looking for does not exist or has been removed.",
       relatedPosts: "Related Posts",
-      aiDisclaimer: "This content was created with care by the Perfect Wedding team with the assistance of artificial intelligence.",
-      authoredByTeam: "This content was created with care by the Perfect Wedding team.",
+      aiDisclaimer: "This content was lovingly created by the Perfect Wedding team with the help of artificial intelligence.",
+      authoredByTeam: "This content was lovingly created by the Perfect Wedding team.",
       canonicalNotice: "This content is available in its original version:",
       notFound: {
         title: "No posts found",
@@ -413,7 +419,13 @@ export const translations = {
         previous: "Previous",
         next: "Next",
         goToPage: "Go to page"
-      }
+      },
+      popupTitle: "Liked the Article? Try Our Tool",
+      popupDescription: "Find your dream dress without leaving home with our AI technology.",
+      popupButton: "I Want to Try",
+      popupLearnMore: "Learn More",
+      popupImageAlt: "Bride using Perfect Wedding",
+      popupCloseButton: "Close"
     },
     anchors: {
       howItWorks: "how-it-works",
@@ -627,7 +639,7 @@ export const translations = {
     },
     blog: {
       title: "Blog Perfect Wedding",
-      subtitle: "Consejos, inspiración y tendencias para tu boda perfecta",
+      subtitle: "Consejos, inspiraciones y tendencias para tu boda perfecta",
       backToHome: "Volver al blog",
       categories: "Categorías",
       tags: "Etiquetas",
@@ -637,25 +649,31 @@ export const translations = {
       readMore: "Leer más",
       category: "Categoría",
       updatedOn: "Actualizado el",
-      postNotFound: "Entrada no encontrada",
-      postNotFoundDescription: "La entrada que estás buscando no existe o ha sido eliminada.",
-      relatedPosts: "Entradas Relacionadas",
-      aiDisclaimer: "Este contenido fue creado con cariño por el equipo de Perfect Wedding con la ayuda de inteligencia artificial.",
-      authoredByTeam: "Este contenido fue creado con cariño por el equipo de Perfect Wedding.",
+      postNotFound: "Publicación no encontrada",
+      postNotFoundDescription: "La publicación que estás buscando no existe o ha sido eliminada.",
+      relatedPosts: "Publicaciones Relacionadas",
+      aiDisclaimer: "Este contenido fue creado con cariño por el equipo Perfect Wedding con la ayuda de inteligencia artificial.",
+      authoredByTeam: "Este contenido fue creado con cariño por el equipo Perfect Wedding.",
       canonicalNotice: "Este contenido está disponible en su versión original:",
       notFound: {
         title: "No se encontraron publicaciones",
         description: "No encontramos publicaciones en español",
         withCategory: " en esta categoría",
         withTag: " con esta etiqueta",
-        checkOtherLanguage: "Puedes verificar si el contenido está disponible en otro idioma.",
-        viewInOtherLanguage: "Ver en otro idioma"
+        checkOtherLanguage: "Puedes verificar si el contenido está disponible en inglés.",
+        viewInOtherLanguage: "Ver en inglés"
       },
       pagination: {
         previous: "Anterior",
         next: "Siguiente",
         goToPage: "Ir a la página"
-      }
+      },
+      popupTitle: "¿Te Gustó el Artículo? Prueba Nuestra Herramienta",
+      popupDescription: "Encuentra tu vestido de novia ideal sin salir de casa con nuestra tecnología de IA.",
+      popupButton: "Quiero Probar",
+      popupLearnMore: "Saber Más",
+      popupImageAlt: "Novia usando Perfect Wedding",
+      popupCloseButton: "Cerrar"
     },
     anchors: {
       howItWorks: "como-funciona",
