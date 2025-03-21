@@ -344,17 +344,6 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   
   const post = postData.primary;
   
-  // Debug
-  console.log('===== POST DATA PARA ALTERNATES =====');
-  console.log(JSON.stringify({
-    availableLocales: Object.keys(postData.allLocales),
-    slugs: Object.entries(postData.allLocales).map(([locale, localePost]: [string, any]) => ({
-      locale,
-      slug: localePost?.fields?.slug
-    }))
-  }, null, 2));
-  console.log('===================================');
-  
   // Obter as traduções para o idioma atual
   const t = getTranslations(lang);
   
@@ -418,8 +407,6 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       });
     }
   });
-  
-  console.log('Links alternados gerados manualmente:', alternateLinks);
   
   // Preparar o objeto alternates para o metadata
   const alternatesObject: Record<string, string> = {
