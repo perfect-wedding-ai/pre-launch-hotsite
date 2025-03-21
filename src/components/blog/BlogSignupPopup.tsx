@@ -103,6 +103,16 @@ const BlogSignupPopup: React.FC<BlogSignupPopupProps> = ({ lang, t }) => {
                 >
                   <div>
                     <input 
+                      type="text" 
+                      id="popup-name" 
+                      name="FNAME" 
+                      placeholder={t.signup.form.name}
+                      required
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <input 
                       type="email" 
                       id="popup-email" 
                       name="EMAIL" 
