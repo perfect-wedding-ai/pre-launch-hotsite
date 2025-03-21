@@ -97,7 +97,9 @@ A integração com o Contentful utiliza os seguintes modelos de conteúdo:
       "type": "Symbol",
       "localized": true,
       "required": true,
-      "validations": []
+      "validations": [],
+      "disabled": false,
+      "omitted": false
     },
     {
       "id": "body",
@@ -139,7 +141,9 @@ A integração com o Contentful utiliza os seguintes modelos de conteúdo:
         {
           "nodes": {}
         }
-      ]
+      ],
+      "disabled": false,
+      "omitted": false
     },
     {
       "id": "image",
@@ -147,6 +151,9 @@ A integração com o Contentful utiliza os seguintes modelos de conteúdo:
       "type": "Link",
       "localized": true,
       "required": false,
+      "validations": [],
+      "disabled": false,
+      "omitted": false,
       "linkType": "Asset"
     },
     {
@@ -155,8 +162,12 @@ A integração com o Contentful utiliza os seguintes modelos de conteúdo:
       "type": "Array",
       "localized": true,
       "required": true,
+      "validations": [],
+      "disabled": false,
+      "omitted": false,
       "items": {
-        "type": "Symbol"
+        "type": "Symbol",
+        "validations": []
       }
     },
     {
@@ -164,7 +175,10 @@ A integração com o Contentful utiliza os seguintes modelos de conteúdo:
       "name": "Meta description",
       "type": "Text",
       "localized": true,
-      "required": false
+      "required": false,
+      "validations": [],
+      "disabled": false,
+      "omitted": false
     },
     {
       "id": "category",
@@ -172,6 +186,9 @@ A integração com o Contentful utiliza os seguintes modelos de conteúdo:
       "type": "Link",
       "localized": true,
       "required": false,
+      "validations": [],
+      "disabled": false,
+      "omitted": false,
       "linkType": "Entry"
     },
     {
@@ -179,14 +196,20 @@ A integração com o Contentful utiliza os seguintes modelos de conteúdo:
       "name": "Publish Date",
       "type": "Date",
       "localized": true,
-      "required": true
+      "required": true,
+      "validations": [],
+      "disabled": false,
+      "omitted": false
     },
     {
       "id": "lastUpdateDate",
       "name": "Last Update Date",
       "type": "Date",
       "localized": true,
-      "required": true
+      "required": true,
+      "validations": [],
+      "disabled": false,
+      "omitted": false
     },
     {
       "id": "recommendedPosts",
@@ -194,8 +217,12 @@ A integração com o Contentful utiliza os seguintes modelos de conteúdo:
       "type": "Array",
       "localized": false,
       "required": false,
+      "validations": [],
+      "disabled": false,
+      "omitted": false,
       "items": {
         "type": "Link",
+        "validations": [],
         "linkType": "Entry"
       }
     },
@@ -209,7 +236,9 @@ A integração com o Contentful utiliza os seguintes modelos de conteúdo:
         {
           "unique": true
         }
-      ]
+      ],
+      "disabled": false,
+      "omitted": false
     },
     {
       "id": "canonicalSlug",
@@ -221,7 +250,9 @@ A integração com o Contentful utiliza os seguintes modelos de conteúdo:
         {
           "unique": true
         }
-      ]
+      ],
+      "disabled": false,
+      "omitted": false
     },
     {
       "id": "canonicalLocale",
@@ -229,7 +260,9 @@ A integração com o Contentful utiliza os seguintes modelos de conteúdo:
       "type": "Symbol",
       "localized": false,
       "required": true,
-      "validations": []
+      "validations": [],
+      "disabled": false,
+      "omitted": false
     },
     {
       "id": "keywords",
@@ -237,11 +270,72 @@ A integração com o Contentful utiliza os seguintes modelos de conteúdo:
       "type": "Array",
       "localized": true,
       "required": true,
+      "validations": [],
+      "disabled": false,
+      "omitted": false,
       "items": {
-        "type": "Symbol"
+        "type": "Symbol",
+        "validations": []
       }
+    },
+    {
+      "id": "producedByAi",
+      "name": "producedByAI",
+      "type": "Boolean",
+      "localized": false,
+      "required": true,
+      "validations": [],
+      "disabled": false,
+      "omitted": false
     }
-  ]
+  ],
+  "sys": {
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "dzhp8jiscbno"
+      }
+    },
+    "id": "blogPost",
+    "type": "ContentType",
+    "createdAt": "2025-03-10T20:12:57.579Z",
+    "updatedAt": "2025-03-21T14:29:51.100Z",
+    "environment": {
+      "sys": {
+        "id": "master",
+        "type": "Link",
+        "linkType": "Environment"
+      }
+    },
+    "publishedVersion": 23,
+    "publishedAt": "2025-03-21T14:29:51.100Z",
+    "firstPublishedAt": "2025-03-10T20:12:57.926Z",
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "16aKC0qjpJnQ81qeHF89Kg"
+      }
+    },
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "16aKC0qjpJnQ81qeHF89Kg"
+      }
+    },
+    "publishedCounter": 12,
+    "version": 24,
+    "publishedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "16aKC0qjpJnQ81qeHF89Kg"
+      }
+    },
+    "urn": "crn:contentful:::content:spaces/dzhp8jiscbno/environments/master/content_types/blogPost"
+  }
 }
 ```
 

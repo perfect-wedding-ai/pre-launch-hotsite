@@ -693,7 +693,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             )}
             
             <div className="text-right text-xs text-gray-400 italic mt-8 mb-12 flex items-center justify-end">
-              {t.blog.aiDisclaimer}
+              {(post.fields as any).producedByAi ? t.blog.aiDisclaimer : t.blog.authoredByTeam}
               <i className="fas fa-heart text-pink-400 ml-2"></i>
             </div>
           </article>

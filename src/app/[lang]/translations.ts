@@ -157,6 +157,7 @@ export const translations = {
       postNotFoundDescription: "O post que você está procurando não existe ou foi removido.",
       relatedPosts: "Posts Relacionados",
       aiDisclaimer: "Este conteúdo foi criado com carinho pelo time Perfect Wedding com auxílio de inteligência artificial.",
+      authoredByTeam: "Este conteúdo foi criado com carinho pelo time Perfect Wedding.",
       canonicalNotice: "Este conteúdo está disponível em sua versão original:",
       notFound: {
         title: "Nenhum post encontrado",
@@ -398,6 +399,7 @@ export const translations = {
       postNotFoundDescription: "The post you are looking for does not exist or has been removed.",
       relatedPosts: "Related Posts",
       aiDisclaimer: "This content was created with care by the Perfect Wedding team with the assistance of artificial intelligence.",
+      authoredByTeam: "This content was created with care by the Perfect Wedding team.",
       canonicalNotice: "This content is available in its original version:",
       notFound: {
         title: "No posts found",
@@ -639,6 +641,7 @@ export const translations = {
       postNotFoundDescription: "La entrada que estás buscando no existe o ha sido eliminada.",
       relatedPosts: "Entradas Relacionadas",
       aiDisclaimer: "Este contenido fue creado con cariño por el equipo de Perfect Wedding con la ayuda de inteligencia artificial.",
+      authoredByTeam: "Este contenido fue creado con cariño por el equipo de Perfect Wedding.",
       canonicalNotice: "Este contenido está disponible en su versión original:",
       notFound: {
         title: "No se encontraron publicaciones",
