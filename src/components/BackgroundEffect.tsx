@@ -14,7 +14,7 @@ const BackgroundEffect: React.FC<BackgroundEffectProps> = ({
   // Determinar opacidade com base na prop ou na presença da classe
   const hasHighOpacity = highOpacity || className.includes('enhanced-opacity');
   const gradientOpacity = hasHighOpacity ? "0.35" : "0.2";
-  const blurOpacity = hasHighOpacity ? "0.35" : "0.15";
+  const blurOpacity = hasHighOpacity ? "0.35" : "0.15"; 
   
   return (
     <div className={`relative overflow-hidden ${className}`}>
