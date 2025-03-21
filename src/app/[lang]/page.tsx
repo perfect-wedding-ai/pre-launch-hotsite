@@ -93,7 +93,7 @@ export default function Home({ params }: { params: { lang: ValidLang } }) {
 
       <Header lang={lang} t={t} />
 
-      <BackgroundEffect className="pt-24 pb-16 bg-light-bg" highOpacity={false}>
+      <BackgroundEffect className="pt-24 pb-16 bg-light-bg">
         <div className="container relative z-[1]">
           <div className="flex flex-col md:flex-row items-center justify-between relative z-10">
             <div className="hero-content w-full md:flex-1 md:pr-12 mb-8 md:mb-0">

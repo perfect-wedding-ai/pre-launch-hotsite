@@ -3,18 +3,14 @@ import React from 'react';
 interface BackgroundEffectProps {
   className?: string;
   children?: React.ReactNode;
-  highOpacity?: boolean;
 }
 
 const BackgroundEffect: React.FC<BackgroundEffectProps> = ({ 
   className = '', 
-  children,
-  highOpacity = false
+  children
 }) => {
-  // Usar apenas a prop highOpacity para determinar a opacidade
-  const hasHighOpacity = highOpacity; // Mantendo apenas highOpacity como determinante
-  const gradientOpacity = hasHighOpacity ? "0.35" : "0.2";
-  const blurOpacity = hasHighOpacity ? "0.35" : "0.15";
+  const gradientOpacity = "0.2";
+  const blurOpacity = "0.15";
   
   return (
     <div className={`relative overflow-hidden ${className}`}>

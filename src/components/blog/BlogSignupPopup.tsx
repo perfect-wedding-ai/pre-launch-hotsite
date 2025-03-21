@@ -59,7 +59,7 @@ const BlogSignupPopup: React.FC<BlogSignupPopupProps> = ({ lang, t }) => {
   return (
     <div className="fixed bottom-6 left-0 right-0 mx-auto max-w-xl z-50 blog-popup-appear">
       <div className="bg-white rounded-2xl shadow-xl border border-pink-100 overflow-hidden">
-        <BackgroundEffect className="rounded-2xl" highOpacity={false}>
+        <BackgroundEffect className="rounded-2xl">
           <div className="p-6 relative">
             <button 
               onClick={closePopup}
