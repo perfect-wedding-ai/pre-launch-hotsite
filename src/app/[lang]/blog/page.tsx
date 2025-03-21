@@ -29,14 +29,37 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
   const title = t.blog.title;
   const description = t.blog.subtitle;
   
+  // Base URL para links
+  const baseUrl = 'https://perfectwedding.ai';
+  
+  // Gerar links alternates apenas para PT e EN (sem ES)
+  const alternateLanguages: Record<string, string> = {};
+  
+  if (lang !== 'pt') {
+    alternateLanguages['pt-BR'] = `${baseUrl}/pt/blog`;
+  }
+  
+  if (lang !== 'en') {
+    alternateLanguages['en-US'] = `${baseUrl}/en/blog`;
+  }
+  
   return {
     title,
     description,
+    // Adicionar alternates apenas para PT e EN
+    alternates: {
+      canonical: `${baseUrl}/${lang}/blog`,
+      languages: alternateLanguages,
+      // x-default para a versão em português
+      types: {
+        'x-default': `${baseUrl}/pt/blog`
+      }
+    },
     openGraph: {
       title,
       description,
       type: 'website',
-      url: `https://perfectwedding.ai/${lang}/blog`,
+      url: `${baseUrl}/${lang}/blog`,
       images: [
         {
           url: 'https://perfectwedding.ai/images/og-image.jpg',
