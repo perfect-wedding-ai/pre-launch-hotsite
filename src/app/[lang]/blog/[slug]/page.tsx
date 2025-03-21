@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
-import { getBlogPostBySlug, getRelatedPosts, getContentfulImageUrl } from '@/lib/contentful/client';
+import { getBlogPostBySlug, getRelatedPosts, getContentfulImageUrl, getBlogPostBySlugAllLocales } from '@/lib/contentful/client';
 import { Locale } from '@/config/i18n.config';
 import MarkdownRenderer from '@/components/blog/MarkdownRenderer';
 import BlogHeader from '@/components/blog/BlogHeader';
@@ -14,6 +14,8 @@ import { getTranslations, getBaseLocale } from '../../translations';
 import { Document } from '@contentful/rich-text-types';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
+import { generateAlternateLinks, generateCanonicalUrl } from '@/components/blog/AlternateLinksGenerator';
+import { i18n } from '@/config/i18n.config';
 
 interface BlogPostPageProps {
   params: {
@@ -328,16 +330,32 @@ function richTextToString(document: Document): string {
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { lang, slug } = params;
   
-  const post = await getBlogPostBySlug(slug, lang);
+  // Buscar post em todos os locales disponíveis
+  const postData = await getBlogPostBySlugAllLocales(slug, lang);
   
-  // Obter as traduções para o idioma atual
-  const t = getTranslations(lang);
-  
-  if (!post) {
+  if (!postData || !postData.primary) {
+    // Obter as traduções para o idioma atual
+    const t = getTranslations(lang);
     return {
       title: t.blog.postNotFound,
     };
   }
+  
+  const post = postData.primary;
+  
+  // Debug
+  console.log('===== POST DATA PARA ALTERNATES =====');
+  console.log(JSON.stringify({
+    availableLocales: Object.keys(postData.allLocales),
+    slugs: Object.entries(postData.allLocales).map(([locale, localePost]: [string, any]) => ({
+      locale,
+      slug: localePost?.fields?.slug
+    }))
+  }, null, 2));
+  console.log('===================================');
+  
+  // Obter as traduções para o idioma atual
+  const t = getTranslations(lang);
   
   const { title, metadescription, image, category, tags = [] } = post.fields;
   // Acessar canonicalSlug e canonicalLocale usando type assertion
@@ -368,18 +386,65 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       (post.fields as any).keywords : [])
   ].filter(Boolean);
   
-  // Determinar a URL canônica
-  const canonicalUrl = canonicalSlug 
-    ? `https://perfectwedding.ai/${canonicalLocale}/blog/${canonicalSlug}`
-    : `https://perfectwedding.ai/${lang}/blog/${slug}`;
+  // Base URL para links
+  const baseUrl = 'https://perfectwedding.ai';
+  
+  // Determinar a URL canônica usando nosso componente
+  const canonicalUrl = generateCanonicalUrl({
+    baseUrl,
+    canonicalLocale,
+    canonicalSlug: canonicalSlug || slug
+  });
+  
+  // Construir manualmente os links alternates baseado nos dados de todos os locales
+  const alternateLinks = [];
+  
+  // Adicionar link x-default
+  alternateLinks.push({
+    hrefLang: 'x-default',
+    href: canonicalUrl
+  });
+  
+  // Adicionar links para cada locale disponível
+  Object.entries(postData.allLocales).forEach(([locale, localePost]: [string, any]) => {
+    if (localePost && localePost.fields && localePost.fields.slug) {
+      const localeSlug = localePost.fields.slug;
+      const hrefLangCode = locale === 'pt' ? 'pt-BR' : locale === 'en' ? 'en-US' : locale === 'es' ? 'es-ES' : locale;
+      
+      alternateLinks.push({
+        hrefLang: hrefLangCode,
+        href: `${baseUrl}/${locale}/blog/${localeSlug}`
+      });
+    }
+  });
+  
+  console.log('Links alternados gerados manualmente:', alternateLinks);
+  
+  // Preparar o objeto alternates para o metadata
+  const alternatesObject: Record<string, string> = {
+    canonical: canonicalUrl
+  };
+  
+  // Adicionar os links alternates
+  const languages: Record<string, string> = {};
+  
+  alternateLinks.forEach(link => {
+    if (link.hrefLang === 'x-default') {
+      alternatesObject['x-default'] = link.href;
+    } else {
+      languages[link.hrefLang] = link.href;
+    }
+  });
   
   return {
     title: `${title} | ${t.blog.title}`,
     description: enhancedDescription,
     keywords: keywordsArr.length > 0 ? keywordsArr : undefined,
-    // Adicionar URL canônica nos metadados
+    // Adicionar URL canônica e alternates nos metadados
     alternates: {
       canonical: canonicalUrl,
+      languages,
+      ...(alternatesObject['x-default'] ? { 'x-default': alternatesObject['x-default'] } : {})
     },
     openGraph: {
       title: `${title} | ${t.blog.title}`,

@@ -283,4 +283,51 @@ export const getContentfulImageUrl = (assetId: string, options = {}) => {
   
   // Construir URLs simples sem parâmetros (testamos vários formatos) 
   return `https://images.ctfassets.net/${spaceId}/${assetId}/image.${imageOptions.format}?${params.toString()}`;
+};
+
+export const getBlogPostBySlugAllLocales = async (slug: string, locale: Locale): Promise<any> => {
+  try {
+    // Buscar post no locale solicitado
+    const primaryPost = await getBlogPostBySlug(slug, locale);
+    
+    if (!primaryPost) {
+      return null;
+    }
+    
+    // Identificar o ID do post
+    const postId = primaryPost.sys.id;
+    
+    // Buscar o mesmo post em todos os locales disponíveis
+    const postInAllLocales = {};
+    for (const loc of ['pt', 'en', 'es']) {
+      try {
+        if (loc === locale) {
+          (postInAllLocales as any)[loc] = primaryPost;
+        } else {
+          // Buscar diretamente pelo ID, não pelo slug, pois o slug pode ser diferente
+          const queryParams = {
+            content_type: 'blogPost',
+            'sys.id': postId,
+            locale: loc,
+            include: 2,
+          };
+          
+          const response = await getClient().getEntries(queryParams);
+          if (response.items.length > 0) {
+            (postInAllLocales as any)[loc] = response.items[0];
+          }
+        }
+      } catch (e) {
+        console.error(`Erro ao buscar post em ${loc}:`, e);
+      }
+    }
+    
+    return {
+      primary: primaryPost,
+      allLocales: postInAllLocales
+    };
+  } catch (error) {
+    console.error(`Error fetching blog post with slug ${slug} in all locales:`, error);
+    return null;
+  }
 }; 
