@@ -8,6 +8,7 @@ import { metadataTranslations, getMetadataTranslations } from './metadata'
 import { Locale, i18n } from '@/config/i18n.config'
 import Providers from '../providers'
 import CookieConsent from '@/components/CookieConsent'
+import { getBaseUrl, siteConfig } from '@/lib/utils/siteConfig'
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -32,9 +33,10 @@ export async function generateMetadata({ params }: { params: { lang: ValidLang }
   
   const title = metadata.title;
   const description = metadata.description;
+  const baseUrl = getBaseUrl();
   
   return {
-    metadataBase: new URL('https://perfectwedding.ai'),
+    metadataBase: new URL(baseUrl),
     title,
     description,
     keywords: metadata.keywords,
@@ -42,31 +44,49 @@ export async function generateMetadata({ params }: { params: { lang: ValidLang }
       title: metadata.ogTitle || title,
       description: metadata.ogDescription || description,
       type: 'website',
-      url: 'https://perfectwedding.ai',
+      url: baseUrl,
       images: [
         {
-          url: '/assets/images/og-image.jpg',
+          url: `${baseUrl}/assets/images/og-image.jpg`,
           width: 1200,
           height: 630,
           alt: 'Perfect Wedding | AI Virtual Dress Try-On',
         },
       ],
     },
-    robots: 'index, follow',
+    robots: {
+      index: process.env.NODE_ENV === 'production',
+      follow: process.env.NODE_ENV === 'production',
+      googleBot: {
+        index: process.env.NODE_ENV === 'production',
+        follow: process.env.NODE_ENV === 'production',
+      },
+    },
     icons: {
       icon: '/assets/icons/favicon.ico',
       shortcut: '/assets/icons/favicon.ico',
     },
     alternates: {
-      canonical: `/${lang}`,
+      canonical: `${baseUrl}/${lang}`,
       languages: {
-        'pt-BR': '/pt',
-        'en-US': '/en',
-        'es-ES': '/es',
+        'x-default': `${baseUrl}/pt`,
+        'pt-BR': `${baseUrl}/pt`,
+        'en-US': `${baseUrl}/en`,
       },
     },
+    verification: {
+      google: process.env.GOOGLE_SITE_VERIFICATION || '',
+    },
+    applicationName: siteConfig.name,
+    referrer: 'origin-when-cross-origin',
+    creator: siteConfig.name,
+    publisher: siteConfig.name,
+    formatDetection: {
+      email: false,
+      telephone: false,
+    },
+    category: 'planejamento de casamentos',
     other: {
-      'google-site-verification': process.env.GOOGLE_SITE_VERIFICATION || '',
       schemaWebsite: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "WebSite",
@@ -92,7 +112,20 @@ export async function generateMetadata({ params }: { params: { lang: ValidLang }
             "text": q.answer
           }
         }))
-      })
+      }),
+      'schema:organization': JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": siteConfig.name,
+        "url": `${baseUrl}/${lang}`,
+        "logo": `${baseUrl}/images/logo.png`,
+        "sameAs": ["https://www.facebook.com/perfectweddingai", "https://www.instagram.com/perfectweddingai/"],
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": `${baseUrl}/${lang}/search?q={search_term_string}`,
+          "query-input": "required name=search_term_string"
+        }
+      }),
     },
     twitter: {
       card: 'summary_large_image',

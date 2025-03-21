@@ -1,5 +1,6 @@
 import { Locale } from '@/config/i18n.config';
 import { BlogPost } from '@/lib/contentful/types';
+import { getBaseUrl } from '@/lib/utils/siteConfig';
 
 export interface AlternateLink {
   hrefLang: string;
@@ -7,7 +8,7 @@ export interface AlternateLink {
 }
 
 interface GenerateCanonicalUrlParams {
-  baseUrl: string;
+  baseUrl?: string;
   canonicalLocale: string;
   canonicalSlug: string;
 }
@@ -32,7 +33,8 @@ export function generateCanonicalUrl({
   canonicalLocale, 
   canonicalSlug 
 }: GenerateCanonicalUrlParams): string {
-  return `${baseUrl}/${canonicalLocale}/blog/${canonicalSlug}`;
+  const siteBaseUrl = baseUrl || getBaseUrl();
+  return `${siteBaseUrl}/${canonicalLocale}/blog/${canonicalSlug}`;
 }
 
 // Estende a interface BlogPost para incluir campos necessários para o hreflang
@@ -45,7 +47,7 @@ interface BlogPostWithCanonical extends Omit<BlogPost, 'fields'> {
 }
 
 interface GenerateAlternateLinksParams {
-  baseUrl: string;
+  baseUrl?: string;
   blogPost: BlogPostWithCanonical;
   availableLocales: Locale[];
 }
@@ -102,10 +104,11 @@ export function generateAlternateLinks({
 }: GenerateAlternateLinksParams): AlternateLink[] {
   const alternateLinks: AlternateLink[] = [];
   const { canonicalSlug, canonicalLocale } = blogPost.fields;
+  const siteBaseUrl = baseUrl || getBaseUrl();
   
   // URL canônica que será usada também como x-default
   const canonicalUrl = generateCanonicalUrl({
-    baseUrl,
+    baseUrl: siteBaseUrl,
     canonicalLocale,
     canonicalSlug
   });
@@ -125,7 +128,7 @@ export function generateAlternateLinks({
     if (localizedSlug) {
       alternateLinks.push({
         hrefLang: getHrefLangCode(locale),
-        href: `${baseUrl}/${locale}/blog/${localizedSlug}`
+        href: `${siteBaseUrl}/${locale}/blog/${localizedSlug}`
       });
     }
   });

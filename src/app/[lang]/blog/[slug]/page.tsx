@@ -16,6 +16,7 @@ import Link from 'next/link';
 import Footer from '@/components/Footer';
 import { generateAlternateLinks, generateCanonicalUrl } from '@/components/blog/AlternateLinksGenerator';
 import { i18n } from '@/config/i18n.config';
+import { getBaseUrl, siteConfig } from '@/lib/utils/siteConfig';
 
 interface BlogPostPageProps {
   params: {
@@ -387,7 +388,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   ].filter(Boolean);
   
   // Base URL para links
-  const baseUrl = 'https://perfectwedding.ai';
+  const baseUrl = getBaseUrl();
   
   // Determinar a URL canônica usando nosso componente
   const canonicalUrl = generateCanonicalUrl({
@@ -541,8 +542,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   
   // Determinar a URL canônica
   const canonicalUrl = canonicalSlug 
-    ? `https://perfectwedding.ai/${canonicalLocale}/blog/${canonicalSlug}`
-    : `https://perfectwedding.ai/${lang}/blog/${slug}`;
+    ? `${getBaseUrl()}/${canonicalLocale}/blog/${canonicalSlug}`
+    : `${getBaseUrl()}/${lang}/blog/${slug}`;
   
   // Estruturar dados para JSON-LD
   const jsonLd = {
@@ -554,15 +555,15 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     'dateModified': lastUpdateDate,
     'author': {
       '@type': 'Organization',
-      'name': 'Perfect Wedding',
-      'url': 'https://perfectwedding.ai',
+      'name': siteConfig.name,
+      'url': getBaseUrl(),
     },
     'publisher': {
       '@type': 'Organization',
-      'name': 'Perfect Wedding',
+      'name': siteConfig.name,
       'logo': {
         '@type': 'ImageObject',
-        'url': 'https://perfectwedding.ai/images/logo.png',
+        'url': `${getBaseUrl()}${siteConfig.logoUrl}`,
       },
     },
     'description': post.fields.metadescription || '',

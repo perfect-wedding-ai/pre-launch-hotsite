@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { getBaseLocale } from './translations'
+import { getBaseUrl, siteConfig } from '@/lib/utils/siteConfig'
 
 type MetadataTranslations = {
   [key in 'pt' | 'en' | 'es']: {
@@ -13,25 +14,25 @@ type MetadataTranslations = {
 
 export const metadataTranslations: MetadataTranslations = {
   pt: {
-    title: 'Perfect Wedding – Experimente Vestidos de Noiva Virtualmente',
-    description: 'Experimente vestidos de noiva virtualmente com nossa tecnologia de IA. Descubra o vestido dos seus sonhos sem sair de casa, economize tempo e viva uma experiência inovadora.',
-    keywords: 'vestido de noiva virtual, experiência com IA para noivas, teste de vestidos online, prova virtual de vestidos de noiva, vestido dos sonhos online, simulação de vestidos com inteligência artificial, ensaio virtual de vestidos, descubra seu vestido ideal, tecnologia para noivas, ateliê virtual de vestidos',
-    ogTitle: 'Vestido de Noiva Virtual | Experimente com IA | Perfect Wedding',
-    ogDescription: 'Experimente vestidos de noiva virtualmente com nossa tecnologia de IA. Descubra o vestido dos seus sonhos sem sair de casa!'
+    title: 'Perfect Wedding AI - Planejamento de Casamento Inteligente',
+    description: 'Um assistente de IA para tornar o planejamento de casamento mais fácil e personalizado. Automatize tarefas, receba recomendações e crie o casamento dos seus sonhos.',
+    keywords: 'casamento IA, planejamento de casamento, IA para casamentos, assistente de casamento, organização de casamento, perfectwedding ai, noiva',
+    ogTitle: 'Perfect Wedding AI - Revolucionando o Planejamento de Casamento com IA',
+    ogDescription: 'Um assistente inteligente que ajuda casais a planejar o casamento perfeito com recomendações personalizadas, gerenciamento de tarefas e recursos exclusivos.'
   },
   en: {
-    title: 'Perfect Wedding – Try On Wedding Dresses Virtually',
-    description: 'Try on wedding dresses virtually with our AI technology. Find your dream dress without leaving home, save time and experience an innovative way to find your dress.',
-    keywords: 'virtual wedding dress, AI bridal experience, online dress fitting, virtual wedding dress try-on, dream dress online, AI dress simulation, virtual dress fitting, find your ideal dress, bridal technology, virtual bridal boutique',
-    ogTitle: 'Virtual Wedding Dress | Try On with AI | Perfect Wedding',
-    ogDescription: 'Try on wedding dresses virtually with our AI technology. Find your dream dress without leaving home!'
+    title: 'Perfect Wedding AI - Smart Wedding Planning',
+    description: 'An AI assistant to make wedding planning easier and personalized. Automate tasks, get recommendations, and create the wedding of your dreams.',
+    keywords: 'wedding AI, wedding planning, AI for weddings, wedding assistant, wedding organization, perfectwedding ai, bride',
+    ogTitle: 'Perfect Wedding AI - Revolutionizing Wedding Planning with AI',
+    ogDescription: 'An intelligent assistant that helps couples plan the perfect wedding with personalized recommendations, task management, and exclusive resources.'
   },
   es: {
-    title: 'Perfect Wedding – Prueba Vestidos de Novia Virtualmente',
-    description: 'Prueba vestidos de novia virtualmente con nuestra tecnología de IA. Encuentra el vestido de tus sueños sin salir de casa, ahorra tiempo y vive una experiencia innovadora.',
-    keywords: 'vestido de novia virtual, experiencia con IA para novias, prueba de vestidos online, prueba virtual de vestidos de novia, vestido de los sueños online, simulación de vestidos con inteligencia artificial, prueba virtual de vestidos, encuentra tu vestido ideal, tecnología para novias, boutique virtual de novias',
-    ogTitle: 'Vestido de Novia Virtual | Prueba con IA | Perfect Wedding',
-    ogDescription: '¡Prueba vestidos de novia virtualmente con nuestra tecnología de IA. Encuentra el vestido de tus sueños sin salir de casa!'
+    title: 'Perfect Wedding AI - Planificación Inteligente de Bodas',
+    description: 'Un asistente de IA para hacer la planificación de bodas más fácil y personalizada. Automatice tareas, obtenga recomendaciones y cree la boda de sus sueños.',
+    keywords: 'IA de bodas, planificación de bodas, IA para bodas, asistente de bodas, organización de bodas, perfectwedding ai, novia',
+    ogTitle: 'Perfect Wedding AI - Revolucionando la Planificación de Bodas con IA',
+    ogDescription: 'Un asistente inteligente que ayuda a las parejas a planificar la boda perfecta con recomendaciones personalizadas, gestión de tareas y recursos exclusivos.'
   }
 }
 
@@ -87,17 +88,19 @@ export const metadata: Metadata = {
   },
 }
 
+type ValidLang = 'pt' | 'en' | 'es'
+
 export function getMetadataTranslations(locale: string | undefined) {
   if (!locale) {
     // Se o locale não for fornecido, usar o idioma padrão
-    const DEFAULT_LOCALE = process.env.NEXT_PUBLIC_DEFAULT_LOCALE || 'en';
-    return metadataTranslations[DEFAULT_LOCALE as keyof typeof metadataTranslations] || metadataTranslations.en;
+    const DEFAULT_LOCALE = process.env.NEXT_PUBLIC_DEFAULT_LOCALE || 'en'
+    return metadataTranslations[DEFAULT_LOCALE as keyof typeof metadataTranslations] || metadataTranslations.en
   }
   
   // Extrair o idioma base (ex: 'pt-BR' -> 'pt')
-  const baseLocale = getBaseLocale(locale) as keyof typeof metadataTranslations;
+  const baseLocale = getBaseLocale(locale) as keyof typeof metadataTranslations
   
   // Retornar as traduções para o idioma ou usar o idioma padrão como fallback
-  const DEFAULT_LOCALE = process.env.NEXT_PUBLIC_DEFAULT_LOCALE || 'en';
-  return metadataTranslations[baseLocale] || metadataTranslations[DEFAULT_LOCALE as keyof typeof metadataTranslations] || metadataTranslations.en;
+  const DEFAULT_LOCALE = process.env.NEXT_PUBLIC_DEFAULT_LOCALE || 'en'
+  return metadataTranslations[baseLocale] || metadataTranslations[DEFAULT_LOCALE as keyof typeof metadataTranslations] || metadataTranslations.en
 } 

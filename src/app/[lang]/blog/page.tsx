@@ -9,6 +9,7 @@ import Header from '@/components/Header';
 import { getTranslations, getBaseLocale } from '../translations';
 import BackgroundEffect from '@/components/BackgroundEffect';
 import Footer from '@/components/Footer';
+import { getBaseUrl, siteConfig } from '@/lib/utils/siteConfig';
 
 interface BlogPageProps {
   params: {
@@ -30,7 +31,7 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
   const description = t.blog.subtitle;
   
   // Base URL para links
-  const baseUrl = 'https://perfectwedding.ai';
+  const baseUrl = getBaseUrl();
   
   // Gerar links alternates apenas para PT e EN (sem ES)
   const alternateLanguages: Record<string, string> = {};
@@ -62,7 +63,7 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
       url: `${baseUrl}/${lang}/blog`,
       images: [
         {
-          url: 'https://perfectwedding.ai/images/og-image.jpg',
+          url: `${baseUrl}${siteConfig.ogImage}`,
           width: 1200,
           height: 630,
           alt: 'Perfect Wedding Blog',
@@ -73,7 +74,7 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
       card: 'summary_large_image',
       title,
       description,
-      images: ['https://perfectwedding.ai/images/og-image.jpg'],
+      images: [`${baseUrl}${siteConfig.ogImage}`],
     },
   };
 }
