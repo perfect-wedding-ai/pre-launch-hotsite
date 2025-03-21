@@ -600,7 +600,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <BlogHeader 
             locale={lang} 
             title={title}
-            showBackLink
             canonicalSlug={canonicalSlug}
             currentSlug={slug}
             canonicalLocale={canonicalLocale}
@@ -697,6 +696,29 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <i className="fas fa-heart text-pink-400 ml-2"></i>
             </div>
           </article>
+          
+          <div className="max-w-4xl mx-auto mb-10 mt-6">
+            <Link 
+              href={`/${lang}/blog`}
+              className="inline-flex items-center text-pink-700 hover:text-pink-900 transition-colors"
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className="h-4 w-4 mr-1" 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M15 19l-7-7 7-7" 
+                />
+              </svg>
+              {t.blog.backToHome}
+            </Link>
+          </div>
           
           {relatedPosts.length > 0 && (
             <div className="bg-white rounded-lg overflow-hidden mb-8 shadow-sm">
