@@ -38,6 +38,16 @@ export function redirectToLanguage(locale: Locale): void {
   // Salva a preferência de idioma antes de redirecionar
   saveLanguagePreference(locale)
   
+  // Verifica se há links alternantes na página
+  const alternateLinks = getAlternateLinks()
+  const targetLang = locale === 'pt' ? 'pt-BR' : locale === 'en' ? 'en-US' : locale === 'es' ? 'es-ES' : locale
+  
+  // Se encontrar um link alternante para o idioma desejado, usa-o
+  if (alternateLinks[targetLang]) {
+    window.location.href = alternateLinks[targetLang]
+    return
+  }
+  
   // Se o primeiro segmento for um dos idiomas suportados, substitui-o
   if (['pt', 'en', 'es'].includes(currentLocale)) {
     const newPath = '/' + locale + path.slice(3) // Remove o idioma atual e adiciona o novo
@@ -46,4 +56,25 @@ export function redirectToLanguage(locale: Locale): void {
     // Se não houver prefixo de idioma, adiciona-o
     window.location.href = '/' + locale + path
   }
+}
+
+// Função para obter links alternantes das meta tags da página
+function getAlternateLinks(): Record<string, string> {
+  if (typeof window === 'undefined') return {}
+  
+  const links: Record<string, string> = {}
+  
+  // Procura por meta tags link[rel="alternate"] com hreflang
+  const alternateLinkTags = document.querySelectorAll('link[rel="alternate"][hreflang]')
+  
+  alternateLinkTags.forEach((link) => {
+    if (link instanceof HTMLLinkElement) {
+      const hreflang = link.getAttribute('hreflang')
+      if (hreflang) {
+        links[hreflang] = link.href
+      }
+    }
+  })
+  
+  return links
 } 
