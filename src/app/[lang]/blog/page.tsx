@@ -251,7 +251,7 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
             </div>
             
             {/* Posts do blog - em telas grandes ocupam 3 colunas */}
-            <div className="lg:col-span-3 order-2 lg:order-2">
+            <div className={`${postsResponse.items.length === 0 ? 'col-span-full' : 'lg:col-span-3'} order-2 lg:order-2`}>
               {postsResponse.items.length > 0 ? (
                 <>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8">
@@ -268,49 +268,53 @@ export default async function BlogPage({ params, searchParams }: BlogPageProps) 
                   />
                 </>
               ) : (
-                <div className="text-center py-12">
-                  <h2 className="text-2xl font-playfair font-bold text-gray-900 mb-4">
-                    {category_name ? 
-                      `${t.blog.notFound.title} "${category_name}"` : 
-                      t.blog.notFound.title}
-                  </h2>
-                  <p className="text-gray-600 mb-4">
-                    {t.blog.notFound.description}
-                    {category ? t.blog.notFound.withCategory : ''}
-                    {category_name ? t.blog.notFound.withCategory : ''}
-                    {tag ? t.blog.notFound.withTag : ''}
-                  </p>
-                  <p className="text-gray-600">
-                    {t.blog.notFound.checkOtherLanguage}
-                  </p>
-                  <div className="mt-6">
-                    <a 
-                      href={`/${lang}/blog`} 
-                      className="inline-block bg-primary text-white py-2 px-6 mr-4 rounded-md hover:bg-primary-dark transition"
-                    >
-                      {"Ver todos os posts"}
-                    </a>
-                    <a 
-                      href={`/${baseLocale === 'pt' ? 'en' : 'pt'}/blog`} 
-                      className="inline-block bg-gray-200 text-gray-800 py-2 px-6 rounded-md hover:bg-gray-300 transition"
-                    >
-                      {t.blog.notFound.viewInOtherLanguage}
-                    </a>
+                <div className="flex justify-center items-center">
+                  <div className="max-w-xl w-full text-center border border-gray-200 rounded-lg p-8 shadow-sm bg-white/80">
+                    <h2 className="text-2xl font-playfair font-bold text-gray-900 mb-4">
+                      {category_name ? 
+                        `${t.blog.notFound.title} "${category_name}"` : 
+                        t.blog.notFound.title}
+                    </h2>
+                    <p className="text-gray-600 mb-4">
+                      {t.blog.notFound.description}
+                      {category ? t.blog.notFound.withCategory : ''}
+                      {category_name ? t.blog.notFound.withCategory : ''}
+                      {tag ? t.blog.notFound.withTag : ''}
+                    </p>
+                    <p className="text-gray-600">
+                      {t.blog.notFound.checkOtherLanguage}
+                    </p>
+                    <div className="mt-6 flex justify-center items-center space-x-4">
+                      <a 
+                        href={`/${lang}/blog`} 
+                        className="bg-primary text-white py-2 px-6 rounded-md hover:bg-primary-dark transition"
+                      >
+                        {"Ver todos os posts"}
+                      </a>
+                      <a 
+                        href={`/${baseLocale === 'pt' ? 'en' : 'pt'}/blog`} 
+                        className="bg-gray-200 text-gray-800 py-2 px-6 rounded-md hover:bg-gray-300 transition"
+                      >
+                        {t.blog.notFound.viewInOtherLanguage}
+                      </a>
+                    </div>
                   </div>
                 </div>
               )}
             </div>
             
             {/* Filtros - visíveis apenas em telas pequenas (abaixo de lg) após os posts */}
-            <div className="lg:hidden col-span-1 order-3 mt-8">
-              <BlogFilters
-                categories={categoriesResponse.items}
-                tags={uniqueTags}
-                locale={lang}
-                activeCategory={categoryId}
-                activeTag={tag}
-              />
-            </div>
+            {postsResponse.items.length > 0 && (
+              <div className="lg:hidden col-span-1 order-3 mt-8">
+                <BlogFilters
+                  categories={categoriesResponse.items}
+                  tags={uniqueTags}
+                  locale={lang}
+                  activeCategory={categoryId}
+                  activeTag={tag}
+                />
+              </div>
+            )}
           </div>
         </div>
       </BackgroundEffect>
