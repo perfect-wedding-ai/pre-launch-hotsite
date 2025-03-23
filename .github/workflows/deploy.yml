@@ -75,6 +75,7 @@ jobs:
           # Contentful - variáveis não secretas
           netlify env:set CONTENTFUL_SPACE_ID "${{ vars.CONTENTFUL_SPACE_ID }}"
           netlify env:set CONTENTFUL_ENVIRONMENT_ID "${{ vars.CONTENTFUL_ENVIRONMENT_ID }}"
+          netlify env:set CONTENTFUL_PREVIEW "${{ vars.CONTENTFUL_PREVIEW }}"
           
           # Contentful - variáveis secretas (com contexto production obrigatório)
           netlify env:set CONTENTFUL_ACCESS_TOKEN "${{ secrets.CONTENTFUL_ACCESS_TOKEN }}" --secret --context production

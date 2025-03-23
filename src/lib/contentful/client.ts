@@ -93,6 +93,11 @@ function transformManagementEntryToDeliveryFormat(item: any, locale: string): an
 export const getClient = (preview: boolean = false) => {
   const isDraftEnvironment = process.env.CONTENTFUL_ENVIRONMENT_ID === 'draft';
   
+  // Verificar se deve usar a API de preview
+  const isPreviewMode = preview || 
+                        process.env.CONTENTFUL_PREVIEW === 'true' || 
+                        process.env.NODE_ENV === 'development';
+  
   if (isDraftEnvironment) {
     // Retorna um objeto que simula a API do cliente de entrega,
     // mas usa a API de gerenciamento internamente
@@ -116,8 +121,8 @@ export const getClient = (preview: boolean = false) => {
     };
   }
   
-  // Para ambiente de produção, use o cliente normal
-  return preview ? previewClient : contentfulClient;
+  // Use o cliente de preview apenas quando explicitamente solicitado ou em desenvolvimento
+  return isPreviewMode ? previewClient : contentfulClient;
 };
 
 export const getBlogPosts = async (locale: Locale, options: { limit?: number; skip?: number; tag?: string; category?: string } = {}) => {
@@ -136,7 +141,12 @@ export const getBlogPosts = async (locale: Locale, options: { limit?: number; sk
       ...(category && { 'fields.category.sys.id': category }),
     };
     
-    const response = await getClient().getEntries(queryParams);
+    // Determinar se estamos em ambiente de produção
+    const isProduction = process.env.NODE_ENV === 'production' && process.env.CONTENTFUL_PREVIEW !== 'true';
+    
+    // Use o cliente adequado, garantindo que em produção não usamos preview
+    const client = isProduction ? contentfulClient : getClient();
+    const response = await client.getEntries(queryParams);
     
     // Apenas garantir que os posts tenham pelo menos um título
     let filteredItems = response.items.filter((item: any) => {
