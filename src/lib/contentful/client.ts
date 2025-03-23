@@ -94,35 +94,62 @@ export const getClient = (preview: boolean = false) => {
   const isDraftEnvironment = process.env.CONTENTFUL_ENVIRONMENT_ID === 'draft';
   
   // Verificar se deve usar a API de preview
+  // Respeitar CONTENTFUL_PREVIEW=false mesmo em desenvolvimento
   const isPreviewMode = preview || 
-                        process.env.CONTENTFUL_PREVIEW === 'true' || 
-                        process.env.NODE_ENV === 'development';
+                        (process.env.CONTENTFUL_PREVIEW === 'true') || 
+                        (process.env.NODE_ENV === 'development' && process.env.CONTENTFUL_PREVIEW !== 'false');
   
-  if (isDraftEnvironment) {
-    // Retorna um objeto que simula a API do cliente de entrega,
-    // mas usa a API de gerenciamento internamente
-    return {
-      getEntries: async (query: any) => {
-        try {
-          const environment = await getManagementEnvironment();
-          const entries = await environment.getEntries(query);
-          const locale = query.locale || 'en'; // Usar português como fallback
-          
-          // Transforma os itens para o formato esperado
-          return {
-            ...entries,
-            items: entries.items.map(item => transformManagementEntryToDeliveryFormat(item, locale))
-          };
-        } catch (error) {
-          console.error('Error fetching entries with management API:', error);
-          throw error;
+  console.log('🔍 Contentful Client Config:', { 
+    preview: !!preview,
+    isDraftEnvironment,
+    isPreviewMode,
+    CONTENTFUL_PREVIEW: process.env.CONTENTFUL_PREVIEW,
+    NODE_ENV: process.env.NODE_ENV
+  });
+  
+  // Verificar se o ambiente está configurado corretamente
+  try {
+    // Se o ambiente for draft, usar a Content Management API
+    if (isDraftEnvironment) {
+      console.log('🔧 Usando Content Management API (ambiente draft)');
+      // Retorna um objeto que simula a API do cliente de entrega,
+      // mas usa a API de gerenciamento internamente
+      return {
+        getEntries: async (query: any) => {
+          try {
+            const environment = await getManagementEnvironment();
+            const entries = await environment.getEntries(query);
+            const locale = query.locale || 'en'; // Usar português como fallback
+            
+            // Transforma os itens para o formato esperado
+            return {
+              ...entries,
+              items: entries.items.map(item => transformManagementEntryToDeliveryFormat(item, locale))
+            };
+          } catch (error) {
+            console.error('Error fetching entries with management API:', error);
+            // Fallback para o contentfulClient em caso de erro
+            console.log('Fallback to contentful client due to error');
+            return contentfulClient.getEntries(query);
+          }
         }
-      }
-    };
+      };
+    }
+    
+    // Use o cliente de preview apenas quando explicitamente solicitado ou em desenvolvimento (se permitido)
+    if (isPreviewMode) {
+      console.log('🔮 Usando Preview API - vai mostrar conteúdo draft e publicado');
+      return previewClient;
+    } else {
+      console.log('📢 Usando Content Delivery API - apenas conteúdo publicado');
+      return contentfulClient;
+    }
+  } catch (error) {
+    console.error('Error configuring Contentful client:', error);
+    // Sempre retornar contentfulClient como fallback
+    console.log('⚠️ Fallback: usando Content Delivery API devido a erro');
+    return contentfulClient;
   }
-  
-  // Use o cliente de preview apenas quando explicitamente solicitado ou em desenvolvimento
-  return isPreviewMode ? previewClient : contentfulClient;
 };
 
 export const getBlogPosts = async (locale: Locale, options: { limit?: number; skip?: number; tag?: string; category?: string } = {}) => {
@@ -144,15 +171,36 @@ export const getBlogPosts = async (locale: Locale, options: { limit?: number; sk
     // Determinar se estamos em ambiente de produção
     const isProduction = process.env.NODE_ENV === 'production' && process.env.CONTENTFUL_PREVIEW !== 'true';
     
+    console.log('📊 getBlogPosts:', { 
+      isProduction, 
+      NODE_ENV: process.env.NODE_ENV,
+      CONTENTFUL_PREVIEW: process.env.CONTENTFUL_PREVIEW,
+      limite: limit,
+      pulo: skip,
+      tag,
+      categoria: category
+    });
+    
     // Use o cliente adequado, garantindo que em produção não usamos preview
-    const client = isProduction ? contentfulClient : getClient();
-    const response = await client.getEntries(queryParams);
+    // Em caso de problema, usar apenas o contentfulClient diretamente como fallback
+    let response;
+    try {
+      const client = isProduction ? contentfulClient : getClient();
+      response = await client.getEntries(queryParams);
+    } catch (error) {
+      console.error('Error using selected client, falling back to contentful client:', error);
+      // Fallback para contentfulClient em caso de erro
+      console.log('⚠️ Fallback: usando Content Delivery API para recuperação direta de posts');
+      response = await contentfulClient.getEntries(queryParams);
+    }
     
     // Apenas garantir que os posts tenham pelo menos um título
     let filteredItems = response.items.filter((item: any) => {
       return item.fields.title && typeof item.fields.title === 'string';
     });
 
+    console.log(`✅ Recuperados ${filteredItems.length} posts (total do Contentful: ${response.total})`);
+    
     return {
       ...response,
       items: filteredItems,
